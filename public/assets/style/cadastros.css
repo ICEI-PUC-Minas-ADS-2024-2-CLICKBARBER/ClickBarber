@@ -1,0 +1,217 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(to right, #1d0000 0%, #000000 11%);
+  color: rgb(255, 255, 255);
+  font-family: Arial, sans-serif;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  position: relative;
+}
+
+.logo-container {
+  flex: 0 0 auto;
+}
+
+.titulo-container {
+  flex: 1;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.titulo {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  flex: 0 0 auto;
+}
+
+.layout img {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---------- Main ---------- */
+
+.container{
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.cd{
+  width: 464px;
+  height: auto;
+  background-color: #121212;
+  margin-bottom: 2rem;
+  border-radius: 19px;
+}
+
+.titulo{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+}
+.titulo p2{
+  margin: 2rem;
+  margin-bottom: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+}
+
+/* ---------- Formulario de cadastro ---------- */ 
+
+.form{
+  display: flex;
+  justify-content: center;
+  margin: 3;
+}
+.laIn{
+  width: 100%;
+}
+
+.laIn label{
+  margin-top: 40px;
+  margin-bottom: 14px;
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ast{
+  color: rgb(255, 31, 31);
+}
+
+.laIn input{
+  display: block;
+  width: 334px;
+  height: 34px;
+  padding: 0rem .4rem;
+  font-weight: 800;
+}
+.laIn input:focus{
+  outline: none;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.lInp{
+  display: flex;
+}
+.lInp input{
+  width: 291px;
+  display: flex;
+}
+.img_check{
+  width: 41px!important;
+  height: 37.5px!important;
+  display: flex;
+  align-items: baseline;
+  margin: 0px!important;
+  outline: 0px;
+}
+.img_check img{
+  width: 100%;
+  height: 100%;
+  
+}
+.img_check input{
+  display: none;
+}
+
+.invalid{
+  display: none;
+  font-size: 11px;
+  color: rgb(197, 38, 38);
+  margin-top: 7px;
+  width: 320px;
+}
+
+.btn{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 36px;
+}
+.btn button{
+  background-color: #6d2f2f;
+  border-radius: 6px;
+  width: 323px;
+  height: 49px;
+  color: #000000;
+  font-size: large;
+  font-weight: 700;
+  border: 0px;
+  transition: 300ms;
+}
+.btn button:hover{
+  background-color: #502222;
+}
+
+
+/* ---------- Mobile ---------- */
+
+
+@media (max-width: 376px) {
+  
+  .titulo p2{
+    font-size: 33px;
+    font-weight: 900;
+  }
+  
+  .cd{
+    width: auto;
+  }
+  .laIn label{
+    font-size: 16px;
+  }
+
+  .laIn input{
+    width: 240px;
+    height: 29px;
+  }
+
+  .lInp input{
+    width: 202px;
+    display: flex;
+  }
+  .img_check{
+    width: 39px!important;
+    height: 32px!important;
+  }
+
+  .invalid{
+    font-size: 11.5px;
+    width: 250px;
+  }
+
+  .btn button{
+    width: 232px;
+    height: 41px;
+  }
+}
