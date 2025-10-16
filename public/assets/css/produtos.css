@@ -1,0 +1,231 @@
+/*CORPO DA PÁGINA*/
+body {
+    /*fundo degradê*/
+    background: linear-gradient(to left, #000000, #170000);
+    font-family: 'Prata', serif;
+}
+
+/*CABEÇALHO*/
+
+.navbar {
+    /*tirando as margens do cabeçalho*/
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand {
+    /*removendo o espaço entre header e o topo da página*/
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+}
+
+.navbar-brand img {
+    /*logo menu*/
+    height: 8rem;
+    width: auto;
+}
+
+.navbar-nav .nav-link {
+    /*opções do menu*/
+    font-size: 1.1rem;
+    transition: transform 0.3s;
+    font-family: "Italiana", serif !important;
+    font-weight: 100 !important;
+}
+
+.navbar-nav .nav-link:hover {
+    /*opções do menu quando passa o mouse*/
+    transform: scale(1.05);
+}
+
+.nav-icons {
+    /*empurrando o menu pro canto esquerdo */
+    margin-left: auto;
+}
+
+.navbar-nav {
+    /*distância entre logo e opções do menu*/
+    margin-left: 2rem;
+}
+
+.nav-icons a {
+    /*ícones das redes sociais*/
+    font-size: 1rem;
+}
+
+.nav-link {
+    /*permite a linha embaixo da opção quando clica*/
+    position: relative;
+}
+
+.nav-link.active::after {
+    /*estética do traço emabixo da opção quando clica*/
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    background-color: #8b8b8b;
+    border-radius: .1rem;
+}
+
+/*MAIN*/
+
+/*PRIMEIRA TELA*/
+
+#tituloPrimeiraTela {
+    /*título "como deseja filtrar os materiais?"*/
+    color: white;
+    font-size: 3rem;
+    padding: 1rem 0rem 0rem 1rem;
+    margin-top: 1rem;
+}
+
+.fundoOpcoes {
+    /*estética do fundo cinza atrás das opções + frase*/
+    background-color: rgba(134, 134, 134, 0.514);
+    max-width: 30rem;
+    border-radius: .3rem;
+    margin: 1rem 1rem 1rem 2rem;
+    padding-left: .5rem;
+    color: white;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.fundoOpcoes a {
+    /*estética do botão "cadastrar material" que é um link*/
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+#fundoOpcaoDeCima {
+    /*distância entre o título e a primeira opção*/
+    margin-top: 3rem;
+}
+
+.fundoOpcoes:hover {
+    /*opções quando passa o mouse*/
+    transform: scale(1.03);
+    background-color: rgba(99, 99, 99, 0.514);
+}
+
+/*TELA AO CLICAR EM FILTRAR POR SERVIÇO*/
+
+#tituloSegundaTela {
+    /*título "selecione o serviço"*/
+    color: white;
+    font-size: 2rem;
+    padding: 1rem 0rem 0rem 1rem;
+    margin-top: 1rem;
+}
+
+.fundoOpcoesServico {
+    /*estética do fundo cinza atrás das opções + frase*/
+    background-color: rgba(134, 134, 134, 0.514);
+    max-width: 30rem;
+    border-radius: .3rem;
+    margin: 1rem 1rem 1rem 2rem;
+    padding-left: .5rem;
+    color: white;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+#fundoOpcaoDeCimaServicos {
+    /*distância entre o título e a primeira opção*/
+    margin-top: 2rem;
+}
+
+.fundoOpcoesServico:hover {
+    /*opções quando passa o mouse*/
+    transform: scale(1.03);
+    background-color: rgba(99, 99, 99, 0.514);
+}
+
+.btnVoltarParaServicos,
+.btnVoltar {
+    /*botão voltar*/
+    display: block;
+    margin: 1rem 0rem 0rem 1rem;
+    gap: 0.5rem;
+    color: white;
+    display: inline-flex;
+}
+
+.btnVoltarParaServicos,
+.btnVoltar i {
+    /*seta do botão voltar*/
+    font-size: .9rem;
+}
+
+/*CARDS DOS PRODUTOS*/
+
+.card-imagem {
+    /*imagem dos produtos*/
+    max-width: 100%;
+    height: 11rem;
+    margin: 1rem auto;
+    object-fit: contain;
+}
+
+.card-title {
+    /*nome dos produtos*/
+    margin: 0 auto 1rem auto;
+    font-weight: 600;
+}
+
+.card {
+    /*fundo do card*/
+    margin-top: 1rem;
+    box-shadow: .5rem .5rem .2rem rgba(255, 255, 255, 0.16);
+    background-color: #e4e4e4;
+}
+
+.avisoDisponibilidade {
+    /*div de disponível ou não*/
+    background-color: green;
+    margin: 1rem auto 0rem auto;
+    padding: .4rem;
+    border-radius: .4rem;
+    color: white;
+    font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*RESPONSIVIDADE*/
+@media (max-width: 768px) {
+    /*em telas menores que 767px de largura (referência: ipad mini)*/
+
+    #tituloPrimeiraTela {
+        /*título "como deseja filtrar os materiais?"*/
+        font-size: 2rem;
+        padding: 1rem 1rem 0rem 1rem;
+    }
+
+    .fundoOpcoes {
+        /*estética do fundo cinza atrás das opções + frase*/
+        margin: 1rem 1rem 1rem 1rem;
+        font-size: 1.3rem;
+    }
+
+    .nav-icons a {
+        /*ícones das redes sociais*/
+        margin-top: 1rem;
+    }
+}
