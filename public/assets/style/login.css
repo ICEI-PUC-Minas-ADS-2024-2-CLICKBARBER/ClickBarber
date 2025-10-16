@@ -1,9 +1,17 @@
+@font-face {
+    font-family: 'Bakbak One';
+    src: url('../fonts/BakbakOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
   margin: 0;
   height: 100vh;
   background: linear-gradient(to right, #1d0000 0%, #000000 11%);
   color: white;
-  font-family: Arial, sans-serif;
+  font-family: 'Bakbak One', sans-serif;
 }
 
 /* ---------- Header ---------- */
@@ -71,8 +79,8 @@ body {
 .titulo p2{
   margin: 2rem;
   margin-bottom: 8px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
+  font-family:'Bakbak One', Helvetica, sans-serif;
+  
   font-size: 40px;
 }
 
@@ -93,7 +101,7 @@ body {
   display: block;
   width: 100%;
   font-size: 16px;
-  font-weight: 700;
+  
 }
 
 .laIn input{
@@ -189,7 +197,7 @@ input[type="number"] {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: 900;
+    
     font-size: 15px;
     margin-bottom: 45.1px;
 }
@@ -228,7 +236,7 @@ input[type="number"] {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: 900;
+    
     font-size: 12px;
     margin-bottom: 90.1px;
 }
@@ -242,13 +250,15 @@ input[type="number"] {
 
 @media (max-width: 376px) {
   
+  
+
   .titulo p2{
     font-size: 33px;
-    font-weight: 900;
   }
   
   .cd{
-    width: auto;
+    width: 332px;
+    margin: auto;
   }
   .laIn label{
     font-size: 16px;

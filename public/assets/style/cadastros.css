@@ -1,9 +1,17 @@
+@font-face {
+    font-family: 'Bakbak One';
+    src: url('../fonts/BakbakOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
   margin: 0;
   height: 100vh;
   background: linear-gradient(to right, #1d0000 0%, #000000 11%);
   color: rgb(255, 255, 255);
-  font-family: Arial, sans-serif;
+  font-family: 'Bakbak One', sans-serif;
 }
 
 /* ---------- Header ---------- */
@@ -70,8 +78,8 @@ body {
 .titulo p2{
   margin: 2rem;
   margin-bottom: 8px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
+  font-family: 'Bakbak One';
+  
   font-size: 40px;
 }
 
@@ -92,7 +100,7 @@ body {
   display: block;
   width: 100%;
   font-size: 16px;
-  font-weight: 700;
+  
 }
 
 .ast{
@@ -185,7 +193,8 @@ input[type="number"] {
   }
   
   .cd{
-    width: auto;
+    width: 332px;
+    
   }
   .laIn label{
     font-size: 16px;
