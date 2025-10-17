@@ -62,7 +62,6 @@
         <div class="fundoOpcoes" id="verTodosMateriais">
             <p>Ver todos os materiais disponíveis</p>
         </div>
-
         <div class="fundoOpcoes">
             <a href="cadastromaterial.html">+ Cadastrar material</a>
         </div>
@@ -105,7 +104,6 @@
             <div class="fundoOpcoesServico">
                 <p>Penteados</p>
             </div>
-
         </div>
 
         <!--PÁGINA COM TODOS OS MATERIAIS DISPONÍVEIS-->
@@ -117,158 +115,18 @@
                 <i class="bi bi-arrow-left"></i> Voltar
             </a>
 
-            <!-- produtos (bloco de 3 por linha)-->
-            <div class="container my-4">
-                <div class="row g-4">
-
-                    <!--produto/card 1-->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <!--imagem-->
-                            <img src="assets/imagens/luva.png" class="card-imagem" alt="Imagem do card">
-                            <div class="card-body d-flex flex-column">
-                                <!--linha clara-->
-                                <hr class="bg-light">
-                                <!--nome do produto-->
-                                <h5 class="card-title">Luva descartável</h5>
-                                <!--quantidade/marca/validade-->
-                                <ul class="mb-3 ps-3">
-                                    <li>Quantidade: 10 caixas</li>
-                                    <li>Marca: Descarpack</li>
-                                    <li>Validade: 90 dias</li>
-                                </ul>
-                                <!--disponibilidade-->
-                                <span class="avisoDisponibilidade">DISPONÍVEL</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--produto/card 2-->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <!--imagem-->
-                            <img src="assets/imagens/creme_alisamento.png" class="card-imagem" alt="Imagem do card">
-                            <div class="card-body d-flex flex-column">
-                                <!--linha clara-->
-                                <hr class="bg-light">
-                                <!--nome do produto-->
-                                <h5 class="card-title">Creme de alisamento</h5>
-                                <!--quantidade/marca/validade-->
-                                <ul class="mb-3 ps-3">
-                                    <li>Quantidade: 5 potes</li>
-                                    <li>Marca: Lisa Hair</li>
-                                    <li>Validade: 1 ano</li>
-                                </ul>
-                                <!--disponibilidade-->
-                                <span class="avisoDisponibilidade">DISPONÍVEL</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--produto/card 2-->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <!--imagem-->
-                            <img src="assets/imagens/tesoura.png" class="card-imagem" alt="Imagem do card">
-                            <div class="card-body d-flex flex-column">
-                                <!--linha clara-->
-                                <hr class="bg-light">
-                                <!--nome do produto-->
-                                <h5 class="card-title">Tesoura Fio Navalha 7</h5>
-                                <!--quantidade/marca/validade-->
-                                <ul class="mb-3 ps-3">
-                                    <li>Quantidade: 0</li>
-                                    <li>Marca: Santa Clara</li>
-                                    <li>Validade: 0</li>
-                                </ul>
-                                <!--disponibilidade-->
-                                <span class="avisoDisponibilidade">DISPONÍVEL</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- produtos (bloco de 3 por linha), js popula-->
+            <div id="lista" class="container my-4">
+                <div class="row g-4"></div> <!--js popula-->
             </div>
         </div>
 
         <!--PÁGINA COM MATERIAIS DISPONÍVEIS POR SERVIÇO-->
         <!--materiais quando clico em algum serviço-->
         <div id="blocoMateriaisPorServico" style="display: none;">
-
-            <!--botão voltar-->
-            <a href="#" class="btnVoltarParaServicos">
-                <i class="bi bi-arrow-left"></i> Voltar
-            </a>
-
-            <!-- produtos (bloco de 3 por linha)-->
+            <a href="#" class="btnVoltarParaServicos"><i class="bi bi-arrow-left"></i> Voltar</a>
             <div class="container my-4">
-                <div class="row g-4">
-
-                    <!--produto/card 1-->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <!--imagem-->
-                            <img src="assets/imagens/luva.png" class="card-imagem" alt="Imagem do card">
-                            <div class="card-body d-flex flex-column">
-                                <!--linha clara-->
-                                <hr class="bg-light">
-                                <!--nome do produto-->
-                                <h5 class="card-title">Luva descartável</h5>
-                                <!--quantidade/marca/validade-->
-                                <ul class="mb-3 ps-3">
-                                    <li>Quantidade: 10 caixas</li>
-                                    <li>Marca: Descarpack</li>
-                                    <li>Validade: 90 dias</li>
-                                </ul>
-                                <!--disponibilidade-->
-                                <span class="avisoDisponibilidade">DISPONÍVEL</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--produto/card 2-->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <!--imagem-->
-                            <img src="assets/imagens/creme_alisamento.png" class="card-imagem" alt="Imagem do card">
-                            <div class="card-body d-flex flex-column">
-                                <!--linha clara-->
-                                <hr class="bg-light">
-                                <!--nome do produto-->
-                                <h5 class="card-title">Creme de alisamento</h5>
-                                <!--quantidade/marca/validade-->
-                                <ul class="mb-3 ps-3">
-                                    <li>Quantidade: 5 potes</li>
-                                    <li>Marca: Lisa Hair</li>
-                                    <li>Validade: 1 ano</li>
-                                </ul>
-                                <!--disponibilidade-->
-                                <span class="avisoDisponibilidade">DISPONÍVEL</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--produto/card 2-->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100">
-                            <!--imagem-->
-                            <img src="assets/imagens/tesoura.png" class="card-imagem" alt="Imagem do card">
-                            <div class="card-body d-flex flex-column">
-                                <!--linha clara-->
-                                <hr class="bg-light">
-                                <!--nome do produto-->
-                                <h5 class="card-title">Tesoura Fio Navalha 7</h5>
-                                <!--quantidade/marca/validade-->
-                                <ul class="mb-3 ps-3">
-                                    <li>Quantidade: 0</li>
-                                    <li>Marca: Santa Clara</li>
-                                    <li>Validade: 0</li>
-                                </ul>
-                                <!--disponibilidade-->
-                                <span class="avisoDisponibilidade">DISPONÍVEL</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="row g-4"></div> <!--js popula-->
             </div>
         </div>
 

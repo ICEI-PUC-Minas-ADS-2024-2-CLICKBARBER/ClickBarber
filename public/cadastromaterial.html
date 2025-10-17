@@ -85,8 +85,16 @@
                         <option>Hidratação</option>
                         <option>Alisamento</option>
                         <option>Penteados</option>
+                        <option value="__outra__">Outra…</option>
                     </select>
                     <div class="invalid-feedback">Selecione a categoria.</div>
+                </div>
+
+                <!--campo se o usuário selecionar "outra" categoria-->
+                <div class="col-md-6 d-none" id="campoOutraCategoria">
+                    <label for="categoriaOutra" class="form-label">Nova categoria</label>
+                    <input type="text" class="form-control" id="categoriaOutra" placeholder="Digite a nova categoria">
+                    <div class="form-text">Ex.: Progressiva, Escova, Camuflagem, etc.</div>
                 </div>
 
                 <!--quantidade-->
@@ -113,6 +121,14 @@
                 <div class="col-md-3">
                     <label for="validade" class="form-label">Validade</label>
                     <input type="date" class="form-control" id="validade" name="validade">
+                </div>
+
+                <!--marca-->
+                <div class="col-md-6">
+                    <label for="marca" class="form-label">Marca</label>
+                    <input type="text" class="form-control" id="marca" name="marca" required
+                        placeholder="Ex.: Descarpack">
+                    <div class="invalid-feedback">Informe a marca.</div>
                 </div>
 
                 <!--descrição-->

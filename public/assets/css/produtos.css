@@ -187,17 +187,63 @@ body {
     background-color: #e4e4e4;
 }
 
-.avisoDisponibilidade {
-    /*div de disponível ou não*/
-    background-color: green;
-    margin: 1rem auto 0rem auto;
-    padding: .4rem;
-    border-radius: .4rem;
-    color: white;
+#blocoTodosMateriais .alert.alert-secondary,
+#blocoMateriaisPorServico .alert.alert-secondary {
+    /*estilo do aviso "nenhum produto" dentro das categorias*/
+    background: linear-gradient(180deg, #2a1d1d, #1a1313);
+    color: #ffffff;
+    border-radius: .6rem;
+    padding: .8rem;
+    max-width: 60%;
+}
+
+#blocoTodosMateriais .alert.alert-secondary::before,
+#blocoMateriaisPorServico .alert.alert-secondary::before {
+    /*ícone do aviso "nenhum produto" dentro das categorias*/
+    content: "ⓘ";
+    margin-right: 10px;
+    display: inline-block;
+    opacity: .85;
+}
+
+#blocoTodosMateriais .alert.alert-secondary,
+#blocoMateriaisPorServico .alert.alert-secondary {
+    /*tira a borda do aviso "nenhum produto" dentro das categorias*/
+    --bs-alert-border-color: transparent;
+}
+
+.category-title {
+    /*estilo do aviso "produtos da categoria *tal*" dentro das categorias*/
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+#blocoTodosMateriais .section-title {
+    /*estilo do aviso "todos os materiais"*/
+    background: transparent !important;
+    color: #ffffff;
+    border: none !important;
+    font-size: 1.1rem;
+}
+
+#blocoTodosMateriais .section-title i {
+    /*ícone dentro do título "todos os materiais"*/
+    opacity: .9;
+    font-size: 1rem;
+}
+
+.card .btn.btn-sm {
+    /*botões editar e excluir*/
+    border-radius: .5rem;
+    letter-spacing: .2px;
     font-weight: 600;
 }
 
-
+.card .btn-outline-primary.btn-sm i,
+.card .btn-outline-danger.btn-sm i {
+    /*botão de disponível ou indisponível*/
+    font-size: 0.9rem;
+}
 
 
 
