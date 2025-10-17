@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Julius+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Italiana&family=Julius+Sans+One&display=swap');
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(to left, #2c0000 7%, #000000 50%, #2c0000 90%);
+  color: white;
+  font-family: 'Arial', sans-serif;
+}
+.fonte-italiana
+{
+  font-family: 'Italiana', sans-serif;
+}
+
+
+
+/* ---------- Header ---------- */
+.header 
+{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0rem 2rem;
+  position: relative;
+}
+
+.logo-container 
+{
+  flex: 0 0 auto;
+}
+
+.img-container 
+{
+  position: relative;
+}
+.nav a
+{
+  color: white;
+  padding: 0.1rem 2rem;
+  font-size: 22px;
+}
+.nav a:hover
+{
+  color:darkred;
+}
+.layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  flex: 0 0 auto;
+}
+
+.layout img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Card*/
+.custom-card {
+  background-color: #1a1a1a;  /* cor do card */
+  border-radius: 0.5rem;
+  padding-top:3rem;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.custom-card:hover {
+  transform: scale(1.03);
+}
+
+.img-container {
+  position: relative;
+}
+
+/*Imagem*/
+.img-container img {
+  display: block;
+  width: 15rem;
+  margin: 0 auto;
+  height: auto;
+}
+
+/*Titulo Card*/
+.texto-central {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: "Julius Sans One", sans-serif;
+  font-size: 42px;
+  pointer-events: none;
+}
+
+/*Botão*/
+.custom-btn {
+  background-color: #6D2F2F;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:15rem;
+  height: 4rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.4rem;
+  font-size: 48px;
+  color: black;
+  font-family: "Inter", sans-serif;
+  transition: transform 0.2s ease;
+  margin: 0 auto; 
+}
+
+.custom-btn:hover {
+  transform: scale(1.1);
+  background-color: #9c3636;
+  color: white;
+}
