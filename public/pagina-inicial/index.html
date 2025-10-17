@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hero Responsivo - Barbearia</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+<style>
+  /* Fontes personalizadas */
+  h2 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 5rem;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+    color: #ffffff;
+  }
+
+  p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+    color: #ffffff;
+  }
+  a {
+     font-family: "Playfair Display", serif;
+  }
+</style>
+
+<script src="assets/scripts/app.js"></script>
+</head>
+<body>
+  <!-- NAV DESKTOP -->
+  <nav class="nav" aria-label="Navegação principal">
+    <div class="nav-inner">
+      <div class="text-section">
+        <div class="company">
+          <a href="/" class="logo" aria-label="Página inicial">
+            <img src="assets/image/logo.png" alt="Logo ClickBarber" />
+          </a>
+          <a href="/page-9" class="enter">Entrar</a>
+        </div>
+
+        <div class="nav-links" role="navigation" aria-label="Links">
+          <a href="planos.html">Planos</a>
+          <a href="#saiba-mais">Saiba mais</a>
+          <a href="#ajuda">Ajuda</a>
+        </div>
+      </div>
+
+  <div class="social-links" aria-label="Redes sociais">
+  <a class="social" aria-label="Instagram" href="https://instagram.com/seuPerfil" target="_blank" rel="noopener">
+    <img src="assets/image/instagram.png" alt="Instagram" />
+  </a>
+  <a class="social" aria-label="Facebook" href="https://facebook.com/seuPerfil" target="_blank" rel="noopener">
+    <img src="assets/image/instagram.png" alt="Facebook" />
+  </a>
+  <a class="social" aria-label="X/Twitter" href="https://x.com/seuPerfil" target="_blank" rel="noopener">
+    <img src="assets/image/instagram.png" alt="X (Twitter)" />
+  </a>
+</div>
+  </nav>
+
+  <!-- NAV MOBILE -->
+  <nav class="nav-mobile" aria-label="Navegação principal mobile">
+    <div class="nav-mobile-inner">
+      <div class="text-mobile">
+        <div class="company-mobile">
+          <a href="/" class="logo" aria-label="Página inicial">
+            <img src="assets/image/logo.png" alt="Logo ClickBarber" />
+          </a>
+          <img class="menu" style="display: block; width: 3rem; height: auto;" src="assets/image/menu.png" alt="">
+                <div class="nav-mobile-links" role="navigation" aria-label="Links">
+          
+          <a href="/page-9">Entrar</a>
+          <a href="/planos.html">Planos</a>
+          <a href="#saiba-mais">Saiba mais</a>
+          <a href="#ajuda">Ajuda</a>
+        </div>
+      </div>
+        </div>
+
+  
+
+<div class="social-links-mobile" aria-label="Redes sociais">
+  <a class="social" aria-label="Instagram" href="https://instagram.com/seuPerfil" target="_blank" rel="noopener">
+    <img src="assets/image/instagram.png" alt="Instagram" />
+  </a>
+  <a class="social" aria-label="Facebook" href="https://facebook.com/seuPerfil" target="_blank" rel="noopener">
+    <img src="assets/image/instagram.png" alt="Facebook" />
+  </a>
+  <a class="social" aria-label="X/Twitter" href="https://x.com/seuPerfil" target="_blank" rel="noopener">
+    <img src="assets/image/instagram.png" alt="X (Twitter)" />
+  </a>
+</div>
+  </nav>
+
+  <!-- HERO DESKTOP -->
+  <section class="hero" aria-labelledby="hero-title-desktop">
+    <div class="hero-container">
+      <div class="hero-text">
+        <h2 id="hero-title-desktop">Transforme sua barbearia com tecnologia de verdade.</h2>
+        <p>Organize, controle e cresça — tudo com um só sistema.</p>
+
+        <div class="hero-buttons">
+          <a href="/planos.html" class="btn btn-primary">Ver planos</a>
+          <a href="#saiba-mais" class="btn btn-secondary">Saiba mais</a>
+        </div>
+      </div>
+
+      <div class="hero-image" aria-hidden="true">
+        <div class="large grid centered perspective square-grid">
+          <img  id="tesoura"   src="assets/image/tesoura.png" alt="" />
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HERO MOBILE -->
+  <section class="hero-mobile" aria-labelledby="hero-title-mobile">
+    <div class="hero-mobile-container">
+      <div class="hero-mobile-image" aria-hidden="true">
+        <img src="assets/image/tesoura.png" alt="" />
+      </div>
+
+      <div class="hero-mobile-text">
+        <h2 id="hero-title-mobile">Transforme sua barbearia com tecnologia de verdade.</h2>
+        <p>Organize, controle e cresça — tudo com um só sistema.</p>
+
+        
+
+        <div class="hero-mobile-buttons " style="display:none; ">
+         
+          <a href="#planos" class="btn btn-primary">Ver planos</a>
+          <a href="#saiba-mais" class="btn btn-secondary">Saiba mais</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE CARDS -->
+  <section class="feature-cards-1" aria-label="Recursos">
+    <div class="row-center">
+      <ul class="cards-list" role="list">
+        <li class="card">
+          <div class="image-wrapper" aria-hidden="true" role="presentation">
+            <img src="assets/image/card1.png" alt="" class="image" />
+          </div>
+          <div class="text">
+            <div class="title"><h5>Traga confiança</h5></div>
+            <div class="subtitle">
+              <p>Reduza faltas, aumente a fidelidade e acompanhe seu desempenho.</p>
+            </div>
+          </div>
+        </li>
+
+        <li class="card">
+          <div class="image-wrapper" aria-hidden="true" role="presentation">
+            <img src="assets/image/card2.png" alt="" class="image" />
+          </div>
+          <div class="text">
+            <div class="title"><h5>Gestão inteligente</h5></div>
+            <div class="subtitle">
+              <p>Economize horas toda semana. Foque no cliente — a gente cuida do resto.</p>
+            </div>
+          </div>
+        </li>
+
+        <li class="card">
+          <div class="image-wrapper" aria-hidden="true" role="presentation">
+            <img src="assets/image/card3.png" alt="" class="image" />
+          </div>
+          <div class="text text-fixed">
+            <div class="title"><h5>Agendamentos eficazes</h5></div>
+            <div class="subtitle">
+              <p>Agendamento em tempo real, lembretes automáticos, histórico de clientes e mais.</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-content">
+        <a href="/" class="footer-logo" aria-label="Página inicial">
+          <img src="assets/image/logo.png" alt="Logo ClickBarber" />
+        </a>
+        <p class="footer-text">
+          ClickBarber é uma plataforma online destinada à gestão de barbearias,
+          que oferece funcionalidades para controle de agendamentos, clientes,
+          relatórios e demais aspectos operacionais do negócio.
+        </p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Links do rodapé">
+        <h3>Suporte</h3>
+        <ul>
+          <li><a href="#contato">Contato</a></li>
+          <li><a href="#suporte">Suporte</a></li>
+          <li><a href="#legal">Legal</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  
+</div>
+</body>
+</html>
