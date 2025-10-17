@@ -25,7 +25,7 @@ btnEntrar.addEventListener('click',async (event)=>{
     else
         if(await verificaEmail(email)){
             valid = false;
-            document.getElementById("inEmail").style.display="flex";
+            document.getElementById("inEmail2").style.display="flex";
         }
 
 
