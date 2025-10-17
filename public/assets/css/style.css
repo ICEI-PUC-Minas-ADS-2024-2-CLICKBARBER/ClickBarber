@@ -1,0 +1,102 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(to left, #1d0000 5%, #000000 50%, #1d0000 90%);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  position: relative;
+}
+
+.logo-container {
+  flex: 0 0 auto;
+}
+
+.titulo-container {
+  flex: 1;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.titulo {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  flex: 0 0 auto;
+}
+
+.layout img {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---------- Conteúdo ---------- */
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+
+.acoes {
+  margin-bottom: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  background-color: #6b1913;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: #8c241a;
+}
+
+/* ---------- Lista de Serviços ---------- */
+.lista {
+  width: 80%;
+  max-width: 700px;
+}
+
+.card {
+  background-color: #1c1c1c;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card h2 {
+  color: #e0baba;
+  margin-top: 0;
+}
+
+.card p {
+  margin: 5px 0;
+}

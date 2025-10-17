@@ -1,0 +1,11 @@
+{
+  "servicos": [
+    {
+      "id": "eb2f",
+      "titulo": "Cabelo",
+      "descricao": "corte elegante de acordo com seu estilo",
+      "preco": "30,00",
+      "duracao": "30min"
+    }
+  ]
+}
