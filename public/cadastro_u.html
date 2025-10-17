@@ -41,6 +41,7 @@
               <label for="email">Digite seu Email<span class="ast"> *</span></label>
               <input type="text" placeholder="username@gmail.com" id="email">
               <div class="invalid" id="inEmail">Esse campo é obrigatorio, por favor digite um email válido</div>
+              <div class="invalid" id="inEmail2">Esse email ja foi cadastrado no sistema</div>
             </div>
             
             <!--Nome do usuario-->
@@ -69,6 +70,7 @@
               <label for="cpf">Digite seu CPF <span class="ast"> *</span></label>
               <input type="number" placeholder="123-456-789-10" id="cpf">
               <div class="invalid" id="inCPF">Esse campo é obrigatorio, por favor digite um CPF válido</div>
+              <div class="invalid" id="inCPF2">O valor digitado ja existe no sistema</div>
             </div>
             
             <!--Senha da conta-->
@@ -98,7 +100,7 @@
             </div>
            
             <div class="btn">
-              <button id="btnCria">CRIAR CONTA</button>
+              <button type="button" id="btnCria">CRIAR CONTA</button>
             </div>
             
           </form>

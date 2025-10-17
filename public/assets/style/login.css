@@ -103,6 +103,10 @@ body {
   font-size: 16px;
   
 }
+.ast{
+  color: rgb(255, 31, 31);
+}
+
 
 .laIn input{
   display: block;

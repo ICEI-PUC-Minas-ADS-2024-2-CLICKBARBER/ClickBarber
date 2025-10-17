@@ -1,3 +1,4 @@
+const url = 'http://localhost:3000/barbearias'
 const btnCriar =  document.getElementById("btnCriar");
 const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
@@ -19,12 +20,12 @@ check.addEventListener('click',()=>{
 
     //se estiver checado a senha ira aparecer e o botão ira mudar para o olho aberto
     if(check.checked){
-        img.src = "src/img/olhon.png"
+        img.src = "assets/img/olhon.png"
         senha.type = "text"
     }
     //se não a senha vai ser ocultada e a imagem ira mudar para o olho bloqueado
     else{
-        img.src = "src/img/olho.png"
+        img.src = "assets/img/olho.png"
         senha.type = "password"
     }
 })
@@ -34,19 +35,19 @@ check2.addEventListener('click',()=>{
 
     //se estiver checado a senha ira aparecer e o botão ira mudar para o olho aberto
     if(check2.checked){
-        img.src = "src/img/olhon.png"
+        img.src = "assets/img/olhon.png"
         senha.type = "text"
     }
     //se não a senha vai ser ocultada e a imagem ira mudar para o olho bloqueado
     else{
-        img.src = "src/img/olho.png"
+        img.src = "assets/img/olho.png"
         senha.type = "password"
     }
 })
 
 
 //função que verifica se todos os campos estão preenchidos de forma correta
-btnCriar.addEventListener('click', (event) => {
+btnCriar.addEventListener('click', async (event) => {
     
     //some com os avisos
     document.querySelectorAll(".invalid").forEach(element =>{
@@ -71,6 +72,12 @@ btnCriar.addEventListener('click', (event) => {
     else if(!/@/.test(email)){
         valid = false;
         document.getElementById("inEmail").style.display="flex";
+    }
+    else{
+        if(!(await procuraDado('email',email))){
+            valid = false;
+            document.getElementById("inEmail2").style.display="flex";
+        }
     }
 
     //verifica o campo nome
@@ -97,6 +104,12 @@ btnCriar.addEventListener('click', (event) => {
     else if(!cnpj.length == 14){
         valid = false;
         document.getElementById("inCNPJ").style.display="flex";
+    }
+    else{
+        if(!(await procuraDado('cnpj',cnpj))){
+            valid = false;
+            document.getElementById("inCNPJ2").style.display="flex";
+        }
     }
 
     //verifica o campo senha
@@ -128,5 +141,37 @@ btnCriar.addEventListener('click', (event) => {
     if(valid===false)
         event.preventDefault();
     else
-        window.location.href = "/login.html"
+
+        var dado = {
+            'email':email,
+            'nome':nome,
+            'telefone':telefone,
+            'cnpj':cnpj,
+            'senha':senha
+        }
+        
+        cadastraBarbearia(dado)
+        window.location.href = "login.html"
 })
+
+function cadastraBarbearia(dado){
+
+    fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type' : 'aplication/json'},
+        body :JSON.stringify(dado)
+    })
+}
+
+async function procuraDado(nome, dado){
+
+    const response = await fetch(url+'?'+nome+'='+dado)
+
+    if(!response.ok)
+        throw new Error('Ocorreu um erro')
+
+    const data = await response.json()
+
+    return data.length == 0
+
+}

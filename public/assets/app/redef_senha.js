@@ -1,10 +1,11 @@
+const url = 'http://localhost:3000/usuarios'
 const btnRedefinir = document.getElementById("btnRedefinir");
 const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
 
 
 //verifica se a senha tem no minimo 1 letra 1 numero e 1 simbolo
-function verificaSenha(senha){
+async function verificaSenha(senha){
     const letra = /[a-zA-Z]/.test(senha);
     const num = /\d/.test(senha);
     const simbolo = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(senha);
@@ -19,12 +20,12 @@ check.addEventListener('click',()=>{
 
     //se estiver checado a senha ira aparecer e o botão ira mudar para o olho aberto
     if(check.checked){
-        img.src = "src/img/olhon.png"
+        img.src = "assets/img/olhon.png"
         senha.type = "text"
     }
     //se não a senha vai ser ocultada e a imagem ira mudar para o olho bloqueado
     else{
-        img.src = "src/img/olho.png"
+        img.src = "assets/img/olho.png"
         senha.type = "password"
     }
 
@@ -35,19 +36,19 @@ check2.addEventListener('click',()=>{
 
     //se estiver checado a senha ira aparecer e o botão ira mudar para o olho aberto
     if(check2.checked){
-        img.src = "src/img/olhon.png"
+        img.src = "assets/img/olhon.png"
         senha.type = "text"
     }
     //se não a senha vai ser ocultada e a imagem ira mudar para o olho bloqueado
     else{
-        img.src = "src/img/olho.png"
+        img.src = "assets/img/olho.png"
         senha.type = "password"
     }
 
 })
 
 //função que verifica se todos os campos estão preenchidos de forma correta
-btnRedefinir.addEventListener('click', (event) => {
+btnRedefinir.addEventListener('click', async (event) => {
     
     //some com os avisos
     document.querySelectorAll(".invalid").forEach(element =>{
@@ -87,4 +88,17 @@ btnRedefinir.addEventListener('click', (event) => {
     //se algum campo estiver invalido o envio não ira acontecer
     if(valid===false)
         event.preventDefault();
+    else{
+
+        const sucesso = await mudaSenha(senha);
+        if (sucesso) {
+            window.location.href = "login.html";
+        } else {
+            console.error('Falha ao mudar senha');
+        }
+    }
 })
+
+async function mudaSenha(senha){
+    
+}

@@ -40,6 +40,7 @@
               <label for="emailLoja">Digite seu Email<span class="ast"> *</span></label>
               <input type="text" placeholder="username@gmail.com" id="emailLoja">
               <div class="invalid" id="inEmail">Esse campo é obrigatorio, por favor digite um email válido</div>
+              <div class="invalid" id="inEmail2">Esse email ja esta cadastrado no sistema</div>
             </div>
             
             <!--Nome da loja-->
@@ -61,6 +62,7 @@
               <label for="cnpj">Digite o CNPJ da loja<span class="ast"> *</span> </label>
               <input type="number" placeholder="XX.XXX.XXX/YYYY-ZZ" id="cnpj">
               <div class="invalid" id="inCNPJ">Esse campo é obrigatorio, por favor digite um CNPJ válido</div>
+              <div class="invalid" id="inCNPJ2">Esse valor ja esta cadastrado no sistema</div>
             </div>
             
             <!--Senha da conta-->
@@ -90,7 +92,7 @@
             </div>
            
             <div class="btn">
-              <button id="btnCriar">CRIAR CONTA</button>
+              <button type="button" id="btnCriar">CRIAR CONTA</button>
             </div>
             
           </form>

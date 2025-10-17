@@ -1,8 +1,7 @@
+const url = 'http://localhost:3000/usuarios'
 const btnCriar =  document.getElementById("btnCria");
 const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
-
-console.log(window.location.href)
 
 
 //verifica se a senha tem no minimo 1 letra 1 numero e 1 simbolo
@@ -21,12 +20,12 @@ check.addEventListener('click',()=>{
 
     //se estiver checado a senha ira aparecer e o botão ira mudar para o olho aberto
     if(check.checked){
-        img.src = "src/img/olhon.png"
+        img.src = "assets/img/olhon.png"
         senha.type = "text"
     }
     //se não a senha vai ser ocultada e a imagem ira mudar para o olho bloqueado
     else{
-        img.src = "src/img/olho.png"
+        img.src = "assets/img/olho.png"
         senha.type = "password"
     }
 
@@ -37,12 +36,12 @@ check2.addEventListener('click',()=>{
 
     //se estiver checado a senha ira aparecer e o botão ira mudar para o olho aberto
     if(check2.checked){
-        img.src = "src/img/olhon.png"
+        img.src = "assets/img/olhon.png"
         senha.type = "text"
     }
     //se não a senha vai ser ocultada e a imagem ira mudar para o olho bloqueado
     else{
-        img.src = "src/img/olho.png"
+        img.src = "assets/img/olho.png"
         senha.type = "password"
     }
 
@@ -50,7 +49,7 @@ check2.addEventListener('click',()=>{
 
 
 //função que verifica se todos os campos estão preenchidos de forma correta
-btnCriar.addEventListener('click', (event) => {
+btnCriar.addEventListener('click', async (event) => {
     
     //some com os avisos
     document.querySelectorAll(".invalid").forEach(element =>{
@@ -76,6 +75,12 @@ btnCriar.addEventListener('click', (event) => {
     else if(!/@/.test(email)){
         valid = false;
         document.getElementById("inEmail").style.display="flex";
+    }
+    else{
+        if(!(await procuraDado('email',email))){
+            valid = false
+            document.getElementById("inEmail2").style.display="flex";
+        }
     }
 
     //verifica o campo nome
@@ -109,6 +114,12 @@ btnCriar.addEventListener('click', (event) => {
         valid = false;
         document.getElementById("inCPF").style.display="flex";
     }
+    else{
+        if(!(await procuraDado('cpf',cpf))){
+            valid = false
+            document.getElementById("inCPF2").style.display="flex";
+        }
+    }
 
     //verifica o campo senha
     if(!senha || senha === ""){
@@ -137,6 +148,54 @@ btnCriar.addEventListener('click', (event) => {
     //se algum campo estiver invalido o envio não ira acontecer
     if(valid==false)
         event.preventDefault();
-    else
-        window.location.href = "/login.html"
+    else{
+        var valores = 
+        {
+            "email":email,
+            "nome": nome + ' ' + sobrenome,
+            "telefone":telefone,
+            "cpf":cpf,
+            "senha":senha,
+        }
+
+        if(cadastraUsuario(valores))
+            window.location.href = "login.html"
+    }
+        
 })
+
+async function cadastraUsuario(valores){
+
+    try{
+        await fetch(url,{
+            method: 'POST',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify(valores)
+        })
+    }
+    catch(err){
+        Console.Log(`Ocorreu um erro ${err}:`)
+        alert('Ocorreu um erro, por favor tente de novo')
+        return false
+    }
+    return true
+}
+
+async function procuraDado(nome, dado){
+
+    console.log(url+ '?' +nome+ '=' +dado)
+    
+    const response =  await fetch(url+ '?' +nome+ '=' +dado)
+
+    if(!response.ok){
+        throw new Error('Ocorreu um erro')
+    }
+
+    const data = await response.json()
+
+    console.log(data)
+    console.log(data.length ==0)
+
+    return data.length == 0
+
+}

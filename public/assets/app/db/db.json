@@ -1,0 +1,46 @@
+{
+  "usuarios": [
+    {
+      "id": "9acc",
+      "email": "leonardo.m.j.soares@gmail.com",
+      "nome": "Leonardo Mendes",
+      "telefone": "1122334455",
+      "cpf": "12312312312",
+      "senha": "leonor489."
+    },
+    {
+      "id": "96d7",
+      "email": "leonardo.m.j.soares@gmail.co",
+      "nome": "leo Mendes",
+      "telefone": "1234567890",
+      "cpf": "12312312311",
+      "senha": "leonor489."
+    },
+    {
+      "id": "8db3",
+      "email": "eonardo.m.j.soares@gmail.com",
+      "nome": "Leonardo Mendes",
+      "telefone": "1223344512",
+      "cpf": "12312312313",
+      "senha": "eeeee44..54"
+    },
+    {
+      "id": "8a87",
+      "email": "leonardo.m.j.soares@gmail.",
+      "nome": "Leonardo Mendes",
+      "telefone": "3445756445",
+      "cpf": "09876543210",
+      "senha": "leonor169."
+    }
+  ],
+  "barbearias": [
+    {
+      "id": "7aea",
+      "email": "clickBarber@gmail.com",
+      "nome": "ClickBarber",
+      "telefone": "1223344556",
+      "cnpj": "12121212121212",
+      "senha": "qwweerrt.5"
+    }
+  ]
+}
