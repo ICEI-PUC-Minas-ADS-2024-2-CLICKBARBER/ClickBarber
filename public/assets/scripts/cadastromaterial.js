@@ -45,6 +45,23 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!form) { /*se a página não tem esse form, o script não executa*/
         return;
     }
+    /*impedir a inserção de uma validade menor que o dia que o cadastro está sendo realizado*/
+    const validadeEntrada = document.getElementById("validade");
+    if (validadeEntrada) { /*se essa constante não existir, não executa*/
+        const hoje = new Date(); /*cria um objeto Date com a data e hora atuais do meu navegador*/
+        const yyyy = hoje.getFullYear(); /*extrai o ano - 4 dígitos*/
+        const mm = String(hoje.getMonth() + 1).padStart(2, "0"); /*pega o mês; vai de 0 a 11, então soma + 1 para ficar de 1 a 12. Converte para string e garante sempre dois dígitos (ex.: 3 vira 03)*/
+        const dd = String(hoje.getDate()).padStart(2, "0"); /*pega o dia do mês, converte pra string e completa com zero à esquerda (ex.: 3 vira 03)*/
+        const hojeStr = `${yyyy}-${mm}-${dd}`; /*monta a data no formato ISO (ex.: "2025-10-20")*/
+        validadeEntrada.min = hojeStr; /*define o atributo HTML min do input de data, impedindo seleção de datas anteriores a hoje*/
+        validadeEntrada.addEventListener("input", () => { /*define o evento entrada - RODA NO INPUT - impede que selecione no calendário*/
+            if (validadeEntrada.value && validadeEntrada.value < hojeStr) { /*se a entrada não está vazia && se a data é menor que "hoje"*/
+                validadeEntrada.setCustomValidity("A validade não pode ser anterior a hoje.");
+            } else {
+                validadeEntrada.setCustomValidity(""); /*se estiver tudo certo, nada acontece*/
+            }
+        });
+    }
     /*ler e salvar no localStorage*/
     function lerListaProdutos() { /*lê a lista do localStorage*/
         try {
@@ -103,6 +120,20 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Preencha: nome, categoria, marca e quantidade.");
             return;
         }
+        /*impedir a inserção de uma validade menor que o dia que o cadastro está sendo realizado (roda no submit, antes de salvar; impede que insira manualmente*/
+        {
+            /*mesmo esquema do outro*/
+            const hoje = new Date();
+            const yyyy = hoje.getFullYear();
+            const mm = String(hoje.getMonth() + 1).padStart(2, "0");
+            const dd = String(hoje.getDate()).padStart(2, "0");
+            const hojeStr = `${yyyy}-${mm}-${dd}`;
+            if (validade && validade < hojeStr) {
+                alert("Data de validade inválida. Selecione uma data a partir de hoje.");
+                return;
+            }
+        }
+        /*imagem*/
         const novaImagem = await new Promise(resolve => { /*editando a imagem*/
             if (imgInput?.files?.[0]) { /*tenta ler o arquivo selecionado*/
                 const r = new FileReader(); /*se houver arquivo, converte em data url*/
