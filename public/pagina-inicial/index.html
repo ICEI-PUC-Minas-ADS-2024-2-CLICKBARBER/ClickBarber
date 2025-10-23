@@ -33,6 +33,7 @@
 </style>
 
 <script src="assets/scripts/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </head>
 <body>
   <!-- NAV DESKTOP -->
@@ -47,7 +48,7 @@
         </div>
 
         <div class="nav-links" role="navigation" aria-label="Links">
-          <a href="planos.html">Planos</a>
+          <a href="/public/pagina-inicial/planos.html">Planos</a>
           <a href="#saiba-mais">Saiba mais</a>
           <a href="#ajuda">Ajuda</a>
         </div>
@@ -78,7 +79,7 @@
                 <div class="nav-mobile-links" role="navigation" aria-label="Links">
           
           <a href="/page-9">Entrar</a>
-          <a href="/planos.html">Planos</a>
+          <a href="/public/pagina-inicial/planos.html">Planos</a>
           <a href="#saiba-mais">Saiba mais</a>
           <a href="#ajuda">Ajuda</a>
         </div>
@@ -115,7 +116,8 @@
 
       <div class="hero-image" aria-hidden="true">
         <div class="large grid centered perspective square-grid">
-          <img  id="tesoura"   src="assets/image/tesoura.png" alt="" />
+          <img id="tesoura" class="tesoura" src="assets/image/tesoura.png" alt="">
+
         </div>
 
 
@@ -215,4 +217,41 @@
   
 </div>
 </body>
+ <script>
+    const img = document.getElementById('tesoura');
+    let isRotating = false;
+    let lastX = 0;
+    let rotation = 0;
+
+    // Impede o menu padrão do botão direito
+    img.addEventListener('contextmenu', e => e.preventDefault());
+
+    img.addEventListener('mousedown', e => {
+      if (e.button === 2) { // botão direito
+        isRotating = true;
+        lastX = e.clientX;
+      }
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (isRotating) {
+        const deltaX = e.clientX - lastX;
+        rotation += deltaX * 0.5; // sensibilidade
+        lastX = e.clientX;
+
+        anime({
+          targets: img,
+          rotate: rotation,
+          duration: 150,
+          easing: 'linear'
+        });
+      }
+    });
+
+    window.addEventListener('mouseup', e => {
+      if (e.button === 2) {
+        isRotating = false;
+      }
+    });
+  </script>
 </html>

@@ -65,6 +65,10 @@ html{
   height: 100%;
  
 }
+.logo :hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
 
 .image {
   width: 32px;
@@ -90,6 +94,12 @@ html{
   display: flex;
   gap: 32px;
   font-size: 24px;
+}
+a:hover {
+
+  color: #646464;
+   transform: scale(1.05);
+  transition: transform 0.3s ease;
 }
 
 .social-links {
@@ -243,7 +253,21 @@ html{
   height: auto;
   border-radius: 12px;
   object-fit: cover;
+  animation: flutuar 10s ease-in-out infinite;
+      transform-origin: center;
 }
+ @keyframes flutuar {
+      0% {
+        transform: translateY(0px) rotate(-50deg);
+      }
+      50% {
+        transform: translateY(0px) rotate(50deg);
+        transform: translateZ() rotate(20deg);
+      }
+      100% {
+        transform: translateY(0px) rotate(-50deg);
+      }
+    }
 
 /* --- MOBILE HERO --- */
 .hero-mobile {
@@ -251,6 +275,7 @@ html{
   width: 100%;
   padding: 18px 5px 0px;
 }
+
 
 .hero-mobile-container {
   display: flex;
