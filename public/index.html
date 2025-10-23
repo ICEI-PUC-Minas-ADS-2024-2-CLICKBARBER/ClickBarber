@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda - Click Barber</title>
+  <link rel="stylesheet" href="../src/style.css">
+</head>
+<body>
+  <header class="header">
+    <span class="logo-container">
+      <img src="img/image.png" alt="logo" width="200px" />
+    </span>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#">Página inicial</a></li>
+        <li><a href="#">Serviços</a></li>
+        <li><a href="#">Planos</a></li>
+      </ul>
+    </nav>
+    <div class="socials">
+      <a href="#"><img src="img/instagram.png" alt="Instagram" /></a>
+      <a href="#"><img src="img/linkedin.png" alt="LinkedIn" /></a>
+      <a href="#"><img src="img/x.png" alt="X" /></a>
+    </div>
+  </header>
+
+  <div class="titulo-container">
+    <h1 class="titulo">Agenda</h1>
+  </div>
+
+  <!-- FILTROS -->
+  <section class="filtros">
+    <select id="filtroBarbeiro" aria-label="Filtrar por barbeiro">
+      <option value="">Todos os barbeiros</option>
+    </select>
+
+    <input type="date" id="filtroData" placeholder="data">
+
+    <button id="btnFiltrar">Filtrar</button>
+    <button id="btnLimpar">Limpar</button>
+  </section>
+
+  <!-- NOVO AGENDAMENTO -->
+  <section id="novoAgendamento">
+    <h2>Adicionar Agendamento</h2>
+    <div class="form-agenda">
+      <select id="barbeiroSelect" aria-label="Selecionar barbeiro">
+        <option value="">Selecione o barbeiro</option>
+      </select>
+
+      <input type="date" id="dataInput" placeholder="data">
+      <input type="time" id="horaInput" placeholder="hora">
+      <input type="text" id="clienteInput" placeholder="Nome do cliente">
+      <input type="text" id="servicoInput" placeholder="Serviço">
+
+      <button id="btnAgendar">Agendar</button>
+    </div>
+  </section>
+
+  <!-- AGENDA -->
+  <main id="agenda"></main>
+
+  <footer>
+    <button id="verMais">Ver mais ⌄</button>
+  </footer>
+
+  <!-- MODAL DE STATUS -->
+  <div id="modalStatus" class="modal">
+    <div class="modal-content">
+      <h3>Atualizar status do cliente</h3>
+      <p id="modalCliente"></p>
+      <div class="modal-buttons">
+        <button id="btnChegou">✅ Chegou</button>
+        <button id="btnFaltou">❌ Faltou</button>
+        <button id="btnCancelar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../src/script.js"></script>
+</body>
+</html>
