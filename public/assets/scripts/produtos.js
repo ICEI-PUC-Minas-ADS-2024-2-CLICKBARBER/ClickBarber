@@ -1,13 +1,36 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /*DECLARANDO VARIÁVEIS E VALORES*/
+    const API_BASE = 'http://localhost:3000/api'; /*prefixo pra todas as chamadas*/
+
+    /*HELPER HTTP*/
+    async function http(method, path, body, params = {}) { /*monta a URL e só adiciona query params que têm valor, envia JSON quando tem body, tenta ler res.json(), lança erro se !res.ok*/
+        const url = new URL(`${API_BASE}${path}`);
+        Object.entries(params).forEach(([k, v]) => {
+            if (v !== undefined && v !== null && v !== '') url.searchParams.set(k, v);
+        });
+        const res = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: body ? JSON.stringify(body) : undefined
+        });
+        let data = null; try { data = await res.json(); } catch { }
+        if (!res.ok) throw new Error(data?.error || `Erro ${res.status}`);
+        return data;
+    }
+
+    /*ATALHOS PARA ENDPOINTS DE PRODUTO (facilitam chamar a API)*/
+    const apiListarProdutos = (params = {}) => http('GET', '/produtos', undefined, params);
+    const apiBuscarProduto = (id) => http('GET', `/produtos/${id}`);
+    const apiExcluirProduto = (id) => http('DELETE', `/produtos/${id}`);
+    const apiCategorias = () => http('GET', '/produtos/categorias');
+
+    /*OBTENDO ELEMENTOS DAS PÁGINAS E DECLARANDO VARIÁVEIS E VALORES*/
     const opcaoServico = document.getElementById("fundoOpcaoDeCima");
     const titulo = document.getElementById("tituloPrimeiraTela");
     const opcoesIniciais = document.querySelectorAll(".fundoOpcoes");
     const blocoServicos = document.getElementById("opcoesServico");
     const blocoTodosMateriais = document.getElementById("blocoTodosMateriais");
     const blocoMateriaisPorServico = document.getElementById("blocoMateriaisPorServico");
-
 
     /*FAZ A LINHA APARECER EMBAIXO DO MENU*/
     const menus = [ /*array com os 4 itens do menu*/
@@ -23,7 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-
     /*FAZ A OPÇÃO "PRODUTOS DISPONÍVEIS" VOLTAR PARA A TELA INICIAL*/
     const menuProdutos = document.getElementById("menuProdutos");
     if (menuProdutos) {
@@ -37,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-
     /*BOTÃO QUE FAZ VOLTAR PARA A TELA DE SERVIÇOS*/
     document.querySelectorAll(".btnVoltarParaServicos").forEach(btn => { /*seleciona todos os botões “Voltar para serviços”*/
         btn.addEventListener("click", (e) => { /*ao clicar no botão*/
@@ -49,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
             blocoServicos.style.display = "block"; /*mostra as categorias de serviços para o usuário escolher*/
         });
     });
-
 
     /*BOTÃO VOLTAR LEVANDO PARA A TELA INICIAL*/
     document.querySelectorAll(".btnVoltar").forEach(btn => { /*mesma lógica*/
@@ -63,8 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-
-    /*FAZ VOLTAR PARA A TELA INICIAL SEMPRE QUE CLICAR NA LOGO*/
+    /*LOGO FAZ VOLTAR PARA A TELA INICIAL SEMPRE QUE CLICA*/
     const logo = document.querySelector(".navbar-brand"); /*mesma lógica*/
     if (logo) {
         logo.addEventListener("click", (e) => {
@@ -77,11 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-
     /*FAZ A OPÇÃO "PRODUTOS DISPONÍVEIS" FICAR SEMPRE COM A LINHA EMBAIXO*/
     menus.forEach(m => m && m.classList.remove("active"));
     if (menuProdutos) menuProdutos.classList.add("active"); /*define active especificamente na opção produtos*/
-
 
     /*FAZ TUDO DESAPARECER AO CLICAR EM "POR SERVIÇO" E MOSTRA OS SERVIÇOS DISPONÍVEIS*/
     if (opcaoServico) { /*mesma lógica*/
@@ -94,20 +111,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-
     /*FAZ TUDO DESAPARECER AO CLICAR EM "VER TODOS OS MATERIAIS" E MOSTRA OS MATERIAIS*/
     const verTodosMateriais = document.getElementById("verTodosMateriais"); /*mesma lógica +*/
+    /*chama o backend e desenha os cards*/
     if (verTodosMateriais) {
-        verTodosMateriais.addEventListener("click", () => {
+        verTodosMateriais.addEventListener("click", async () => {
             titulo.style.display = "none";
             opcoesIniciais.forEach(div => div.style.display = "none");
             blocoServicos.style.display = "none";
             if (blocoMateriaisPorServico) blocoMateriaisPorServico.style.display = "none";
             blocoTodosMateriais.style.display = "block";
-            cardProdutos(lerListaProdutos()); /*+ carrega na tela os cards de todos os produtos lidos do localStorage*/
+            // buscar no backend:
+            const produtos = await apiListarProdutos();
+            cardProdutos(produtos);
         });
     }
-
 
     /*FAZ TUDO DESAPARECER AO CLICAR EM UMA OPÇÃO DE SERVIÇO E MOSTRA OS MATERIAIS DE ACORDO COM A OPÇÃO SELECIONADA*/
     const containerServicos = document.getElementById("opcoesServico"); /*mesma lógica +*/
@@ -129,115 +147,96 @@ document.addEventListener("DOMContentLoaded", function () {
     let categoriaAtual = null; /*para lembrar qual categoria está aberta no momento e me nela mesmo após ações, como excluir*/
 
     /*EXCLUIR*/
-    document.addEventListener("click", (e) => { /*evento de clique*/
-        const btn = e.target.closest(".btn-excluir"); /*verifica se o clique foi no botão de exluir*/
-        if (!btn) { /*se não foi, não executa*/
-            return;
-        }
-        const id = Number(btn.dataset.id); /*lê o ID do produto*/
-        if (!id) { /*se não tiver, não executa*/
-            return;
-        }
-        if (!confirm("Tem certeza que deseja excluir este produto?")) return; /*pede confirmação*/
-        const lista = lerListaProdutos(); /*lê todos os produtos do localStorage*/
-        const nova = lista.filter(p => p.id !== id); /*remove o produto com aquele ID*/
-        salvarProdutos(nova); /*salva a lista sem o item*/
-        if (blocoTodosMateriais.style.display === "block") { /*se estiver na tela de todos, recarrega todos*/
-            cardProdutos(lerListaProdutos());
-        } else if (blocoMateriaisPorServico.style.display === "block" && categoriaAtual) { /*se estiver na tela de categoria, recarrega a categoria atual*/
-            desenharPorCategoria(categoriaAtual);
+    document.addEventListener("click", async (e) => { /*só reage ao clique no botão excluir*/
+        const btn = e.target.closest(".btn-excluir");
+        if (!btn) return;
+        const id = Number(btn.dataset.id);
+        if (!id) return;
+        if (!confirm("Tem certeza que deseja excluir este produto?")) return;
+        try {
+            await apiExcluirProduto(id); /*chama o backend e redesenha a lista certa*/
+            if (blocoTodosMateriais.style.display === "block") { /*se está em "todos", recarrega todos*/
+                const produtos = await apiListarProdutos();
+                cardProdutos(produtos);
+            } else if (blocoMateriaisPorServico.style.display === "block" && categoriaAtual) { /*se está em alguma categoria, redesenha a categoria atual*/
+                await desenharPorCategoria(categoriaAtual); // já busca da API
+            }
+        } catch (err) {
+            alert(err.message || 'Falha ao excluir');
         }
     });
 
-    function salvarProdutos(produtos) { /*converte o array para JSON e salva na chave chaveBusca do localStorage*/
-        localStorage.setItem(chaveBusca, JSON.stringify(produtos));
-    }
-
     /*PUXANDO OS PRODUTOS*/
     /*declarando variáveis e valores*/
-    const chaveBusca = "produtosJson";
     const selCategoria = document.getElementById("filtroCategoria");
     const btnTodos = document.getElementById("btnTodos");
     const lista = document.getElementById("lista")?.querySelector(".row"); /*row onde todos os cards serão inseridos*/
     const listaPorServico = document.getElementById("blocoMateriaisPorServico")?.querySelector(".container .row"); /*row onde os cards por categoria serão inseridos*/
-    function lerListaProdutos() { /*tenta ler e fazer JSON.parse do localStorage, se falhar, retorna vazio*/
-        try {
-            return JSON.parse(localStorage.getItem(chaveBusca)) || [];
-        }
-        catch {
-            return [];
-        }
-    }
     function limparRow(row) { /*apaga todo o conteúdo de uma row antes de redesenhar*/
         if (row) row.innerHTML = "";
     }
 
-
     /*RETORNA A LISTA DE CATEGORIAS*/
-    function categoriasUnicas() {
-        const todos = lerListaProdutos(); /*busca todos os produtos em localStorage*/
-        const set = new Set(
-            todos.map(p => (p.categoria || "").trim()).filter(Boolean) /*pega as categorias*/
-        );
-        return Array.from(set).sort(); /*retorna o nome das categorias*/
+    async function categoriasUnicas() { /*busca as categorias da API*/
+        const cats = await apiCategorias();
+        return Array.isArray(cats) ? cats : [];
     }
-    function montarServicosDinamicos() { /*função que cria, no HTML, os “cards/opções” de serviço*/
-        const container = document.getElementById("opcoesServico"); /*pega o container das opções de serviços*/
-        if (!container) { /*se não existir, encerra*/
-            return;
-        }
-        const existentes = new Set( /*cria um set com as categorias para não repetir*/
-            Array.from(container.querySelectorAll(".fundoOpcoesServico p")) /*seleciona o p dentro do container - palavra*/
+    async function montarServicosDinamicos() {
+        const container = document.getElementById("opcoesServico");
+        if (!container) return;
+        const existentes = new Set( /*compara com as que já existem no HTML para não duplicar*/
+            Array.from(container.querySelectorAll(".fundoOpcoesServico p"))
                 .map(p => (p.textContent || "").trim().toLowerCase())
         );
-        categoriasUnicas().forEach(cat => { /*adiciona as categorias que ainda não tem*/
-            if (existentes.has(cat.toLowerCase())) { /*se a categoria já existe, não insere*/
-                return;
-            }
-            const div = document.createElement("div"); /*cria a div*/
-            div.className = "fundoOpcoesServico"; /*aplica a classe*/
-            div.innerHTML = `<p>${cat}</p>`; /*aplica o nome*/
-            container.appendChild(div); /*insere no bloco categorias*/
+        const cats = await categoriasUnicas();
+        cats.forEach(cat => {
+            if (existentes.has(String(cat).toLowerCase())) return;
+            const div = document.createElement("div");
+            div.className = "fundoOpcoesServico";
+            div.innerHTML = `<p>${cat}</p>`;
+            container.appendChild(div);
         });
     }
-    montarServicosDinamicos(); /*chamando a função*/
-
+    (async () => { await montarServicosDinamicos(); })(); /*cria cards .fundoOpcoesServico novos para categorias que faltam. Chamar de forma assíncrona*/
 
     /*PREENCHENDO OS CARDS*/
     function cardHTML(p) {
-        const statusClass = p.ativo ? "btn-success" : "btn-danger"; /*define o botão verde p/bool true e vermelho p/ bool false*/
-        const statusText = p.ativo ? "DISPONÍVEL" : "INDISPONÍVEL";
-        /*retorna uma string html do card*/
-        return ` 
+        const ehDescartavel = !!p.descartavel;
+        const ativo = !!p.ativo;
+        const qtd = Number(p.quantidade || 0);
+        const disponivel = ativo && (ehDescartavel ? qtd > 0 : true); /*define disponibilidade visual baseada nos campos do produto*/
+        const statusClass = disponivel ? "btn-success" : "btn-danger";
+        const statusText = disponivel ? "DISPONÍVEL" : "INDISPONÍVEL";
+        /*html dos cards*/
+        return `
           <div class="card h-100">
             ${p.imagem
                 ? `<img src="${p.imagem}" class="card-imagem" alt="Imagem do produto">`
                 : `<div class="card-imagem d-flex align-items-center justify-content-center" style="height:180px;background:#efefef;color:#777;">Sem imagem</div>`}
             <div class="card-body d-flex flex-column">
               <hr class="bg-light">
-              <h5 class="card-title">${p.nome}</h5>
+              <h5 class="card-title d-flex align-items-center">${p.nome}</h5>
               <ul class="mb-3 ps-3">
-                <li><strong>Quantidade:</strong> ${p.quantidade}${p.unidade ? " " + p.unidade : ""}</li>
-                <li><strong>Marca:</strong> ${p.marca}</li>
-                <li><strong>Categoria:</strong> ${p.categoria}</li>
+                <li><strong>Quantidade:</strong> ${qtd}${p.unidade ? " " + p.unidade + "(s)" : ""}</li>
+                <li><strong>Marca:</strong> ${p.marca || "—"}</li>
+                <li><strong>Categoria:</strong> ${p.categoria || "—"}</li>
+                <li><strong>Descartável:</strong> ${ehDescartavel ? "Sim" : "Não"}</li>
                 <li><strong>Validade:</strong> ${p.validade || "—"}</li>
               </ul>
-              <div class="mt-auto">
+              <div class="mt-auto d-flex gap-2 flex-wrap">
                 <button type="button" class="btn btn-sm ${statusClass}" disabled>${statusText}</button>
-                <!-- AÇÕES -->
-          <a href="cadastromaterial.html?id=${p.id}" class="btn btn-outline-primary btn-sm">
-            <i class="bi bi-pencil"></i> Editar
-          </a>
-          <button type="button" class="btn btn-outline-danger btn-sm btn-excluir" data-id="${p.id}">
-            <i class="bi bi-trash"></i> Excluir
-          </button>
+                <a href="cadastromaterial.html?id=${p.id}" class="btn btn-outline-primary btn-sm">
+                  <i class="bi bi-pencil"></i> Editar
+                </a>
+                <button type="button" class="btn btn-outline-danger btn-sm btn-excluir" data-id="${p.id}">
+                  <i class="bi bi-trash"></i> Excluir
+                </button>
               </div>
             </div>
           </div>`;
     }
 
-
-    /*CARREGA TODOS OS PRODUTOS*/
+    /*DESENHA A LISTA TODOS OS PRODUTOS*/
     function cardProdutos(produtos) { /*carrega a lista completa de todos os produtos na row lista*/
         if (!lista) { /*se não encontrou a row, não roda*/
             return;
@@ -263,26 +262,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const dados = lerListaProdutos(); /*lê os produtos no localStorage*/
-
-    /*PREENCHENDO OS CARDS*/
-    function desenharPorCategoria(categoria) {
-        if (!listaPorServico) { /*se não há row em serviços, não roda*/
-            return;
+    /*FILTRAR/DESENHAR POR CATEGORIA*/
+    function norm(s) { return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } /*deixa o texto minúsculo e sem acentos para comparar*/
+    async function desenharPorCategoria(categoria) {
+        if (!listaPorServico) return;
+        limparRow(listaPorServico);
+        const nome = norm(categoria);
+        const params = {};
+        if (nome === "descartaveis") { /*trata “Descartáveis/Não descartáveis” mapeando para o filtro descartavel=true/false*/
+            params.descartavel = true;
+        } else if (nome === "nao descartaveis" || nome === "nao descartáveis" || nome === "não descartaveis") {
+            params.descartavel = false;
+        } else {
+            params.categoria = categoria; // usa o texto da etiqueta como veio
         }
-        limparRow(listaPorServico); /*limpa  arow antes de inserir os produtos*/
-        const dados = lerListaProdutos().filter( /*lê os produtos e filtra pela categoria selecionada*/
-            p => (p.categoria || "").toLowerCase() === (categoria || "").toLowerCase()
-        );
-        if (!dados.length) { /*se não há produtos para aquela categoria, avisa:*/
+        const dados = await apiListarProdutos(params); /*para outras categorias, envia categoria direto e o backend filtra.*/
+        /*monta os cards da seção por serviço*/
+        if (!dados.length) {
             listaPorServico.innerHTML = `<div class="col-12"><div class="alert alert-secondary">Nenhum produto em "${categoria}".</div></div>`;
             return;
         }
-        const header = document.createElement("div"); /*título com qual categoria está sendo exibida*/
+        const header = document.createElement("div");
         header.className = "col-12";
         header.innerHTML = `<div class="category-title">Produtos da categoria “${categoria}”</div>`;
         listaPorServico.appendChild(header);
-        dados.forEach(p => { /*para cada produtdo da categoria cria uma coluna e insere o card*/
+        dados.forEach(p => {
             const col = document.createElement("div");
             col.className = "col-12 col-md-6 col-lg-4";
             col.innerHTML = cardHTML(p);

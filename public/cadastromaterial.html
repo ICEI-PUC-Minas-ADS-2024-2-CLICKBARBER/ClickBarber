@@ -24,14 +24,14 @@
     <!--cabeçalho-->
     <header class="navbar">
 
-        <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="container-fluid d-flex align-items-center">
             <!--logo-->
             <a class="navbar-brand d-flex align-items-center" href="produtos.html">
                 <img src="assets/imagens/logo_click_barber_sem_fundo.png" alt="Click Barber Logo">
             </a>
 
             <!--opções-->
-            <ul class="navbar-nav flex-row justify-content-center flex-wrap">
+            <ul class="navbar-nav flex-row mx-auto gap-3">
                 <li class="nav-item mx-3"><a id="menuAgenda" class="nav-link text-white" href="#">Agenda</a></li>
                 <li class="nav-item mx-3"><a id="menuProdutos" class="nav-link text-white" href="produtos.html">Produtos
                         disponíveis</a></li>
@@ -51,6 +51,7 @@
 
     <!--corpo do site-->
     <main>
+
         <!--botão voltar-->
         <a href="produtos.html" id="btnVoltar">
             <i class="bi bi-arrow-left"></i> Voltar
@@ -77,24 +78,12 @@
                     <label for="categoria" class="form-label">Categoria</label>
                     <select id="categoria" name="categoria" class="form-select" required>
                         <option value="" selected disabled>Selecione...</option>
-                        <option>Corte de cabelo</option>
-                        <option>Barba completa</option>
-                        <option>Sobrancelha</option>
-                        <option>Tintura</option>
-                        <option>Barboterapia</option>
-                        <option>Hidratação</option>
-                        <option>Alisamento</option>
-                        <option>Penteados</option>
-                        <option value="__outra__">Outra…</option>
+                        <option>Coloração e química</option>
+                        <option>Cuidados e estilo</option>
+                        <option>Elétricos e máquinas</option>
+                        <option>Ferramentas manuais</option>
+                        <option>Higiene</option>
                     </select>
-                    <div class="invalid-feedback">Selecione a categoria.</div>
-                </div>
-
-                <!--campo se o usuário selecionar "outra" categoria-->
-                <div class="col-md-6 d-none" id="campoOutraCategoria">
-                    <label for="categoriaOutra" class="form-label">Nova categoria</label>
-                    <input type="text" class="form-control" id="categoriaOutra" placeholder="Digite a nova categoria">
-                    <div class="form-text">Ex.: Progressiva, Escova, Camuflagem, etc.</div>
                 </div>
 
                 <!--quantidade-->
@@ -108,13 +97,13 @@
                 <!--unidade-->
                 <div class="col-md-4">
                     <label for="unidade" class="form-label">Unidade</label>
-                    <select id="unidade" name="unidade" class="form-select" required>
+                    <select id="unidade" name="unidade" class="form-select">
                         <option value="" selected disabled>Selecione...</option>
-                        <option>unidade</option>
-                        <option>caixa</option>
-                        <option>litros</option>
+                        <option>caixa(s)</option>
+                        <option>litro(s)</option>
+                        <option>pote(s)</option>
+                        <option>unidade(s)</option>
                     </select>
-                    <div class="invalid-feedback">Selecione a unidade.</div>
                 </div>
 
                 <!--validade-->
@@ -126,30 +115,27 @@
                 <!--marca-->
                 <div class="col-md-6">
                     <label for="marca" class="form-label">Marca</label>
-                    <input type="text" class="form-control" id="marca" name="marca" required
-                        placeholder="Ex.: Descarpack">
-                    <div class="invalid-feedback">Informe a marca.</div>
-                </div>
-
-                <!--descrição-->
-                <div class="col-12">
-                    <label for="descricao" class="form-label">Descrição</label>
-                    <textarea class="form-control" id="descricao" name="descricao" rows="3"
-                        placeholder="Observações, modo de uso, etc."></textarea>
+                    <input type="text" class="form-control" id="marca" name="marca" placeholder="Ex.: Descarpack">
                 </div>
 
                 <!--imagem-->
                 <div class="col-md-6">
                     <label for="imagem" class="form-label">Imagem (opcional)</label>
                     <input class="form-control" type="file" id="imagem" name="imagem" accept="image/*">
-                    <div class="form-text">PNG/JPG até ~2MB.</div>
+                    <div class="form-text">PNG/JPG até ~10MB.</div>
                 </div>
 
-                <!--atividade do produto-->
-                <div class="col-md-6 d-flex align-items-end">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="true" id="ativo" name="ativo" checked>
+                <div class="col-12 d-flex align-items-end">
+                    <!--atividade-->
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="ativo" name="ativo" checked>
                         <label class="form-check-label" for="ativo">Ativo</label>
+                    </div>
+
+                    <!--descartabilidade-->
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="descartavel" name="descartavel" checked>
+                        <label class="form-check-label" for="descartavel">Descartável</label>
                     </div>
                 </div>
 
@@ -164,6 +150,7 @@
 
     </main>
 
+    <script src="assets/scripts/api.js"></script> <!--js-->
     <script src="assets/scripts/cadastromaterial.js"></script> <!--js-->
 
 </body>
