@@ -1,4 +1,3 @@
-const url = 'http://localhost:3000/usuarios'
 const btnRedefinir = document.getElementById("btnRedefinir");
 const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
@@ -48,7 +47,7 @@ check2.addEventListener('click',()=>{
 })
 
 //função que verifica se todos os campos estão preenchidos de forma correta
-btnRedefinir.addEventListener('click', async (event) => {
+btnRedefinir.addEventListener('click', (event) => {
     
     //some com os avisos
     document.querySelectorAll(".invalid").forEach(element =>{
@@ -88,17 +87,4 @@ btnRedefinir.addEventListener('click', async (event) => {
     //se algum campo estiver invalido o envio não ira acontecer
     if(valid===false)
         event.preventDefault();
-    else{
-
-        const sucesso = await mudaSenha(senha);
-        if (sucesso) {
-            window.location.href = "login.html";
-        } else {
-            console.error('Falha ao mudar senha');
-        }
-    }
 })
-
-async function mudaSenha(senha){
-    
-}

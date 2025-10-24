@@ -42,17 +42,13 @@ btnEntrar.addEventListener('click',async (event)=>{
         document.getElementById("inSenha").style.display="flex";
     }
     else{
-        if(await procuraEmail(email)){
+        if(!(await procuraDado(email))){
             valid = false;
-            document.getElementById("inEmail").style.display="flex";
+            document.getElementById("inSenha").style.display="flex";
         }
         
         //verifica o campo senha
         else if(!senha || senha === ""){
-            valid = false;
-            document.getElementById("inSenha").style.display="flex";
-        }
-        else if(!(await verificaSenha(email, senha))){
             valid = false;
             document.getElementById("inSenha").style.display="flex";
         }
@@ -61,64 +57,48 @@ btnEntrar.addEventListener('click',async (event)=>{
     //se algum campo estiver invalido o envio não ira acontecer
     if(valid===false)
         event.preventDefault();
-    else{
-
-        if(logaUser(email)){}
-            //window.location.href = "cadastro_u.html"
+    else if(await fazLogin(email,senha)){
+        window.location.href = "home.html"
     }
 
 })
 
-async function procuraEmail(dado){
+async function procuraDado(dado){
 
-    const response =  await fetch(url+ '/usuarios?email=' +dado)
-
+    const response =  await fetch(url+ '/usuarios/email' , {
+        method: "POST",
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({email: dado})
+    })
+    
     if(!response.ok){
-        throw new Error('Ocorreu um erro')
+        return false;
     }
 
     const data = await response.json()
 
-    console.log(data.length)
-
-    return data.length == 0
-
+    return data.cadastrado
 }
 
-async function verificaSenha(email,senha){
+async function fazLogin(email,senha){
 
-    const resp = await fetch(url+'/usuarios?email='+email)
+    const response = await fetch(url+'/login' ,{
+        method: 'POST',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({
+            email: email,
+            senha: senha
+        })
+    })
 
-    if(!resp.ok)
-        throw new Error("Ocorreu um erro");
-
-    const data = await resp.json();
-
-    return data[0].senha == senha
-}
-
-async function logaUser(email) {
-    
-    const resp = await fetch(url+'/usuarios?email='+email)
-    console.log(url+'/usuarios?email='+email)
-    
-    if(!resp.ok){
-        throw Error('Ocorreu um erro')
+    if(!response.ok){
+        alert('Credenciais incorretas, por favor tente de novo')
+        return false
     }
+    else{
+        const data = await response.json();
 
-    const dados = await resp.json()
-    console.log(dados[0])
-
-    const valores = dados[0]
-
-    const usuario = {
-        id: valores.id,
-        nome: valores.nome,
-        email: valores.email,
-        horario: new Date().toLocaleString('pt-BR')
-    };
-    console.log(usuario)
-    
-    localStorage.setItem('usuario', JSON.stringify(usuario));
-    
+        localStorage.setItem('token', data.token);
+        return true;
+    }
 }

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Poppins:wght@300;400;500&display=swap');
+
 @font-face {
     font-family: 'Bakbak One';
     src: url('../fonts/BakbakOne-Regular.ttf') format('truetype');
@@ -10,11 +12,12 @@ body {
   margin: 0;
   height: 100vh;
   background: linear-gradient(to right, #1d0000 0%, #000000 11%);
-  color: rgb(255, 255, 255);
-  font-family: 'Bakbak One', sans-serif;
+  color: white;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* ---------- Header ---------- */
+
 .header {
   display: flex;
   align-items: center;
@@ -38,6 +41,8 @@ body {
 .titulo {
   margin: 0;
   font-size: 2rem;
+  font-family: 'Italiana', serif;
+  font-weight: 100;
 }
 
 .layout {
@@ -78,7 +83,7 @@ body {
 .titulo p2{
   margin: 2rem;
   margin-bottom: 8px;
-  font-family: 'Bakbak One';
+  font-family: 'Poppins', sans-serif;
   
   font-size: 40px;
 }
@@ -95,17 +100,17 @@ body {
 }
 
 .laIn label{
-  margin-top: 40px;
+  margin-top: 61px;
   margin-bottom: 14px;
   display: block;
   width: 100%;
   font-size: 16px;
   
 }
-
 .ast{
   color: rgb(255, 31, 31);
 }
+
 
 .laIn input{
   display: block;
@@ -125,6 +130,20 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+.laIn input:nth-last-child{
+  display: block;
+  width: 334px;
+  height: 34px;
+  padding: 0rem .4rem;
+  font-weight: 800;
+  margin-bottom: 0%;
+}
+.laIn p{
+    font-size: 12px;
+}
+.laIn a{
+    color: #ffffff;
+}
 
 .lInp{
   display: flex;
@@ -135,7 +154,7 @@ input[type="number"] {
 }
 .img_check{
   width: 41px!important;
-  height: 37.2px!important;
+  height: 37.5px!important;
   display: flex;
   align-items: baseline;
   margin: 0px!important;
@@ -164,7 +183,7 @@ input[type="number"] {
   justify-content: center;
   align-items: center;
   margin-top: 40px;
-  margin-bottom: 36px;
+  margin-bottom: 41.11px;
 }
 .btn button{
   background-color: #6d2f2f;
@@ -181,20 +200,73 @@ input[type="number"] {
   background-color: #502222;
 }
 
+.continue{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 15px;
+    margin-bottom: 45.1px;
+}
+
+.links{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 41px;
+}
+.div_link{
+    width: 322px;
+    display: flex;
+    justify-content: space-between;
+}
+.div_link div{
+    width: 71px;
+    height: 37px;
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.div_link img{
+    width: 20px;
+    height: 19px;
+    border-radius: 29px;
+}
+.inst{
+    width: 21px;
+    height: 20px;
+}
+
+.cr_conta{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 12px;
+    margin-bottom: 90.1px;
+}
+.cr_conta a{
+    color: #446fdd;
+}
+
 
 /* ---------- Mobile ---------- */
 
 
 @media (max-width: 376px) {
   
+  
+
   .titulo p2{
     font-size: 33px;
-    font-weight: 900;
   }
   
   .cd{
     width: 332px;
-    
+    margin: auto;
   }
   .laIn label{
     font-size: 16px;
@@ -204,7 +276,6 @@ input[type="number"] {
     width: 240px;
     height: 29px;
   }
-
   .lInp input{
     width: 202px;
     display: flex;
@@ -222,5 +293,19 @@ input[type="number"] {
   .btn button{
     width: 232px;
     height: 41px;
+  }
+  
+  .div_link{
+    margin: 0px 35px;
+    width: 100%;
+  }
+  .div_link div{
+    width: 60px;
+    height: 32px;
+  }
+  .cr_conta div{
+    text-align: center;
+    width: 55%;
+    
   }
 }

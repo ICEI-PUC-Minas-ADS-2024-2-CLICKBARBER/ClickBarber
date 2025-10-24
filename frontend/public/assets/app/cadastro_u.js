@@ -1,5 +1,5 @@
-const url = 'http://localhost:3000/barbearias'
-const btnCriar =  document.getElementById("btnCriar");
+const url = 'http://localhost:3000/usuarios'
+const btnCriar =  document.getElementById("btnCria");
 const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
 
@@ -28,6 +28,7 @@ check.addEventListener('click',()=>{
         img.src = "assets/img/olho.png"
         senha.type = "password"
     }
+
 })
 check2.addEventListener('click',()=>{
     const img = document.getElementById("imgCheckBox2");
@@ -43,6 +44,7 @@ check2.addEventListener('click',()=>{
         img.src = "assets/img/olho.png"
         senha.type = "password"
     }
+
 })
 
 
@@ -55,12 +57,13 @@ btnCriar.addEventListener('click', async (event) => {
     })
 
     //pega os valores de cada campo
-    const email = document.getElementById("emailLoja").value.trim();
-    const nome = document.getElementById("nomeLoja").value.trim();;
-    const telefone = document.getElementById("telefone").value.trim();;
-    const cnpj = document.getElementById("cnpj").value.trim();;
-    const senha = document.getElementById("senha").value.trim();;
-    const senha2 = document.getElementById("senhaConfirm").value.trim();;
+    const email = document.getElementById("email").value.trim();
+    const nome = document.getElementById("nome").value.trim();
+    const sobrenome = document.getElementById("sobrenome").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+    const cpf = document.getElementById("cpf").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    const senha2 = document.getElementById("senhaConfirm").value.trim();
 
     var valid = true;
 
@@ -74,8 +77,8 @@ btnCriar.addEventListener('click', async (event) => {
         document.getElementById("inEmail").style.display="flex";
     }
     else{
-        if(!(await procuraDado('email',email))){
-            valid = false;
+        if(await procuraDado('email',email)){
+            valid = false
             document.getElementById("inEmail2").style.display="flex";
         }
     }
@@ -84,6 +87,12 @@ btnCriar.addEventListener('click', async (event) => {
     if(!nome || nome === ""){
         valid = false;
         document.getElementById("inNome").style.display="flex";
+    }
+
+    //verifica o campo sobrenome
+    if(!sobrenome || sobrenome === ""){
+        valid = false;
+        document.getElementById("inSobrenome").style.display="flex";
     }
 
     //verifica o campo telefone
@@ -96,19 +105,19 @@ btnCriar.addEventListener('click', async (event) => {
         document.getElementById("inTele").style.display="flex";
     }
 
-    //verifica o campo CNPJ
-    if(!cnpj || cnpj === ""){
+    //verifica o campo CPF
+    if(!cpf || cpf === ""){
         valid = false;
-        document.getElementById("inCNPJ").style.display="flex";
+        document.getElementById("inCPF").style.display="flex";
     }
-    else if(!cnpj.length == 14){
+    else if(!cpf.length == 11){
         valid = false;
-        document.getElementById("inCNPJ").style.display="flex";
+        document.getElementById("inCPF").style.display="flex";
     }
     else{
-        if(!(await procuraDado('cnpj',cnpj))){
-            valid = false;
-            document.getElementById("inCNPJ2").style.display="flex";
+        if(await procuraDado('cpf',cpf)){
+            valid = false
+            document.getElementById("inCPF2").style.display="flex";
         }
     }
 
@@ -117,7 +126,6 @@ btnCriar.addEventListener('click', async (event) => {
         valid = false;
         document.getElementById("inSenha").style.display="flex";
     }
-
     else{
 
         if(senha.length <9){
@@ -136,42 +144,64 @@ btnCriar.addEventListener('click', async (event) => {
             document.getElementById("inSenha2").style.display="flex";
         }
     }
-    
-    //se algum campo estiver invalido o envio não ira acontecer
-    if(valid===false)
-        event.preventDefault();
-    else
 
-        var dado = {
-            'email':email,
-            'nome':nome,
-            'telefone':telefone,
-            'cnpj':cnpj,
-            'senha':senha
+    //se algum campo estiver invalido o envio não ira acontecer
+    if(valid==false)
+        event.preventDefault();
+    else{
+        var valores = 
+        {
+            "email":email,
+            "nome": nome + ' ' + sobrenome,
+            "telefone":telefone,
+            "cpf":cpf,
+            "senha":senha,
         }
+
+        if(await cadastraUsuario(valores))
+            window.location.href = "login.html"
+
+    }
         
-        cadastraBarbearia(dado)
-        window.location.href = "login.html"
 })
 
-function cadastraBarbearia(dado){
+async function cadastraUsuario(valores){
 
-    fetch(url, {
-        method: 'POST',
-        headers: {'Content-Type' : 'aplication/json'},
-        body :JSON.stringify(dado)
-    })
+    try{
+        const response = await fetch(url,{
+            method: 'POST',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify(valores)
+        })
+
+        if(!response.ok){
+            alert(response.message);
+            return false;
+        }
+
+    }catch(error){
+        Console.Log(`Ocorreu um erro ${error}:`)
+        alert('Ocorreu um erro, por favor tente de novo')
+        return false
+    }
+    return true
 }
 
 async function procuraDado(nome, dado){
 
-    const response = await fetch(url+'?'+nome+'='+dado)
-
-    if(!response.ok)
-        throw new Error('Ocorreu um erro')
+    const response =  await fetch(url+ '/' +nome , {
+        method: "POST",
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({[nome]: dado})
+    })
+    
+    if(!response.ok){
+        alert(response.message)
+        return false
+    }
 
     const data = await response.json()
 
-    return data.length == 0
+    return data.cadastrado
 
 }

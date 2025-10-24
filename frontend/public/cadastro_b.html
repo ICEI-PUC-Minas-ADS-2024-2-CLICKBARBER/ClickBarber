@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Serviços da Barbearia</title>
-  <link rel="stylesheet" href="assets/style/rec_senha.css">
+  <link rel="stylesheet" href="assets/style/cadastros.css">
   
 </head>
 
@@ -15,7 +15,7 @@
     </div>
 
     <div class="titulo-container">
-      <h1 class="titulo">Serviços da Barbearia</h1>
+      <h1 class="titulo">Cadastrar nova Barbearia</h1>
     </div>
 
     <div class="layout">
@@ -30,17 +30,44 @@
       <div class="cd">
         
         <div class="titulo">
-          <p2>REDEFINIÇÃO DE SENHA</p2>
+          <p2>CADASTRE-SE</p2>
         </div>
 
-        <div class="info">Insira uma nova senha para redefini-la.</div>
-        
         <div class="form">
           <form>
+            <!--Email da loja-->
+            <div class="laIn">
+              <label for="emailLoja">Digite seu Email<span class="ast"> *</span></label>
+              <input type="text" placeholder="username@gmail.com" id="emailLoja">
+              <div class="invalid" id="inEmail">Esse campo é obrigatorio, por favor digite um email válido</div>
+              <div class="invalid" id="inEmail2">Esse email ja esta cadastrado no sistema</div>
+            </div>
+            
+            <!--Nome da loja-->
+            <div class="laIn">
+              <label for="nomeLoja">Digite o nome da Loja<span class="ast"> *</span></label>
+              <input type="text" placeholder="ClickBarber" id="nomeLoja">
+              <div class="invalid" id="inNome">Esse campo é obrigatorio, por favor digite um nome válido</div>
+            </div>
+            
+            <!--Telefone -->
+            <div class="laIn">
+              <label for="telefone">Digite seu Telefone<span class="ast"> *</span></label>
+              <input type="number" placeholder="(31) 1234 - 5678" id="telefone">
+              <div class="invalid" id="inTele">Esse campo é obrigatorio, por favor digite um telefone válido</div>
+            </div>
+            
+            <!--CNPJ da loja-->
+            <div class="laIn">
+              <label for="cnpj">Digite o CNPJ da loja<span class="ast"> *</span> </label>
+              <input type="number" placeholder="XX.XXX.XXX/YYYY-ZZ" id="cnpj">
+              <div class="invalid" id="inCNPJ">Esse campo é obrigatorio, por favor digite um CNPJ válido</div>
+              <div class="invalid" id="inCNPJ2">Esse valor ja esta cadastrado no sistema</div>
+            </div>
             
             <!--Senha da conta-->
             <div class="laIn">
-              <label for="senha">Digite sua nova Senha<span class="ast"> *</span></label>
+              <label for="senha">Digite sua Senha<span class="ast"> *</span></label>
               <div class="lInp">
                 <input type="password" placeholder="senha123" id="senha">
                 <label for="check" class="img_check">
@@ -61,19 +88,21 @@
                 </label>
                 <input id="check2" style="display: none;" value="true" type="checkbox">
               </div>
-              <div class="invalid" id="inSenha2">A senhas senhas precisam ser iguais para prosseguir</div>
+              <div class="invalid" id="inSenha2">As duas senhas precisam ser iguais para prosseguir</div>
             </div>
            
             <div class="btn">
-              <button type="button" id="btnRedefinir">REDEFINIR SENHA</button>
+              <button type="button" id="btnCriar">CRIAR CONTA</button>
             </div>
-
-          </form>      
+            
+          </form>
+        </div>
+      
       </div>
     </div>
   </main>
 
-  <script src="assets/app/redef_senha.js"></script>
+  <script src="assets/app/cadastro_b.js"></script>
 
 </body>
 </html>
