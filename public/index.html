@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,13 +28,51 @@
   <main class="conteudo">
     <div class="acoes">
       <button id="btnAdd">Adicionar serviço</button>
-      <button id="btnEdit">Editar serviço</button>
-      <button id="btnRemove">Remover serviço</button>
     </div>
 
     <div id="listaServicos" class="lista"></div>
   </main>
 
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2 id="modalTitle">Adicionar Serviço</h2>
+      <form id="formServico">
+        <input type="hidden" id="servicoId">
+
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" required>
+
+        <label for="descricao">Descrição:</label>
+        <input type="text" id="descricao" required>
+
+        <label for="preco">Preço (R$):</label>
+        <input type="number" id="preco" step="0.01" required>
+
+        <label for="duracao">Duração (min):</label>
+        <input type="text" id="duracao" required>
+
+        <div class="botoes">
+          <button type="submit" id="btnSalvar">Salvar</button>
+          <button type="button" id="btnCancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalConfirm" class="modal">
+    <div class="modal-content">
+      <h2>Confirmar Remoção</h2>
+      <p>Tem certeza que deseja remover este serviço?</p>
+      <div class="botoes">
+        <button id="btnConfirmar">Sim</button>
+        <button id="btnCancelarRemover">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mensagem" class="mensagem"></div>
+
   <script src="/public/assets/app/script.js"></script>
 </body>
+
 </html>
