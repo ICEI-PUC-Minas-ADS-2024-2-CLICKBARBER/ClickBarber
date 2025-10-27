@@ -1,5 +1,6 @@
 import * as u from '../repositories/usuariosRepositories.js'
 
+//função que pega todos os usuarios
 export async function getUsuarios(req , res){
     
     try{
@@ -8,6 +9,7 @@ export async function getUsuarios(req , res){
         if(!data)
             return res.status(404).send({message: 'Nenhum usuario encontrado'});
 
+        //filtra a informação pra impedir o envio de dados sensiveis
         const safeUsers = data.map(usuario =>{
             const { id, nome, email} = usuario;
             return { id, nome, email };
@@ -19,9 +21,12 @@ export async function getUsuarios(req , res){
         return res.status(500).send({message: `Erro interno do servidor`});
     }
 }
+
+//função que pega o usuario pelo id
 export async function getUsuariosById(req , res){
     
     try{
+        //pega o id no parametro do request
         const id = req.params.id;
 
         const data = await u.getUserById(id);
@@ -29,6 +34,7 @@ export async function getUsuariosById(req , res){
         if(!data)
             return res.status(404).send({message: 'Usuario nao encontrado'});
 
+        //filtra a informação pra impedir o envio de dados sensiveis
         const safeData = {
             id: data.id,
             nome: data.nome,
@@ -42,9 +48,12 @@ export async function getUsuariosById(req , res){
     }
     
 }
+
+//função que pega o usuario pelo email
 export async function getUsuariosByEmail(req , res){
     
     try{
+        //pega o email no parametro do request
         const email = req.params.email;
 
         const data = await u.getUserByEmail(email);
@@ -52,6 +61,7 @@ export async function getUsuariosByEmail(req , res){
         if(!data)
             return res.status(404).send({message: 'Usuario nao encontrado'});
 
+        //filtra a informação pra impedir o envio de dados sensiveis
         const safeData = {
             id: data.id,
             nome: data.nome,
@@ -65,15 +75,19 @@ export async function getUsuariosByEmail(req , res){
     }
 }
 
+//função que cria um novo usuario
 export async function postUsuarios(req , res){
     
     try{
+        //pega os dados enviados
         const {email, nome , telefone , cpf ,senha} = req.body;
 
-        if(!email || !nome || !telefone || !cpf || !senha){
+        //verifica se os dados estão completos
+        if(!email || !nome || !telefone || !cpf || cpf.length != 11 || !senha){
             return res.status(400).send({message: 'Dados incompletos'});
         }
 
+        //cria o novo usuario
         const newUser = {
             nome: nome.trim(),
             email : email.trim(),
@@ -93,8 +107,10 @@ export async function postUsuarios(req , res){
     }
 }
 
+//função que verifica se o email já está cadastrado
 export async function verifyEmail(req, res){
     try{
+        //pega o email enviado
         const {email} = req.body;
 
         if(!email)
@@ -102,6 +118,7 @@ export async function verifyEmail(req, res){
 
         const existe = await u.getEmail(email)
 
+        //envia true se o email ja estiver cadastrado e false se não
         return res.status(200).send({
             message: existe ? 'Email encontrado' : 'Email não encontrado',
             cadastrado: existe
@@ -112,8 +129,10 @@ export async function verifyEmail(req, res){
     }
 }
 
+//função que verifica se o cpf já está cadastrado
 export async function verifyCpf(req, res){
     try{
+        //pega o cpf enviado
         const {cpf} = req.body;
 
         if(!cpf || cpf.length != 11)
@@ -121,6 +140,7 @@ export async function verifyCpf(req, res){
 
         const existe = await u.getCPF(cpf)
 
+        //envia true se o cpf ja estiver cadastrado e false se não
         return res.status(200).send({
             message: existe ? 'CPF encontrado' : 'CPF não encontrado',
             cadastrado: existe
@@ -131,6 +151,7 @@ export async function verifyCpf(req, res){
     }
 }
 
+//função que atualiza os dados do usuario
 export async function putUsuarios(req , res){
     
     const id = req.params.id;
@@ -154,9 +175,10 @@ export async function putUsuarios(req , res){
 }
 
 
-
+//função que deleta um usuario
 export async function deleteUsuarios(req , res){
 
+    //pega o id no parametro do request
     const id = req.params.id;
 
     try{

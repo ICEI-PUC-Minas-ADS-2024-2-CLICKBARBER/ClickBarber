@@ -57,31 +57,38 @@ btnEntrar.addEventListener('click',async (event)=>{
     //se algum campo estiver invalido o envio não ira acontecer
     if(valid===false)
         event.preventDefault();
+    //se der true na verificação de login, redireciona para a home
     else if(await fazLogin(email,senha)){
         window.location.href = "home.html"
     }
-
 })
 
+//função que procura um dado no backend
 async function procuraDado(dado){
 
+    //faz a requisição para o backend
     const response =  await fetch(url+ '/usuarios/email' , {
         method: "POST",
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify({email: dado})
     })
     
+    //verifica se a requisição foi bem sucedida
     if(!response.ok){
         return false;
     }
 
+    //pega os dados retornados
     const data = await response.json()
 
+    //retorna se o dado foi encontrado ou não(true se sim, flase se não)
     return data.cadastrado
 }
 
+//função que faz o login
 async function fazLogin(email,senha){
 
+    //faz a requisição para o backend
     const response = await fetch(url+'/login' ,{
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
@@ -91,13 +98,16 @@ async function fazLogin(email,senha){
         })
     })
 
+    //verifica se a requisição foi bem sucedida
     if(!response.ok){
         alert('Credenciais incorretas, por favor tente de novo')
         return false
     }
     else{
+        //pega os dados retornados
         const data = await response.json();
 
+        //salva o token no local storage
         localStorage.setItem('token', data.token);
         return true;
     }

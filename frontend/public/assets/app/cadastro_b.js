@@ -73,6 +73,7 @@ btnCriar.addEventListener('click', async (event) => {
         valid = false;
         document.getElementById("inEmail").style.display="flex";
     }
+    //verifica se o email ja está cadastrado
     else if(await procuraDado('email',email)){
         valid = false;
         document.getElementById("inEmail2").style.display="flex";
@@ -103,7 +104,7 @@ btnCriar.addEventListener('click', async (event) => {
         valid = false;
         document.getElementById("inCNPJ").style.display="flex";
     }
-
+    //verifica se o cnpj ja está cadastrado
     else if(await procuraDado('cnpj',cnpj)){
         valid = false;
         document.getElementById("inCNPJ2").style.display="flex";
@@ -139,7 +140,7 @@ btnCriar.addEventListener('click', async (event) => {
     if(valid===false)
         event.preventDefault();
     else{
-
+        //cria o objeto com os dados
         var dado = {
             "email":email,
             "nome":nome,
@@ -148,20 +149,25 @@ btnCriar.addEventListener('click', async (event) => {
             "senha":senha
         }
         
-        if(cadastraBarbearia(dado))
-           window.location.href = "login.html"
+        //chama a função que cadastra a barbearia
+        if(await cadastraBarbearia(dado))
+            //se der true envia para a página de login
+            window.location.href = "login.html"
     }
 })
 
+//função que cadastra uma nova barbearia
 async function cadastraBarbearia(dado){
 
     try{
+        //faz a requisição para o backend
         const response = await fetch(url, {
             method: 'POST',
             headers: {'Content-Type' : 'application/json'},
             body :JSON.stringify(dado)
         })
 
+        //verifica se a requisição foi bem sucedida
         if(!response.ok){
             alert(response.message);
             return false;
@@ -176,20 +182,25 @@ async function cadastraBarbearia(dado){
     
 }
 
+//função que procura um dado no backend
 async function procuraDado(nome, dado){
 
+    //faz a requisição para o backend
     const response =  await fetch(url+ '/' +nome , {
         method: "POST",
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify({[nome]: dado})
     })
     
+    //verifica se a requisição foi bem sucedida
     if(!response.ok){
         alert(response.message)
         return false
     }
 
+    //pega os dados retornados
     const data = await response.json()
 
+    //retorna se o dado foi encontrado ou não(true se sim, flase se não)
     return data.cadastrado
 }

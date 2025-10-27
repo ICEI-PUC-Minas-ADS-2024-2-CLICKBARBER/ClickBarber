@@ -76,11 +76,10 @@ btnCriar.addEventListener('click', async (event) => {
         valid = false;
         document.getElementById("inEmail").style.display="flex";
     }
-    else{
-        if(await procuraDado('email',email)){
-            valid = false
-            document.getElementById("inEmail2").style.display="flex";
-        }
+    //verifica se o email ja existe no banco de dados
+    else if(await procuraDado('email',email)){
+        valid = false
+        document.getElementById("inEmail2").style.display="flex";
     }
 
     //verifica o campo nome
@@ -114,11 +113,10 @@ btnCriar.addEventListener('click', async (event) => {
         valid = false;
         document.getElementById("inCPF").style.display="flex";
     }
-    else{
-        if(await procuraDado('cpf',cpf)){
-            valid = false
-            document.getElementById("inCPF2").style.display="flex";
-        }
+    //verifica se o cpf ja existe no banco de dados
+    else if(await procuraDado('cpf',cpf)){
+        valid = false
+        document.getElementById("inCPF2").style.display="flex";
     }
 
     //verifica o campo senha
@@ -149,6 +147,7 @@ btnCriar.addEventListener('click', async (event) => {
     if(valid==false)
         event.preventDefault();
     else{
+        //cria o objeto com os valores
         var valores = 
         {
             "email":email,
@@ -158,22 +157,27 @@ btnCriar.addEventListener('click', async (event) => {
             "senha":senha,
         }
 
+        //chama a função que cadastra o usuario
         if(await cadastraUsuario(valores))
+            //se der true envia para a página de login
             window.location.href = "login.html"
 
     }
         
 })
 
+//função que cadastra o usuario 
 async function cadastraUsuario(valores){
 
     try{
+        //faz a requisição para o backend
         const response = await fetch(url,{
             method: 'POST',
             headers: {'Content-Type' : 'application/json'},
             body: JSON.stringify(valores)
         })
 
+        //verifica se a requisição foi bem sucedida
         if(!response.ok){
             alert(response.message);
             return false;
@@ -187,21 +191,25 @@ async function cadastraUsuario(valores){
     return true
 }
 
+//função que procura um dado no backend
 async function procuraDado(nome, dado){
 
+    //faz a requisição para o backend
     const response =  await fetch(url+ '/' +nome , {
         method: "POST",
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify({[nome]: dado})
     })
     
+    //verifica se a requisição foi bem sucedida
     if(!response.ok){
         alert(response.message)
         return false
     }
 
+    //pega os dados retornados
     const data = await response.json()
 
+    //retorna se o dado foi encontrado ou não(true se sim, flase se não)
     return data.cadastrado
-
 }
