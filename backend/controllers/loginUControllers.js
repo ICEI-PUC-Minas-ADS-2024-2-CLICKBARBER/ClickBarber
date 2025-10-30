@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 
 
 //função que realiza o login
-export async function login(req, res){
+export async function loginU(req, res){
 
     try{
         //pega o email e a senha enviados
@@ -39,8 +39,9 @@ export async function login(req, res){
             //dados que serão salvos no token
             {
                 id: user.id,
-                name: user.nome,
-                email: user.email       
+                nome: user.nome,
+                email: user.email,
+                data_login: new Date().toLocaleString('pt-BB')     
             },
             //chave do token
             'chave_secreta',
@@ -58,13 +59,14 @@ export async function login(req, res){
     }
 }
 
-//função que retorna os dados do usuario que esta logado
-export async function user (req, res){
-    const user = req.user;
-
-    res.json({
-        id:user.id,
-        email:user.email,
-        nome:user.nome
+//função que retorna os dados do usuario/barbearia que esta logado
+export async function dadosToken (req, res){
+    const dados = req.dados;
+    
+    res.status(201).json({
+        id: dados.id,
+        email: dados.email,
+        nome: dados.nome,
+        data_de_login: dados.data_login
     })
 }

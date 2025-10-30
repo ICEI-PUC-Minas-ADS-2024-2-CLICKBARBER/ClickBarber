@@ -4,6 +4,36 @@ const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
 
 
+//função que muda o cabeçalho
+window.addEventListener('DOMContentLoaded', async function() {
+    
+    let noLogin = true
+
+    //verifica se tem uma conta de usuario logada
+    if(!(await verificaLogin(localStorage.getItem('token_u') , 'u'))){
+        //se tiver muda o cabeçalho
+        document.getElementById('navbarI').style.display = 'none'
+        document.getElementById('navbarU').style.display = 'flex'
+        document.getElementById('navbarB').style.display = 'none'
+        noLogin = false
+    }
+    //verifica se tem uma conta de barbearia logada
+    if(!(await verificaLogin(localStorage.getItem('token_b') , 'b'))){
+        //se tiver muda o cabeçalho (mesmo se tiver uma conta de usuario logada ao mesmo tempo, o cabeçalho ira mudar)
+        document.getElementById('navbarI').style.display = 'none'
+        document.getElementById('navbarU').style.display = 'none'
+        document.getElementById('navbarB').style.display = 'flex'
+        noLogin = false
+    }
+    //se não tiver nenhuma conta logada o cabeçalho volta pro padrão
+    if(noLogin == true){
+        //volta pro cabeçalho padrão
+        document.getElementById('navbarI').style.display = 'flex'
+        document.getElementById('navbarU').style.display = 'none'
+        document.getElementById('navbarB').style.display = 'none'
+    }
+})
+
 //verifica se a senha tem no minimo 1 letra 1 numero e 1 simbolo
 function verificaSenha(senha){
     const letra = /[a-zA-Z]/.test(senha);
@@ -203,4 +233,29 @@ async function procuraDado(nome, dado){
 
     //retorna se o dado foi encontrado ou não(true se sim, flase se não)
     return data.cadastrado
+}
+
+//função que verifica se existe uma conta (usuario ou barbearia) logada
+async function verificaLogin(token , l){
+
+    //verifica se o token existe
+    if(token == null){
+        return true
+    }
+    else{
+        //faz uma requisição pra ver se o token é válido
+        const response = await fetch(url+"/login/verify" ,{
+            method: 'GET',
+            headers: {
+                'authorization': `Bearer ${token}`
+            }
+        })
+        //se não for válido tira ele do localStorage
+        if(!response.ok){
+            localStorage.removeItem('token_'+l)
+            return true;
+        }
+
+        return false;
+    }
 }
