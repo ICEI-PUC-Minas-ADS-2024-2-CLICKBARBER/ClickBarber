@@ -1,25 +1,27 @@
-// Senha correta para teste
+// Senha verdadeira
 const senhaCorreta = "123456";
 
-let elementoAtual; // guarda qual elemento vai ser alterado
-let tipoAtual; // 'logo', 'descricao', 'endereco'
+// guarda qual elemento vai ser alterado
+let elementoAtual;
+// 'logo', 'descricao', 'endereco' 
+let tipoAtual; 
 
 const popup = document.getElementById('popup-senha');
 const senhaInput = document.getElementById('senha-input');
 const confirmBtn = document.getElementById('confirm-btn');
 const cancelBtn = document.getElementById('cancel-btn');
 
-// Botões do perfil
+//define o elemento sendo alterado atual para logo
 document.getElementById('alterar-logo-btn').addEventListener('click', () => {
   tipoAtual = 'logo';
   popup.style.display = 'flex';
 });
-
+//define o elemento sendo alterado atual para descrição
 document.getElementById('editar-descricao-btn').addEventListener('click', () => {
   tipoAtual = 'descricao';
   popup.style.display = 'flex';
 });
-
+//define o elemento sendo alterado atual para endereço
 document.getElementById('editar-endereco-btn').addEventListener('click', () => {
   tipoAtual = 'endereco';
   popup.style.display = 'flex';
@@ -40,6 +42,7 @@ confirmBtn.addEventListener('click', () => {
     return;
   }
 
+  //altera a logo se o elemento atual for ela
   if(tipoAtual === 'logo'){
     const inputFile = document.createElement('input');
     inputFile.type = 'file';
@@ -56,12 +59,13 @@ confirmBtn.addEventListener('click', () => {
     }
     inputFile.click();
   }
-
+  
   if(tipoAtual === 'descricao'){
     const novaDesc = prompt("Digite a nova descrição:");
     if(novaDesc) document.getElementById('descricao-text').textContent = novaDesc;
   }
 
+  
   if(tipoAtual === 'endereco'){
     const novoEnd = prompt("Digite o novo endereço:");
     if(novoEnd) document.getElementById('endereco-text').textContent = novoEnd;
