@@ -1,4 +1,6 @@
 import * as u from '../repositories/usuariosRepositories.js'
+//importa o jwt para criar o token
+import jwt from 'jsonwebtoken';
 
 //função que pega todos os usuarios
 export async function getUsuarios(req , res){
@@ -151,6 +153,46 @@ export async function verifyCpf(req, res){
     }
 }
 
+export async function verifyCpfEmail(req , res){
+
+    const { email , cpf} = req.body;
+
+    if(!cpf || cpf.length != 11 || !email)
+        return res.status(400).send({message: "Dados incorretos"});
+
+    try{
+
+        const user = await u.getUserByEmail(email);
+
+        if(!user)
+           return res.status(400).send({message: "Dados incorretos"});
+
+        if(user.cpf == cpf){
+            const token = jwt.sign(
+                //dados que serão salvos no token
+                {
+                    id: user.id
+                },
+                //chave do token
+                'chave_secreta',
+                //tempo até o token expirar
+                {expiresIn: '10m'}
+            )
+            console.log("1")
+            return res.status(200).send({
+                message: "Credenciais corretas",
+                token: token
+            })
+        }
+
+        return res.status(400).send({message: "Dados incorretos"})
+
+    }catch(error){
+        return res.status(500).send({message: `Erro interno do servidor: ${error} `})
+    }
+
+}
+
 //função que atualiza os dados do usuario
 export async function putUsuarios(req , res){
     
@@ -174,6 +216,28 @@ export async function putUsuarios(req , res){
     }
 }
 
+//função que altera a senha do usuario
+export async function alteraSenha(req , res){
+
+    //pega o id do user e a nova senha
+    const {id} = req.dados;
+    const {senha} = req.body;
+
+    if(!senha || !id)
+        return res.status(400).send({message: "Credenciais incorretas"});
+
+    try{
+
+        //chama a função que altera a senha
+        if(!(await u.patchPassword(id , senha)))
+            return res.status(500).send({message: "Ocorreu um erro ao alterar a senha"})
+
+        return res.status(200).send({message: "Senha alterad com sucesso"})
+
+    }catch(error){
+        return res.status(500).send({message: `Erro interno do servidor`})
+    }
+}
 
 //função que deleta um usuario
 export async function deleteUsuarios(req , res){

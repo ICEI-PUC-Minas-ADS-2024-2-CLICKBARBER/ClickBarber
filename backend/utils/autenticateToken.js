@@ -6,13 +6,13 @@ export async function verifyToken(req, res, next){
 
     try{
         //pega o token enviado no header
-        const auth = req.headers.authorization
+        const auth = req.headers.authorization;
 
         if(!auth)
-            return res.status(401).send({message: 'Token não fornecido'})
+            return res.status(401).send({message: 'Token não fornecido'});
 
         //exclui a parte 'Bearer' e pega so o token
-        const token = auth.split(' ')[1]
+        const token = auth.split(' ')[1];
 
         //verifica se o token existe
         if(!token)

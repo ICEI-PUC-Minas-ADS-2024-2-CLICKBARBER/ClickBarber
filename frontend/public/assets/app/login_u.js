@@ -123,7 +123,7 @@ async function procuraDado(dado){
     //pega os dados retornados
     const data = await response.json()
 
-    //retorna se o dado foi encontrado ou não(true se sim, flase se não)
+    //retorna se o dado foi encontrado ou não(true se sim, false se não)
     return data.cadastrado
 }
 

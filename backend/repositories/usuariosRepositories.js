@@ -148,6 +148,33 @@ export async function putUser(id , data){
     return writeDB(db);
 }
 
+//função que atualiza a senha do usuario
+export async function patchPassword(id , password){
+
+    //le o banco de dados
+    const db = await readDB();
+
+    //verifica se existe algum usuario
+    if(!db.usuarios)
+        return null;
+
+    //pega o index em que o id enviado é igual ao que foi cadastrado
+    const index = db.usuarios.findIndex(usuario => usuario.id == id);
+
+    //verifica se o id enviado esta correto
+    if(index == -1)
+        return null;
+
+    //criptografa a nova senha que foi enviada
+    const newSenha = await bcrypt.hash(password , 10);
+
+    //atualiza a senha do usuario
+    db.usuarios[index].senha = newSenha;
+
+    //escreve os novos dados no banco de dados
+    return writeDB(db);
+}
+
 //função que deleta um usuario
 export async function deleteUser(id){
     //lê o banco de dados
