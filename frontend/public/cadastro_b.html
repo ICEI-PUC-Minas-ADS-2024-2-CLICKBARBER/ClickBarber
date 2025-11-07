@@ -18,12 +18,14 @@
 
     <!--barra de navegação-->
     <div class="nb">
+      <!--navbar quando não tem nenhuma conta logada (padrão)-->
       <div id="navbarI" class="navbar">
         <div id="linkEntrar" class="link"><a href="login_u.html">Entrar</a></div>
         <div class="link"><a href="#">Planos</a></div>
         <div class="link"><a href="#">Saiba Mais</a></div>
         <div class="link"><a href="#">Ajuda</a></div>
       </div>
+      <!--navbar quando tem uma conta de barbearia logada-->
       <div id="navbarB" class="navbar" >
         <div class="link"><a href="#">Agenda</a></div>
         <div class="link"><a href="#">Meu Plano</a></div>
@@ -31,6 +33,7 @@
         <div class="link"><a href="#">Produtos disponiveis</a></div>
         <div class="link"><a href="#">Serviços</a></div>
       </div>
+      <!--navbar quando tem uma conta de usuário logado-->
       <div id="navbarU" class="navbar" >
         <div class="link"><a href="#">Agenda</a></div>
       </div>
@@ -110,7 +113,8 @@
               </div>
               <div class="invalid" id="inSenha2">As duas senhas precisam ser iguais para prosseguir</div>
             </div>
-           
+            
+            <!--Botão de cadastro de barbearia-->
             <div class="btn">
               <button type="button" id="btnCriar">CRIAR CONTA</button>
             </div>

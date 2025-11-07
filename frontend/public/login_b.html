@@ -20,12 +20,14 @@
 
     <!--barra de navegação-->
     <div class="nb">
+      <!--navbar quando não tem nenhuma conta logada (padrão)-->
       <div id="navbarI" class="navbar">
         <div id="linkEntrar" class="link"><a href="login_u.html">Entrar</a></div>
         <div class="link"><a href="#">Planos</a></div>
         <div class="link"><a href="#">Saiba Mais</a></div>
         <div class="link"><a href="#">Ajuda</a></div>
       </div>
+      <!--navbar quando tem uma conta de barbearia logada-->
       <div id="navbarB" class="navbar" >
         <div class="link"><a href="#">Agenda</a></div>
         <div class="link"><a href="#">Meu Plano</a></div>
@@ -33,6 +35,7 @@
         <div class="link"><a href="#">Produtos disponiveis</a></div>
         <div class="link"><a href="#">Serviços</a></div>
       </div>
+      <!--navbar quando tem uma conta de usuário logado-->
       <div id="navbarU" class="navbar" >
         <div class="link"><a href="#">Agenda</a></div>
       </div>
@@ -83,14 +86,9 @@
               <p>Esqueceu sua senha ?<br><a href="rec_senha.html">Clique aqui para recupera-la</a></p>
             </div>
            
+            <!--Botão de login-->
             <div class="btn">
               <button type="button" id="btnEntrar">ENTRAR</button>
-            </div>
-            <div class="invalid" id="inLogin">
-              <div>Uma barbearia ja esta logada no site</div>
-            </div>
-            <div class="invalid" id="inLogin2">
-              <div>É preciso fazer login com uma conta antes de faze o login da barbearia</div>
             </div>
             
           </form>
