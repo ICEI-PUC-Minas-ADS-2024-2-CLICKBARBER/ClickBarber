@@ -1,58 +1,63 @@
-.perfil-container {
+/*card principal do perfil*/
+.perfil-container 
+{
+  
   max-width: 600px;
-  margin: 4rem auto;
-  background-color:liner-gradient();
+  margin: 0 auto;
+  background-color:rgb(53, 52, 52);
   border-radius: 12px;
   padding: 3rem 2rem;
   text-align: center;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 2rem rgb(43, 43, 43);
 }
 
-.perfil-logo img {
-  width: 180px;
-  height: 180px;
+/**/
+.perfil-logo img 
+{
+  width: 12rem;
+  height: 12rem;
   border-radius: 50%;
   border: 3px solid #6d2f2f;
   margin-bottom: 1.5rem;
 }
 
-.perfil-logo button,
-.perfil-descricao button,
-.perfil-endereco button {
-  background-color: #6d2f2f;
+.custom-btn
+{
+  background-color: #6D2F2F;
   border: none;
   color: white;
   font-family: "Inter", sans-serif;
   font-size: 18px;
   letter-spacing: 1px;
   border-radius: 8px;
-  padding: 0.8rem 1.6rem;
+  padding: 1rem 2rem;
   cursor: pointer;
   margin-top: 0.8rem;
   transition: 0.3s;
 }
 
-.perfil-logo button:hover,
-.perfil-descricao button:hover,
-.perfil-endereco button:hover {
+.custom-btn:hover
+{
   background-color: #8a3a3a;
   transform: scale(1.05);
 }
 
-.perfil-descricao,
-.perfil-endereco {
-  margin-top: 2rem;
+
+h1
+{
+ font-size: 32px;
 }
 
-.perfil-descricao p,
-.perfil-endereco p {
+.texto
+{
   font-size: 18px;
   color: #e0e0e0;
   margin-bottom: 0.5rem;
 }
 
-/* ---- Pop-up estilizado ---- */
-.popup-senha {
+/*----Pop-up----*/
+.popup-senha
+{
   display: none;
   position: fixed;
   top: 0;
@@ -65,7 +70,8 @@
   z-index: 1000;
 }
 
-.popup-content {
+.popup-content
+{
   background-color: #1e1e1e;
   border: 2px solid #6d2f2f;
   border-radius: 12px;
@@ -76,7 +82,8 @@
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
 }
 
-.popup-content h3 {
+.popup-content h3
+{
   font-family: "Julius Sans One", sans-serif;
   color: #fff;
   font-size: 20px;
@@ -84,7 +91,8 @@
   margin-bottom: 1rem;
 }
 
-.popup-content input {
+.popup-content input
+{
   width: 100%;
   padding: 0.6rem;
   border-radius: 6px;
@@ -97,17 +105,20 @@
   color: #fff;
 }
 
-.popup-content input::placeholder {
+.popup-content input::placeholder
+{
   color: #aaa;
 }
 
-.popup-buttons {
+.popup-buttons
+{
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
-.popup-buttons button {
+.popup-buttons button
+{
   flex: 1;
   background-color: #6d2f2f;
   color: #fff;
@@ -121,7 +132,8 @@
   letter-spacing: 1px;
 }
 
-.popup-buttons button:hover {
+.popup-buttons button:hover
+{
   background-color: #8a3a3a;
   transform: scale(1.05);
 }
