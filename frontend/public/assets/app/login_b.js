@@ -7,34 +7,29 @@ window.addEventListener('DOMContentLoaded', async function() {
     
     let noLogin = true
 
+    const navbarI = document.getElementById('navbarI')
+    const navbarU = document.getElementById('navbarU')
+    const navbarB = document.getElementById('navbarB')
+
     //verifica se tem uma conta de usuario logada
-    if(!(await verificaLogin(localStorage.getItem('token_u') , 'u'))){
-        //se tiver muda o cabeçalho
-        document.getElementById('navbarI').style.display = 'none'
-        document.getElementById('navbarU').style.display = 'flex'
-        document.getElementById('navbarB').style.display = 'none'
+    if(!(await verificaLogin(localStorage.getItem('token_u')))){
+        navbarI.style.display = 'none'
+        navbarU.style.display = 'flex'
+        navbarB.style.display = 'none'
         noLogin = false
     }
     //verifica se tem uma conta de barbearia logada
-    if(!(await verificaLogin(localStorage.getItem('token_b') , 'b'))){
-        //coloca um aviso embaixo do botão de fazer login
-        document.querySelector('.btn').style.marginBottom = '0px'
-        document.getElementById('inLogin').style.display = 'flex'
+    if(!(await verificaLogin(localStorage.getItem('token_b')))){
         //se tiver muda o cabeçalho (mesmo se tiver uma conta de usuario logada ao mesmo tempo, o cabeçalho ira mudar)
-        document.getElementById('navbarI').style.display = 'none'
-        document.getElementById('navbarU').style.display = 'none'
-        document.getElementById('navbarB').style.display = 'flex'
+        window.location.href = "home.html"
         noLogin = false
     }
     //se não tiver nenhuma conta logada o cabeçalho volta pro padrão
     if(noLogin == true){
-        //coloca um aviso embaixo do botão de fazer login
-        document.querySelector('.btn').style.marginBottom = '41.11px'
-        document.getElementById('inLogin').style.display = 'none'
         //volta pro cabeçalho padrão
-        document.getElementById('navbarI').style.display = 'flex'
-        document.getElementById('navbarU').style.display = 'none'
-        document.getElementById('navbarB').style.display = 'none'
+       navbarI.style.display = 'flex'
+       navbarU.style.display = 'none'
+       navbarB.style.display = 'none'
     }
 })
 
@@ -158,7 +153,7 @@ async function fazLogin(cnpj,senha){
 }
 
 //função que verifica se existe uma conta (usuario ou barbearia) logada
-async function verificaLogin(token , l){
+async function verificaLogin(token){
 
     //verifica se o token existe
     if(token == null){
@@ -174,7 +169,6 @@ async function verificaLogin(token , l){
         })
         //se não for válido tira ele do localStorage
         if(!response.ok){
-            localStorage.removeItem('token_'+l)
             return true;
         }
 

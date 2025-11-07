@@ -58,15 +58,3 @@ export async function loginU(req, res){
         return res.status(500).send({message: `Erro interno do servidor: ${error}`})
     }
 }
-
-//função que retorna os dados do usuario/barbearia que esta logado
-export async function dadosToken (req, res){
-    const dados = req.dados;
-    
-    res.status(201).json({
-        id: dados.id,
-        email: dados.email,
-        nome: dados.nome,
-        data_de_login: dados.data_login
-    })
-}

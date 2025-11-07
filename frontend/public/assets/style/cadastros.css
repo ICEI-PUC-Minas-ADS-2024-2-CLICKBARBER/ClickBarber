@@ -145,6 +145,7 @@ body {
 .laIn input:focus{
   outline: none;
 }
+/* Remove os botões de incremento/decremento do input number */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -161,6 +162,7 @@ input[type="number"] {
   width: 291px;
   display: flex;
 }
+/*botões de senha*/
 .img_check{
   width: 41px!important;
   height: 37px!important;
@@ -215,6 +217,7 @@ input[type="number"] {
 
 @media (max-width: 376px) {
   
+  /* ---------- Header ---------- */
   .header{
     display: block;
     padding: 0px 10px 20px 10px;
@@ -251,6 +254,8 @@ input[type="number"] {
     height: 15px;
   }
 
+  /* ---------- Main ---------- */
+  
   .titulo p2{
     font-size: 33px;
     font-weight: 900;

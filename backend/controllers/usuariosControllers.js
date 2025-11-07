@@ -178,7 +178,6 @@ export async function verifyCpfEmail(req , res){
                 //tempo até o token expirar
                 {expiresIn: '10m'}
             )
-            console.log("1")
             return res.status(200).send({
                 message: "Credenciais corretas",
                 token: token
@@ -232,7 +231,7 @@ export async function alteraSenha(req , res){
         if(!(await u.patchPassword(id , senha)))
             return res.status(500).send({message: "Ocorreu um erro ao alterar a senha"})
 
-        return res.status(200).send({message: "Senha alterad com sucesso"})
+        return res.status(200).send({message: "Senha alterada com sucesso"})
 
     }catch(error){
         return res.status(500).send({message: `Erro interno do servidor`})

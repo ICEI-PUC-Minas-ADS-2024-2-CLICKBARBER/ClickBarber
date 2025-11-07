@@ -12,7 +12,7 @@ const PORT = 3000;
 app.use(express.json())
 
 //permite requisições de qualquer origem
-app.use(cors());
+app.use(cors({}));
 app.use(cors({
   origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],

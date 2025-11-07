@@ -24,8 +24,7 @@ export async function verifyToken(req, res, next){
                 return res.status(403).send({message: 'Token inválido'})
 
             //salva os dados do usuario/barbearia na requisição e chama a proxima função
-            req.dados = dados;
-            next();
+            return res.status(200).json({message: "Token válido" , dados: dados})
         })
 
     }catch(error){

@@ -1,4 +1,4 @@
-const url = 'http://localhost:3000/usuarios'
+const url = 'http://localhost:3000'
 const btnCriar =  document.getElementById("btnCria");
 const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
@@ -9,28 +9,29 @@ window.addEventListener('DOMContentLoaded', async function() {
     
     let noLogin = true
 
+    const navbarI = document.getElementById('navbarI')
+    const navbarU = document.getElementById('navbarU')
+    const navbarB = document.getElementById('navbarB')
+
     //verifica se tem uma conta de usuario logada
-    if(!(await verificaLogin(localStorage.getItem('token_u') , 'u'))){
-        //se tiver muda o cabeçalho
-        document.getElementById('navbarI').style.display = 'none'
-        document.getElementById('navbarU').style.display = 'flex'
-        document.getElementById('navbarB').style.display = 'none'
+    if(!(await verificaLogin(localStorage.getItem('token_u')))){
+        window.location.href = "home.html"
         noLogin = false
     }
     //verifica se tem uma conta de barbearia logada
-    if(!(await verificaLogin(localStorage.getItem('token_b') , 'b'))){
+    if(!(await verificaLogin(localStorage.getItem('token_b')))){
         //se tiver muda o cabeçalho (mesmo se tiver uma conta de usuario logada ao mesmo tempo, o cabeçalho ira mudar)
-        document.getElementById('navbarI').style.display = 'none'
-        document.getElementById('navbarU').style.display = 'none'
-        document.getElementById('navbarB').style.display = 'flex'
+        navbarI.style.display = 'none'
+        navbarU.style.display = 'none'
+        navbarB.style.display = 'flex'
         noLogin = false
     }
     //se não tiver nenhuma conta logada o cabeçalho volta pro padrão
     if(noLogin == true){
         //volta pro cabeçalho padrão
-        document.getElementById('navbarI').style.display = 'flex'
-        document.getElementById('navbarU').style.display = 'none'
-        document.getElementById('navbarB').style.display = 'none'
+       navbarI.style.display = 'flex'
+       navbarU.style.display = 'none'
+       navbarB.style.display = 'none'
     }
 })
 
@@ -76,7 +77,6 @@ check2.addEventListener('click',()=>{
     }
 
 })
-
 
 //função que verifica se todos os campos estão preenchidos de forma correta
 btnCriar.addEventListener('click', async (event) => {
@@ -188,10 +188,11 @@ btnCriar.addEventListener('click', async (event) => {
         }
 
         //chama a função que cadastra o usuario
-        if(await cadastraUsuario(valores))
+        if(await cadastraUsuario(valores)){
             //se der true envia para a página de login
-            window.location.href = "login.html"
-
+            window.location.href = "login_u.html"
+        }
+        
     }
         
 })
@@ -201,7 +202,7 @@ async function cadastraUsuario(valores){
 
     try{
         //faz a requisição para o backend
-        const response = await fetch(url,{
+        const response = await fetch(url+'/usuarios',{
             method: 'POST',
             headers: {'Content-Type' : 'application/json'},
             body: JSON.stringify(valores)
@@ -225,7 +226,7 @@ async function cadastraUsuario(valores){
 async function procuraDado(nome, dado){
 
     //faz a requisição para o backend
-    const response =  await fetch(url+ '/' +nome , {
+    const response =  await fetch(url+ '/usuarios/' +nome , {
         method: "POST",
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify({[nome]: dado})
@@ -245,7 +246,7 @@ async function procuraDado(nome, dado){
 }
 
 //função que verifica se existe uma conta (usuario ou barbearia) logada
-async function verificaLogin(token , l){
+async function verificaLogin(token){
 
     //verifica se o token existe
     if(token == null){
@@ -261,7 +262,6 @@ async function verificaLogin(token , l){
         })
         //se não for válido tira ele do localStorage
         if(!response.ok){
-            localStorage.removeItem('token_'+l)
             return true;
         }
 

@@ -166,6 +166,16 @@ body {
   width: 291px;
   display: flex;
 }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 .img_check{
   width: 41px!important;
   height: 37.5px!important;
@@ -247,7 +257,7 @@ body {
 
 @media (max-width: 376px) {
   
-
+  /* ---------- Header ---------- */
   .header{
     display: block;
     padding: 0px 10px 20px 10px;
@@ -283,6 +293,9 @@ body {
     width: 15px;
     height: 15px;
   }
+
+  /* ---------- Main ---------- */
+
   .titulo p2{
     font-size: 33px;
     font-weight: 900;
