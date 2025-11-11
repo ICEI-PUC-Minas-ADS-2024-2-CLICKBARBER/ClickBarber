@@ -4,7 +4,7 @@ const schemaProduto = Joi.object({ /*define o schema -formato e regras dos dados
     nome: Joi.string().min(2).max(100).required(), /*nome: texto, 2–100, obrigatório*/
     categoria: Joi.string().min(2).max(60).required(), /*categoria: texto, 2–60, obrigatório*/
     quantidade: Joi.number().integer().min(0).required(), /*quantidade: número inteiro ≥ 0, obrigatório*/
-    unidade: Joi.string().min(1).max(20), /*unidade: texto, 1–20, opcional*/
+    unidade: Joi.string().allow('', null).max(20), /*unidade: texto, 1–20, opcional*/
     validade: Joi.string().allow('', null).max(50), /*validade: texto opcional; pode ser '' ou null; máx. 50*/
     marca: Joi.string().allow('', null).max(60), /*marca: texto opcional; pode ser '' (vazio) ou null; máx. 60*/
     imagem: Joi.string().allow('', null), /*imagem: texto opcional (data URL/base64 ou URL); pode ser '' ou null*/

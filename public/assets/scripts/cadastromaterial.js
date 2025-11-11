@@ -22,9 +22,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     /*FAZ A LINHA APARECER SEMPRE EMBAIXO DA OPÇÃO "produtos disponíveis", a não ser que outra opção seja selecionada no menu*/
     const menus = [ /*array com os 4 itens do menu*/
         document.getElementById("menuAgenda"),
+        document.getElementById("menuMeuPlano"),
+        document.getElementById("menuPerfil"),
         document.getElementById("menuProdutos"),
         document.getElementById("menuServicos"),
-        document.getElementById("menuPlano")
     ];
     const menuProdutos = document.getElementById("menuProdutos");
     menus.forEach(menu => {
@@ -68,6 +69,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (idEdicao) { /*se existe id na URL:*/
         try {
             produtoEmEdicao = await apiBuscarProduto(idEdicao); /*busca o produto na API*/
+            const selUn = document.getElementById("unidade");
+            if (selUn && produtoEmEdicao?.unidade && ![...selUn.options].some(o => o.value === produtoEmEdicao.unidade)) { //verifica se a unidade ja selecionada existe
+                selUn.insertAdjacentHTML('beforeend', `<option value="${produtoEmEdicao.unidade}">${produtoEmEdicao.unidade}</option>`);
+            }
             const categoriaSelectPreencher = document.getElementById("categoria");
             if (categoriaSelectPreencher && produtoEmEdicao?.categoria) { /*garante que a categoria dele exista no <select>*/
                 const existe = [...categoriaSelectPreencher.options].some(
@@ -80,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     );
                 }
             }
-            /*preenche todos os campos do form*/
+            /*preenche todos os campos do form durante a edição*/
             document.getElementById("nome").value = produtoEmEdicao.nome || "";
             document.getElementById("categoria").value = produtoEmEdicao.categoria || "";
             document.getElementById("marca").value = produtoEmEdicao.marca || "";
@@ -112,7 +117,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const ativo = !!document.getElementById("ativo")?.checked;
         const descartavel = !!document.getElementById("descartavel")?.checked;
         const imgInput = document.getElementById("imagem");
-        if (!nome || !categoria || !quantidade) { /*impede envio se esses 3 campos não estiverem preenchidos*/
+        if (!nome || !categoria || document.getElementById("quantidade").value === '') { /*impede envio se esses 3 campos não estiverem preenchidos*/
             alert("Preencha: nome, categoria e quantidade.");
             return;
         }
@@ -143,15 +148,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
         /*MONTA PAYLOAD*/
         const payload = {
-            nome, categoria, marca, quantidade, unidade, validade, ativo, descartavel,
-            imagem: novaImagem // pode ser null, string base64 ou URL
+            nome, categoria, marca, quantidade, unidade, validade, ativo, descartavel // pode ser null, string base64 ou URL
         };
         /*DECIDE CRIAR OU ATUALIZAR*/
         try {
             if (idEdicao && produtoEmEdicao) {
+                if (novaImagem !== null) {
+                    payload.imagem = novaImagem;
+                }
                 await apiAtualizarProduto(idEdicao, payload);
                 alert("Alterações salvas!");
+
             } else {
+                payload.imagem = novaImagem;
                 await apiCriarProduto(payload);
                 alert("Cadastrado!");
             }

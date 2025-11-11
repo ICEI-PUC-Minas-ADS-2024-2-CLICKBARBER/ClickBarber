@@ -35,9 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
     /*FAZ A LINHA APARECER EMBAIXO DO MENU*/
     const menus = [ /*array com os 4 itens do menu*/
         document.getElementById("menuAgenda"),
+        document.getElementById("menuMeuPlano"),
+        document.getElementById("menuPerfil"),
         document.getElementById("menuProdutos"),
         document.getElementById("menuServicos"),
-        document.getElementById("menuPlano")
     ];
     menus.forEach(menu => {
         menu.addEventListener("click", function () {
@@ -148,21 +149,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*EXCLUIR*/
     document.addEventListener("click", async (e) => { /*só reage ao clique no botão excluir*/
-        const btn = e.target.closest(".btn-excluir");
-        if (!btn) return;
-        const id = Number(btn.dataset.id);
-        if (!id) return;
+        const btn = e.target.closest(".btn-excluir"); /*pega botão excluir*/
+        if (!btn) return; /*se não clicar em excluir, ignora*/
+        const id = Number(btn.dataset.id); /*pea o id*/
+        if (!id) return; /*se não existir, ignora*/
         if (!confirm("Tem certeza que deseja excluir este produto?")) return;
         try {
-            await apiExcluirProduto(id); /*chama o backend e redesenha a lista certa*/
-            if (blocoTodosMateriais.style.display === "block") { /*se está em "todos", recarrega todos*/
-                const produtos = await apiListarProdutos();
-                cardProdutos(produtos);
-            } else if (blocoMateriaisPorServico.style.display === "block" && categoriaAtual) { /*se está em alguma categoria, redesenha a categoria atual*/
-                await desenharPorCategoria(categoriaAtual); // já busca da API
-            }
+            await apiExcluirProduto(id);
+            alert("Produto excluído.");
         } catch (err) {
-            alert(err.message || 'Falha ao excluir');
+            alert(err.message || "Falha ao excluir");
         }
     });
 
@@ -212,12 +208,12 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="card h-100">
             ${p.imagem
                 ? `<img src="${p.imagem}" class="card-imagem" alt="Imagem do produto">`
-                : `<div class="card-imagem d-flex align-items-center justify-content-center" style="height:180px;background:#efefef;color:#777;">Sem imagem</div>`}
+                : `<div class="card-imagem d-flex align-items-center justify-content-center" style="height:180px;background:#none;color:#777;">Sem imagem</div>`}
             <div class="card-body d-flex flex-column">
               <hr class="bg-light">
               <h5 class="card-title d-flex align-items-center">${p.nome}</h5>
               <ul class="mb-3 ps-3">
-                <li><strong>Quantidade:</strong> ${qtd}${p.unidade ? " " + p.unidade + "(s)" : ""}</li>
+                <li><strong>Quantidade:</strong> ${p.quantidade}${p.unidade ? " " + String(p.unidade).replace(/\(s\)+$/i, '(s)') : ""}</li>
                 <li><strong>Marca:</strong> ${p.marca || "—"}</li>
                 <li><strong>Categoria:</strong> ${p.categoria || "—"}</li>
                 <li><strong>Descartável:</strong> ${ehDescartavel ? "Sim" : "Não"}</li>
