@@ -1,0 +1,54 @@
+{
+  "usuarios": [
+    {
+      "id": "3d0efa81-cb1f-4032-9490-878f77dc1dfb",
+      "email": "chrick@gmail.com",
+      "nome": "Rick Mendes",
+      "telefone": "3145678901",
+      "cpf": "12312312319",
+      "senha": "$2b$10$I7T9XsJ/OBQBvUgBTQqHEuxwxIVoq.3cL4Ik8doE.f.HkW5m8xNdO"
+    },
+    {
+      "id": "1ca419a9-8d70-42b3-be9b-dc99cf215e63",
+      "email": "leonardo.m.j.soares@gmail.com",
+      "nome": "Leo Mendes",
+      "telefone": "1234567890",
+      "cpf": "12345678910",
+      "senha": "$2b$10$99rbs/jiYN.o.eddAm7Ul.puNRLO.HNppKUwy8O4lYucZptA8/Iju"
+    },
+    {
+      "id": "e9e63837-cfb6-4d24-a8c7-808089b4b20f",
+      "email": "leo@gmail.com",
+      "nome": "leo m",
+      "telefone": "3646572222",
+      "cpf": "99999999999",
+      "senha": "$2b$10$R4US.B587muGa.XVdDs.Q.p8synb0CfgWgPkcZ6cEiLhVEMBK0k5a"
+    }
+  ],
+  "barbearias": [
+    {
+      "id": "7aea",
+      "email": "clickBarber@gmail.com",
+      "nome": "ClickBarber",
+      "telefone": "1223344556",
+      "cnpj": "12121212121212",
+      "senha": "qwweerrt.5"
+    },
+    {
+      "id": "1b0fd54c-e20a-4331-b012-579948eb9b24",
+      "email": "clickBarber2@gmail.com",
+      "nome": "ClickBarber",
+      "telefone": "1223344556",
+      "cnpj": "12121212121217",
+      "senha": "$2b$10$w6UhdrOif7G/mZCSK1u8GeUcvqk9lN4CYJDkxQqLsam0U/.jeOmgS"
+    },
+    {
+      "id": "90192efa-cb54-4571-b9f6-2b59a4cf1234",
+      "email": "clickBarber3@gmail.com",
+      "nome": "ClickBarber",
+      "telefone": "1234567890",
+      "cnpj": "12345671234567",
+      "senha": "$2b$10$E.oSFuVh4QVW.1OcT.it9OGgylNRj9YmmP6YnKOGKaYpCGX51vapK"
+    }
+  ]
+}
