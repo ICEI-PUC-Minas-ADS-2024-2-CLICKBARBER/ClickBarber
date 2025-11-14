@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClickBarber</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/style/style.css">
+</head>
+<body>
+ <div>
+    <h2>Selecionar Barbeiro</h2>
+
+    <input type="text" id="searchBarbeiro" placeholder="Pesquisar barbeiro...">
+
+    <ul id="listaBarbeiros"></ul>
+
+    <div id="areaServicos" style="display:none; margin-top:20px;">
+        <h3>Serviços do barbeiro selecionado</h3>
+
+        <label for="dropdownServicos">Selecione os serviços:</label>
+        <select id="dropdownServicos" multiple></select>
+
+        <button id="btnSalvar" style="margin-top:15px;">Salvar</button>
+    </div>
+</div>
+
+
+<script src="assets/js/SBarbeiros.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "barbearias": [
+    {
+      "id": 1,
+      "nome": "Barbearia do João",
+      "email": "joao@barber.com",
+      "senha": "123",
+      "barbeiros": [
+        {
+          "id": 1,
+          "nome": "Carlos",
+          "servicos": ["corte", "barba"]
+        },
+        {
+          "id": 2,
+          "nome": "Miguel",
+          "servicos": ["corte"]
+        }
+      ]
+    }
+  ]
+}
