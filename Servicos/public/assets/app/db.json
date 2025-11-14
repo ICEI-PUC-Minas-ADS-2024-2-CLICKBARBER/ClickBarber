@@ -1,0 +1,18 @@
+{
+  "servicos": [
+    {
+      "id": "be12",
+      "titulo": "Corte de Cabelo",
+      "descricao": "Corte moderno com acabamento na navalha e finalização com pomada modeladora.",
+      "preco": "35",
+      "duracao": "30"
+    },
+    {
+      "id": "8477",
+      "titulo": "Barba",
+      "descricao": "Barba desenhada e feita com toalha quente e produtos hidratantes.",
+      "preco": "30",
+      "duracao": "25"
+    }
+  ]
+}
