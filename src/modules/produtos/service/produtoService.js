@@ -1,13 +1,7 @@
 import schemaProduto from '../schema/produtoSchema.js'; /*schemaProduto: regras de validação dos campos (ex.: nome, quantidade, etc)*/
-import produtoRepositoryFile from '../repository/produtoRepository.file.js'; /*produtoRepositoryFile: camada que lê/grava os dados (atualmente em arquivo)*/
 import produtoRepositoryMySQL from '../repository/produtoRepository.mysql.js'; /*pega o export do produtoRepository.mysql.js*/
-import { loadEnv } from '../../../config/env.js'; /*importa do env.js a função loadEnv*/
 
-const { REPOSITORY } = loadEnv(); /*chama a função loadEnv(), pega só o valor da chave REPOSITORY e guarda em REPOSITORY*/
-
-const repo = REPOSITORY === 'mysql' /*se o valor de REPOSITORY for mysql, então repo vai ser produtoRepositoryMySQL. Senão, repo vai ser produtoRepositoryFile*/
-  ? produtoRepositoryMySQL
-  : produtoRepositoryFile;
+const repo = produtoRepositoryMySQL; /*usa sempre o repositório MySQL*/
 
 const produtoService = { /*regras de negócio*/
 
