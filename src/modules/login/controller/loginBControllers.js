@@ -1,4 +1,5 @@
-import {readDB} from '../../../fileReader/fileReader.js';
+//importa a pool do banco de dados
+import { pool } from '../../../index.js';
 //importa o bcrypt para comparar a senha
 import bcrypt from 'bcrypt';
 //importa o jwt para criar o token
@@ -12,24 +13,18 @@ export async function loginB(req, res){
         if(!cnpj || !senha || cnpj.length != 14)
             return res.status(401).send({message: "Credenciais incorretas"});
 
-        const db = await readDB();
+        const [rows] = await pool.execute('select * from Barbearia where CNPJ_barbearia = ?' , [cnpj])
 
-        if(!db.barbearias)
-            return res.status(401).send({message: "Barbearia não encontrada"})
+        if(!rows[0])
+            return res.status(401).send({message: "Credenciais incorretas"})
 
-        const barbearia = db.barbearias.find(barbearia => barbearia.cnpj == cnpj);
-        
-        if(!barbearia)
-            return res.status(404).send({message: "Barbearia não encontrada"});
-
-        if(!(await bcrypt.compare(senha , barbearia.senha)))
+        if(!(await bcrypt.compare(senha , rows[0].senha)))
             return res.status(401).send({message: "Credenciais incorretas"}); 
 
         const token = jwt.sign(
             {
-                id: barbearia.id,
-                email: barbearia.email,
-                nome: barbearia.nome,
+                email: rows[0].Email,
+                nome: rows[0].Nome,
                 data_login: new Date().toLocaleString('pt-BB')
             },
             "chave_secreta"

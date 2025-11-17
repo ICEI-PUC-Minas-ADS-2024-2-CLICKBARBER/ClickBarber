@@ -7,6 +7,7 @@ window.addEventListener('DOMContentLoaded', async function() {
     
     let noLogin = true
 
+    //pega a navbar de cada tipo
     const navbarI = document.getElementById('navbarI')
     const navbarU = document.getElementById('navbarU')
     const navbarB = document.getElementById('navbarB')
@@ -33,7 +34,6 @@ window.addEventListener('DOMContentLoaded', async function() {
     }
 })
 
-
 //funções que mostram e ocultam a senha
 check.addEventListener('click',()=>{
     const img = document.getElementById("imgCheckBox");
@@ -52,7 +52,6 @@ check.addEventListener('click',()=>{
 })
 
 btnEntrar.addEventListener('click',async (event)=>{
-
     //some com os avisos
     document.querySelectorAll(".invalid").forEach(element =>{
         if(element.id != 'inLogin')
@@ -83,7 +82,6 @@ btnEntrar.addEventListener('click',async (event)=>{
                 valid = false;
                 document.getElementById("inSenha").style.display="flex";
             }
-            
             //verifica o campo senha
             else if(!senha || senha === ""){
                 valid = false;

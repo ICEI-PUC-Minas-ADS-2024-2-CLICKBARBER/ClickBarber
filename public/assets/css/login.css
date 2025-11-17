@@ -226,6 +226,9 @@ input[type="number"] {
   border: 0px;
   transition: 300ms;
 }
+#btn_login_b{
+  margin-top: 5rem;
+}
 .btn button:hover{
   background-color: #502222;
 }

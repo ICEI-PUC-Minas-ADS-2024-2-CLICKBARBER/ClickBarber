@@ -1,4 +1,6 @@
 import * as b from '../repository/barbeariasRepositories.js';
+//importa a função que pega os dados através do cep enviado
+import {pegaDadosCep} from '../../utils/getCep.js'
 
 //pega todas as barbearias
 export async function getBarbershops(req, res){
@@ -6,15 +8,20 @@ export async function getBarbershops(req, res){
     try{
         const data = await b.getAllBarbearias();
 
-        if(!data)
+        if(data.length <= 0)
             return res.status(404).send({message: 'Nenhuma barbearia encontrada'})
 
-        //filtra a informação pra impedir o envio de dados sensiveis
+        //filtra as informações de cada barbearia pra impedir o envio de dados sensiveis
         const safeBarberarias = data.map(barbearia =>{
-            const {id, nome, email} = barbearia;
-            return {id, nome, email};
+            return {
+                nome: barbearia.Nome,
+                email: barbearia.email,
+                cidade : barbearia.Cidade_endereco ,  
+                bairro :barbearia.Bairro_endereco , 
+                rua : barbearia.Rua_endereco , 
+                numero :barbearia.Numero_endereco
+            };
         })
-
         res.status(200).json(safeBarberarias);
 
     }catch(error){
@@ -22,23 +29,25 @@ export async function getBarbershops(req, res){
     }
 }
 
-//função que pega a barbearia por id
-export async function getBarbershopById(req, res){
+//função que pega a barbearia por CNPJ
+export async function getBarbershopByCnpj(req, res){
     try{
-        //pega o id no parametro do request
-        const id = req.params.id;
-        const data = await b.getBarbeariaById(id);
+        //pega o cnpj no parametro do request
+        const cnpj = req.params.cnpj;
+        const data = await b.getBarbeariaByCNPJ(cnpj);
 
-        if(!data)
+        if(data.length <= 0)
             return res.status(404).send({message: `Barbearia não encontrada`});
 
         //filtra a informação pra impedir o envio de dados sensiveis
         const safeData = {
-            id: data.id,
-            nome: data.nome,
-            email: data.email
+            nome: data.Nome,
+            email: data.email,
+            cidade : data.Cidade_endereco ,  
+            bairro :data.Bairro_endereco , 
+            rua : data.Rua_endereco , 
+            numero :data.Numero_endereco
         }
-
         res.status(200).json(safeData);
 
     }catch(error){
@@ -54,16 +63,18 @@ export async function getBarbershopByEmail(req, res){
 
         const data = await b.getBarbeariasByEmail(email);
 
-        if(!data)
+        if(data.length <= 0)
             return res.status(404).send({message: 'Barbearia não encontrada'});
 
         //filtra a informação pra impedir o envio de dados sensiveis
         const safeData = {
-            id: data.id,
-            nome: data.nome,
-            email: data.email
+            nome: data.Nome,
+            email: data.email,
+            cidade : data.Cidade_endereco ,  
+            bairro :data.Bairro_endereco , 
+            rua : data.Rua_endereco , 
+            numero :data.Numero_endereco
         }
-
         res.status(200).json(safeData);
 
     }catch(error){
@@ -75,11 +86,24 @@ export async function getBarbershopByEmail(req, res){
 export async function createBarbershop(req, res){
     try{
         //pega os dados enviados
-        const dados = req.body;
+        let dados = req.body;
 
         //verifica se os dados estão completos
-        if(!dados.email || !dados.nome || !dados.telefone || !dados.cnpj || !dados.senha)
+        if(!dados.email || !dados.nome || dados.telefone.length!=10 || dados.cnpj.length != 14 || !dados.senha || dados.cep.length!=8 || !dados.num)
             return res.status(400).send({message: 'Dados incompletos'});
+
+        //chama a função que pega os dados através do cep
+        const dadosCep = await pegaDadosCep(dados.cep);
+
+        //verifica se o cep é válido
+        if(!dadosCep)
+            return res.status(400).send({message : 'CEP inválido'})
+
+        //adiciona os dados do cep aos dados enviados pelo usuário
+        dados = {
+            ...dados,
+            ...dadosCep
+        }
         
         //chama a função que cria a barbearia no repositories
         if(!await b.createNewBarbearia(dados))
@@ -141,13 +165,27 @@ export async function verifyCnpj(req, res){
 //função que atualiza os dados da barbearia
 export async function putBarbershop(req,res){
     try{
-        const id = req.params.id;
+        const cnpj = req.params.cnpj;
         const dados = req.body;
 
-        if(!dados.email || !dados.nome || !dados.telefone)
+        if(!dados.email || !dados.nome || !dados.telefone || dados.cep.length != 8 || !dados.num)
             return res.status(400).send({message: 'Dados incompletos'});
 
-        if(!await b.putBarbearia(id, dados))
+         //chama a função que pega os dados através do cep
+        const dadosCep= await pegaDadosCep(dados.cep);
+
+        //verifica se o cep é válido
+        if(!dadosCep)
+            return res.status(400).send({message : 'CEP inválido'})
+
+        //adiciona os dados do cep aos dados enviados pelo usuário
+        dados = {
+            ...dados,
+            ...dadosCep
+        }
+
+        //tenta atualizar os dados
+        if(!await b.putBarbearia(cnpj, dados))
             return res.status(500).send({message: `Não foi possivel atualizar os dados da barbearia`})
         
         res.status(200).send({message:`Dados da barbearia atualizados com sucesso`});
@@ -161,10 +199,10 @@ export async function putBarbershop(req,res){
 export async function deleteBarbershop(req, res){
     try{
         //pega o id no parametro do request
-        const id = req.params.id;
+        const cnpj = req.params.cnpj;
 
         //chama a função que deleta a barbearia no repositories
-        if(!await b.createNewBarbearia(id))
+        if(!await b.createNewBarbearia(cnpj))
             return res.status(500).send({message: `Não foi possivel deletar a barbearia`});
 
         res.status(200).send({message: `Barbearia deletada com sucesso`});
@@ -173,3 +211,4 @@ export async function deleteBarbershop(req, res){
         return res.status(500).send({message: `Erro interno do servidor`});
     }
 }
+
