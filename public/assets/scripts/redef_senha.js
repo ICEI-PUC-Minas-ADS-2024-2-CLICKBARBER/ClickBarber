@@ -4,7 +4,6 @@ const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
 const url = "http://localhost:3000"
 
-
 //verifica se a senha tem no minimo 1 letra 1 numero e 1 simbolo
 async function verificaSenha(senha){
     const letra = /[a-zA-Z]/.test(senha);
@@ -16,9 +15,9 @@ async function verificaSenha(senha){
 
 //função que muda o cabeçalho
 window.addEventListener('DOMContentLoaded', async function() {
-    
     let noLogin = true
 
+    //pega a navbar de cada tipo
     const navbarI = document.getElementById('navbarI')
     const navbarU = document.getElementById('navbarU')
     const navbarB = document.getElementById('navbarB')
@@ -53,15 +52,14 @@ check.addEventListener('click',()=>{
 
     //se estiver checado a senha ira aparecer e o botão ira mudar para o olho aberto
     if(check.checked){
-        img.src = "assets/img/olhon.png"
+        img.src = "assets/imagens/olhon.png"
         senha.type = "text"
     }
     //se não a senha vai ser ocultada e a imagem ira mudar para o olho bloqueado
     else{
-        img.src = "assets/img/olho.png"
+        img.src = "assets/imagens/olho.png"
         senha.type = "password"
     }
-
 })
 check2.addEventListener('click',()=>{
     const img = document.getElementById("imgCheckBox2");
@@ -129,14 +127,17 @@ btnRedefinir.addEventListener('click', async (event) => {
     }
 })
 
+//função que altera a senha por uma nova
 async function alteraSenha(senha){
+    //pega o token de autorização no session storage
     const token = sessionStorage.getItem('ts');
 
+    //verifica se ele existe
     if(!token)
         return false;
 
     try{
-
+        //envia o token por requisição junto com a nova senha
         const response = await fetch(url + "/usuarios/senha" , {
             method : "PATCH",
             headers : {
@@ -146,6 +147,7 @@ async function alteraSenha(senha){
             body: JSON.stringify({senha : senha})
         })
 
+        //verifica se a senha foi alterada
         if(!response.ok)
             return false
 

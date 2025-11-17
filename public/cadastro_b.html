@@ -58,7 +58,7 @@
 
         <div class="form">
           <form>
-            <!--Email da loja-->
+            <!--Email da barbearia-->
             <div class="laIn">
               <label for="emailLoja">Digite seu Email<span class="ast"> *</span></label>
               <input type="text" placeholder="username@gmail.com" id="emailLoja">
@@ -66,7 +66,7 @@
               <div class="invalid" id="inEmail2">Esse email ja esta cadastrado no sistema</div>
             </div>
             
-            <!--Nome da loja-->
+            <!--Nome da barbearia-->
             <div class="laIn">
               <label for="nomeLoja">Digite o nome da Loja<span class="ast"> *</span></label>
               <input type="text" placeholder="ClickBarber" id="nomeLoja">
@@ -80,12 +80,27 @@
               <div class="invalid" id="inTele">Esse campo é obrigatorio, por favor digite um telefone válido</div>
             </div>
             
-            <!--CNPJ da loja-->
+            <!--CNPJ da barbearia-->
             <div class="laIn">
               <label for="cnpj">Digite o CNPJ da loja<span class="ast"> *</span> </label>
               <input type="number" placeholder="XX.XXX.XXX/YYYY-ZZ" id="cnpj">
               <div class="invalid" id="inCNPJ">Esse campo é obrigatorio, por favor digite um CNPJ válido</div>
               <div class="invalid" id="inCNPJ2">Esse valor ja esta cadastrado no sistema</div>
+            </div>
+
+            <!--CEP da barbearia-->
+            <div class="laIn">
+              <label for="cep">Digite o CEP da loja<span class="ast"> *</span> </label>
+              <input type="number" placeholder="01001000" id="cep">
+              <div class="invalid" id="inCEP">Esse campo é obrigatorio, por favor digite um CEP válido</div>
+              <div id="showCep"></div>
+            </div>
+
+            <!--Numero de endereço da barbearia-->
+            <div class="laIn">
+              <label for="num">Digite o numero de endereço da loja<span class="ast"> *</span> </label>
+              <input type="number" placeholder="123" id="num">
+              <div class="invalid" id="inNum">Esse campo é obrigatorio, por favor digite um numero de endereço válido</div>
             </div>
             
             <!--Senha da conta-->

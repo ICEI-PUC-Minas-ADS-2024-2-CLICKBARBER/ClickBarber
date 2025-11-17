@@ -3,12 +3,11 @@ const btnCriar =  document.getElementById("btnCriar");
 const check = document.getElementById("check");
 const check2 = document.getElementById("check2");
 
-
 //função que muda o cabeçalho
 window.addEventListener('DOMContentLoaded', async function() {
-    
     let noLogin = true
 
+    //pega a navbar de cada tipo
     const navbarI = document.getElementById('navbarI')
     const navbarU = document.getElementById('navbarU')
     const navbarB = document.getElementById('navbarB')
@@ -76,22 +75,46 @@ check2.addEventListener('click',()=>{
     }
 })
 
+//quando o usuário sai do input de cep essa função é chamada
+document.getElementById("cep").addEventListener('blur', async() =>{
+    const cep = document.getElementById("cep").value.trim()
+    //chama a função que pega os dados a partir do cep
+    const data = await pegaDadosCep(cep)
+
+    //verifica se o cep é válido
+    if(!data|| data.erro){
+        document.getElementById("showCep").style.display="none";
+        document.getElementById("inCEP").style.display="flex";
+    }
+    //se for válido adiciona algumas informações(cidade, bairro, rua) abaixo do input
+    else{
+        document.getElementById("inCEP").style.display="none";
+        document.getElementById("showCep").innerHTML = `
+            <p>CEP -> ${data.localidade} ${data.bairro} ${data.logradouro}</p>
+        `
+        document.getElementById("showCep").style.display="flex";
+    }
+})
+
 
 //função que verifica se todos os campos estão preenchidos de forma correta
 btnCriar.addEventListener('click', async (event) => {
     
     //some com os avisos
     document.querySelectorAll(".invalid").forEach(element =>{
-        element.style.display = "none"
+        if(element.id != 'inCEP')
+            element.style.display = "none"
     })
 
     //pega os valores de cada campo
     const email = document.getElementById("emailLoja").value.trim();
-    const nome = document.getElementById("nomeLoja").value.trim();;
-    const telefone = document.getElementById("telefone").value.trim();;
-    const cnpj = document.getElementById("cnpj").value.trim();;
-    const senha = document.getElementById("senha").value.trim();;
-    const senha2 = document.getElementById("senhaConfirm").value.trim();;
+    const nome = document.getElementById("nomeLoja").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+    const cnpj = document.getElementById("cnpj").value.trim();
+    const cep = document.getElementById("cep").value.trim();
+    const num = document.getElementById("num").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    const senha2 = document.getElementById("senhaConfirm").value.trim();
 
     var valid = true;
 
@@ -140,26 +163,40 @@ btnCriar.addEventListener('click', async (event) => {
         valid = false;
         document.getElementById("inCNPJ2").style.display="flex";
     }
+    
+    //verifica se o cep é válido
+    if(!cep || cep === ""){
+        valid = false;
+        document.getElementById("inCEP").style.display="flex";
+    }
+    //se a div inCEP estiver aparecendo é porque o cep é inválido
+    else if(document.getElementById("inCEP").style.display == "flex"){
+        valid = false;
+        document.getElementById("inCEP").style.display="flex";
+    }
+    else
+        document.getElementById("inCEP").style.display="none";
 
+    //verifica se o numero de endereço é válido
+    if(!num || num === ""){
+        valid = false;
+        document.getElementById("inNum").style.display="flex";
+    }
 
     //verifica o campo senha
     if(!senha || senha === ""){
         valid = false;
         document.getElementById("inSenha").style.display="flex";
     }
-
     else{
-
         if(senha.length <9){
             valid = false;
             document.getElementById("inSenha").style.display="flex";
         }
-
         else if(!verificaSenha(senha)){
             valid = false;
             document.getElementById("inSenha").style.display="flex";
         }
-
         //verifica o campo confirmação de senha
         else if(senha!==senha2){
             valid = false;
@@ -177,13 +214,15 @@ btnCriar.addEventListener('click', async (event) => {
             "nome":nome,
             "telefone":telefone,
             "cnpj":cnpj,
-            "senha":senha
+            "senha":senha,
+            "cep" : cep ,
+            "num" : num
         }
-        
         //chama a função que cadastra a barbearia
-        if(await cadastraBarbearia(dado))
+        if(await cadastraBarbearia(dado)){
             //se der true envia para a página de login
             window.location.href = "login_b.html"
+        }   
     }
 })
 
@@ -210,7 +249,6 @@ async function cadastraBarbearia(dado){
         return false;
     }
     return true;
-    
 }
 
 //função que procura um dado no backend
@@ -240,9 +278,9 @@ async function procuraDado(nome, dado){
 async function verificaLogin(token){
 
     //verifica se o token existe
-    if(token == null){
+    if(token == null)
         return true
-    }
+
     else{
         //faz uma requisição pra ver se o token é válido
         const response = await fetch(url+"/login/verify" ,{
@@ -252,10 +290,26 @@ async function verificaLogin(token){
             }
         })
         //se não for válido retorna true
-        if(!response.ok){
+        if(!response.ok)
             return true;
-        }
 
         return false;
     }
+}
+
+//função que pega os dados a partir do cep enviado
+async function pegaDadosCep(cep){
+    //verifica se ele tem tamanho válido
+    if(cep.length != 8)
+        return false
+
+    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    
+    const data = await response.json();
+
+    //verifica se a requisição foi bem sucedida ou se o cep existe
+    if(!response.ok || data.erro)
+        return false
+
+    return data ;
 }

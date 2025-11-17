@@ -23,11 +23,16 @@ export async function verifyToken(req, res, next){
             if(error)
                 return res.status(403).send({message: 'Token inválido'})
 
-            //salva os dados do usuario/barbearia na requisição e chama a proxima função
-            return res.status(200).json({message: "Token válido" , dados: dados})
+            //chama o proximo middleware
+            req.dados = dados
+            next()
         })
-
     }catch(error){
         return res.status(500).send({message: `Erro interno do servidor `})
     }
+}
+
+//função usada como proximo middleware após o verifyToken quando ele esta sozinho
+export function tokenHandler(req, res){
+    return res.status(200).send({message : "Token válido" , dados : req.dados})
 }

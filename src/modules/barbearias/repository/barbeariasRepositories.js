@@ -1,164 +1,85 @@
-//importa as funções de leitura e escrita do banco de dados
-import { readDB , writeDB } from '../../../fileReader/fileReader.js';
-//importa o uuid para criar ids únicos
-import { v4 as uuidv4 } from 'uuid';
+//importa a pool do banco de dados
+import { pool } from '../../../index.js';
 //importa o bcrypt para criptografar a senha
 import bcrypt from 'bcrypt';
 
 //função que retorna todos as barbearias cadastradas
 export async function getAllBarbearias(){
-    //lê o banco de dados
-    const data = await readDB();
-    
-    //verifica se existem barbearias cadastradas
-    if(!data.barbearias) return [];
+    //pega todas as barbearias cadastradas no banco de dados
+    const [rows] = await pool.execute('select * from Barbearia') ;
 
-    return data.barbearias;
+    return rows ;
 }
 
-//função que pega a barbearia pelo id
-export async function getBarbeariaById(id){
-    //lê o banco de dados
-    const data = await readDB();
+//função que pega a barbearia pelo CNPJ
+export async function getBarbeariaByCNPJ(cnpj){
+    //pega a barbearia cujo CNPJ é igual o enviado
+    const [rows] = await pool.execute('select * from Barbearia where CNPJ_barbearia = ?' ,[cnpj] ) ;
 
-    //verifica se existem barbearias cadastradas
-    if(!data.barbearias) return null;
-
-    //procura o index em que o id enviado é o mesmo doque o cadastrado
-    const index = data.barbearias.findIndex(usuario => usuario.id ==id);
-
-    //se não encontrar retorna null
-    if(index == -1) return null;
-
-    return data.barbearias[index];
+    return rows[0]
 }
 
 //função que pega a barbearia pelo email
 export async function getBarbeariasByEmail(email){
-    //lê o banco de dados
-    const data = await readDB();
+    //pega a barbearia cujo email é igual o enviado
+    const [rows] = await pool.execute('select * from Barbearia where email = ?', [email] )
 
-    //verifica se existem barbearias cadastradas
-    if(!data.barbearias) return null;
-
-    //procura o index em que o email enviado é o mesmo doque o cadastrado
-    const index = data.barbearias.findIndex(usuario => usuario.email ==email);
-
-    //se não encontrar retorna null
-    if(index ==-1) return null;
-
-    return data.barbearias[index];
+    return rows[0];
 }
 
 //função que verifica se o cnpj já está cadastrado
 export async function getCNPJ(cnpj){
-    //lê o banco de dados
-    const data = await readDB();
+    //pega a barbearia cujo CNPJ é igual o enviado
+    const [rows] = await pool.execute('select * from Barbearia where CNPJ_barbearia = ?' ,[cnpj]);
 
-    //verifica se existem barbearias cadastradas
-    if(!data.barbearias) return null;
-
-    //procura o index em que o cnpj enviado é o mesmo doque o cadastrado
-    const index = data.barbearias.findIndex(user => user.cnpj ==cnpj)
-
-    //se não encontrar retorna false
-    if(index == -1) return false;
-
-    return true;
+    //se for maior que zero é porque existe e envia true
+    return rows.length > 0; 
 }
 
 //função que verifica se o email já está cadastrado
 export async function getEmail(email){
-    //lê o banco de dados
-    const data = await readDB();
+    //pega a barbearia cujo email é igual o enviado
+    const [rows] = await pool.execute('select * from Barbearia where email = ?' ,[email]);
 
-    //verifica se existem barbearias cadastradas
-    if(!data.barbearias) return null;
-
-    //procura o index em que o email enviado é o mesmo doque o cadastrado
-    const index = data.barbearias.findIndex(user => user.email == email)
-
-    //se não encontrar retorna false
-    if(index == -1) return false;
-
-    return true;
+    //se for maior que zero é porque existe e envia true
+    return rows.length > 0; 
 }
 
 //função que cria uma nova barbearia
 export async function createNewBarbearia(data){
     //pega os dados enviados
-    const {email, nome, telefone, cnpj, senha} = data;
+    let {email, nome, telefone, cnpj, senha , cep, rua , cidade , bairro , num} = data;
+    const ddd = `${telefone[0]}${telefone[1]}` //pega o ddd do numero enviado (2 primeiros numeros)
+    telefone = telefone.slice(2); //tira o ddd do telefone enviado
+    senha = await bcrypt.hash(senha, 10) //criptografa a senha
 
-    //lê o banco de dados
-    const dados = await readDB();
+    //cadastra todas as informações enviadas no banco de dados
+    const [result] = await pool.execute(
+        'insert into Barbearia (CNPJ_barbearia , Nome , email , DDD_telefone , Numero_Telefone , senha , CEP_endereco , Cidade_endereco , Bairro_endereco , Rua_endereco , Numero_endereco) VALUES (?,?,?,?,?,?,?,?,?,?,?)',[cnpj , nome , email , ddd , telefone ,senha , cep , cidade , bairro , rua , num]) ;
 
-    //verifica se o array de barbearias existe, se não cria um novo
-    if(!dados.barbearias)
-        dados.barbearias = [];
-
-    //cria a nova barbearia
-    const newBarbearia = {
-        id: uuidv4(), //gera um id unico
-        email: email,
-        nome: nome,
-        telefone: telefone,
-        cnpj: cnpj,
-        senha: await bcrypt.hash(senha, 10) //criptografa a senha
-    }
-
-    //adiciona a nova barbearia no array lido
-    dados.barbearias.push(newBarbearia);
-
-    //escreve os novos dados no banco de dados
-    return writeDB(dados);
+    //se nenhuma linha for alterada é porque o usuário não foi cadastrado        
+    return result.affectedRows > 0 ;
 }
 
 //função que atualiza os dados da barbearia
-export async function putBarbearia(id, data){
+export async function putBarbearia(cnpj, data){
     //pega os dados enviados
-    const {email, nome , telefone} = data;
+    const {email, nome , telefone ,cep , rua , cidade , bairro , num} = data;
+    const ddd = `${telefone[0]}${telefone[1]}` //pega o ddd do numero enviado (2 primeiros numeros)
+    telefone = telefone.slice(2);  //tira o ddd do telefone enviado
 
-    //lê o banco de dados
-    const db = await readDB();
+    //atualiza todas as informações enviadas no banco de dados
+    const [result] = await pool.execute('update Barbearia set Nome = ? , email = ?, DDD_telefone = ?, Numero_Telefone = ? ,CEP_endereco = ?, Cidade_endereco = ? , Bairro_endereco = ?, Rua_endereco = ?, Numero_endereco = ? where CNPJ_barbearia = ?' , [nome , email , ddd , telefone , cep , cidade , bairro , rua , num , cnpj])
 
-    //verifica se existem barbearias cadastradas
-    if(!db.barbearias) return null;
-
-    //procura o index em que o id enviado é o mesmo doque o cadastrado
-    const index = db.barbearias.findIndex(usuario => usuario.id ==id);
-
-    //se não encontrar retorna null
-    if(index === -1) return null;
-
-    //atualiza os dados da barbearia (apena email, nome e telefone)
-    db.barbearias[index] = {
-        ...db.barbearias[index],
-        email: email,
-        nome: nome,
-        telefone: telefone
-    }
-
-    //escreve os novos dados no banco de dados
-    return writeDB(db);
+    //se nenhuma linha for alterada é porque o usuário não foi atualizado  
+    return result.affectedRows > 0;
 }
 
 //função que deleta uma barbearia
-export async function deleteBarbearia(id){
-    //lê o banco de dados
-    const db = await readDB();
+export async function deleteBarbearia(cnpj){
+    //exclui a barbearia cujo id é igual ao enviado
+    const [result] = await pool.execute('delete from Barbearia where CNPJ_barbearia = ?' , [cnpj])
 
-    //verifica se existem barbearias cadastradas
-    if(!db.barbearias) return null;
-
-    //procura o index em que o id enviado é o mesmo doque o cadastrado
-    const index = db.barbearias.findIndex(usuario => usuario.id ==id);
-
-    //se não encontrar retorna null
-    if(index === -1) return null;
-
-    //remove a barbearia do array
-    db.barbearias.splice(index, 1);
-
-    //escreve os novos dados no banco de dados
-    return writeDB(db);
+    //se for menor que zero é porque a barbearia não foi excluida
+    return result.affectedRows > 0;
 }

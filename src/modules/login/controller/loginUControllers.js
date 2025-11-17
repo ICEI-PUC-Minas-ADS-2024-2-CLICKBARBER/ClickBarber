@@ -1,4 +1,5 @@
-import {readDB} from '../../../fileReader/fileReader.js';
+//importa a pool do banco de dados
+import { pool } from '../../../index.js';
 //importa o bcrypt para comparar a senha
 import bcrypt from 'bcrypt';
 //importa o jwt para criar o token
@@ -14,33 +15,26 @@ export async function loginU(req, res){
 
         //verifica se eles estão completos
         if(!email || !senha)
-            return res.status(401).send({message:"Credenciais invalidas"})
+            return res.status(401).send({message:"Credenciais incorretas"})
 
         //pega as informações do banco de dados
-        const data = await readDB();
+        const [rows] = await pool.execute('select * from Pessoa where E_mail = ?' ,[email])
 
         //verifica se existe algum usuarios cadastrado
-        if(!data.usuarios)
-            return res.status(401).send({message: 'Credenciais inválidas'});
-
-        //procura o usuario pelo email enviado
-        const user = data.usuarios.find(u => u.email === email);
-
-        //verifica se ele existe
-        if(!user)
-            return res.status(401).send({message: 'Credenciais invalidas'})
+        if(!rows[0])
+            return res.status(401).send({message: 'Credenciais incorretas'});
 
         //compara a senha enviada com a senha cadastrado no banco de dados
-        if(!await bcrypt.compare(senha, user.senha))
-            return res.status(401).send({message: 'Credenciais invalidas'})
+        if(!await bcrypt.compare(senha, rows[0].Senha))
+            return res.status(401).send({message: 'Credenciais incorretas'})
 
         //se a senha estiver correta cria o token jwt
         const token = jwt.sign(
             //dados que serão salvos no token
             {
-                id: user.id,
-                nome: user.nome,
-                email: user.email,
+                id: rows[0].ID_pessoa,
+                nome: rows[0].Nome,
+                email: rows[0].Email,
                 data_login: new Date().toLocaleString('pt-BB')     
             },
             //chave do token

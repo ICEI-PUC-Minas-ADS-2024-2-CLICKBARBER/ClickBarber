@@ -6,7 +6,7 @@ const routes = express.Router();
 
 //rotas de GET
 routes.get('/', barbearias.getBarbershops);
-routes.get('/:id', barbearias.getBarbershopById)
+routes.get('/:id', barbearias.getBarbershopByCnpj)
 routes.get('/email/:email', barbearias.getBarbershopByEmail);
 //rotas de POST
 routes.post('/', barbearias.createBarbershop);

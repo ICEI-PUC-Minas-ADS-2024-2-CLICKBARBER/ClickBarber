@@ -145,6 +145,12 @@ body {
 .laIn input:focus{
   outline: none;
 }
+
+#showCep{
+  font-size: 11px;
+  display: none;
+}
+
 /* Remove os botões de incremento/decremento do input number */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -193,7 +199,7 @@ input[type="number"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 80px;
   margin-bottom: 36px;
 }
 .btn button{

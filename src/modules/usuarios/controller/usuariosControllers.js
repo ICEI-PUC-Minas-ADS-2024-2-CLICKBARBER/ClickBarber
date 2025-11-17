@@ -13,14 +13,17 @@ export async function getUsuarios(req , res){
 
         //filtra a informação pra impedir o envio de dados sensiveis
         const safeUsers = data.map(usuario =>{
-            const { id, nome, email} = usuario;
-            return { id, nome, email };
+            return { 
+                id : usuario.ID_pessoa, 
+                nome : usuario.Nome, 
+                email :usuario.E_mail 
+            };
         })
 
         res.status(200).json(safeUsers);
         
     }catch(error){
-        return res.status(500).send({message: `Erro interno do servidor`});
+        return res.status(500).send({message: `Erro interno do servidor : ${error}`});
     }
 }
 
@@ -38,9 +41,9 @@ export async function getUsuariosById(req , res){
 
         //filtra a informação pra impedir o envio de dados sensiveis
         const safeData = {
-            id: data.id,
-            nome: data.nome,
-            email:data.email
+            id: data.ID_pessoa,
+            nome: data.Nome,
+            email:data.E_mail
         }
 
         res.status(200).json(safeData);
@@ -65,9 +68,9 @@ export async function getUsuariosByEmail(req , res){
 
         //filtra a informação pra impedir o envio de dados sensiveis
         const safeData = {
-            id: data.id,
-            nome: data.nome,
-            email:data.email
+            id: data.ID_pessoa,
+            nome: data.Nome,
+            email:data.E_mail
         }
 
         res.status(200).json(safeData);
@@ -89,7 +92,7 @@ export async function postUsuarios(req , res){
             return res.status(400).send({message: 'Dados incompletos'});
         }
 
-        //cria o novo usuario
+        //junta as informaçoes em um objeto
         const newUser = {
             nome: nome.trim(),
             email : email.trim(),
@@ -98,6 +101,7 @@ export async function postUsuarios(req , res){
             senha: senha.trim()
         }
 
+        //tenta criar um novo usuario
         if(!await u.createNewUser(newUser)){
             return res.status(500).send({message: 'Erro ao criar usuario'});
         }
@@ -153,6 +157,7 @@ export async function verifyCpf(req, res){
     }
 }
 
+//função que verifica se o cpf e o email foram cadastrados pelo mesmo usuario
 export async function verifyCpfEmail(req , res){
 
     const { email , cpf} = req.body;
@@ -161,23 +166,25 @@ export async function verifyCpfEmail(req , res){
         return res.status(400).send({message: "Dados incorretos"});
 
     try{
-
+        //pega o usuario pelo email
         const user = await u.getUserByEmail(email);
 
         if(!user)
            return res.status(400).send({message: "Dados incorretos"});
 
-        if(user.cpf == cpf){
+        //verifica se o cpf enviado é o mesmo presente no usuario do email enviaado
+        if(user.CPF == cpf){
             const token = jwt.sign(
                 //dados que serão salvos no token
                 {
-                    id: user.id
+                    id: user.ID_pessoa
                 },
                 //chave do token
                 'chave_secreta',
                 //tempo até o token expirar
                 {expiresIn: '10m'}
             )
+            //retorna o token
             return res.status(200).send({
                 message: "Credenciais corretas",
                 token: token
@@ -240,18 +247,14 @@ export async function alteraSenha(req , res){
 
 //função que deleta um usuario
 export async function deleteUsuarios(req , res){
-
     //pega o id no parametro do request
     const id = req.params.id;
 
     try{
-
-        if(!deleteUser(id)){
+        if(!u.deleteUser(id))
             return res.status(500).send({message: 'Erro ao excluir usuario'});
-        }
 
         res.status(200).send({message:'Usuario excluido com sucesso'});
-
 
     }catch(error){
         return res.status(500).send({message: 'Erro interno do servidor'});

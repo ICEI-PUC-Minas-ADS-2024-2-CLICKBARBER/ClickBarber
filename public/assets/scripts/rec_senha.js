@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', async function() {
     
     let noLogin = true
 
+    //pega a navbar de cada tipo
     const navbarI = document.getElementById('navbarI')
     const navbarU = document.getElementById('navbarU')
     const navbarB = document.getElementById('navbarB')
@@ -65,23 +66,22 @@ btnEntrar.addEventListener('click', async (event)=>{
         if(!cpf || cpf === ""){
             valid = false;
             document.getElementById("invalid").style.display="flex";
-        
         }
         else if(cpf.length != 11){
             valid = false;
             document.getElementById("invalid").style.display="flex";
-            
         }
         //verifica se o cpf ja existe no banco de dados
         else if(!(await procuraDado('cpf',cpf))){
             valid = false
             document.getElementById("invalid").style.display="flex";
-            
         }
     }
 
+    //verifica se o cpf e o email foram cadastrados pelo mesmo usuario. Se sim cria um token de autorização para a alteração de senha
     const token = await verificaDados(email , cpf)
 
+    //verifica se o token existe
     if(!token){
         valid = false;
         document.getElementById("invalid").style.display="flex";
@@ -91,6 +91,7 @@ btnEntrar.addEventListener('click', async (event)=>{
     if(valid===false)
         event.preventDefault();
     else{
+        //se existir coloca o token no session storage e redireciona o usuario pra página de alteração de senha
         sessionStorage.setItem("ts" , token)
         window.location.href = "redef_senha.html"
     }
@@ -119,6 +120,7 @@ async function procuraDado(nome, dado){
     return data.cadastrado
 }
 
+//função que verifica se o cpf e o email foram cadastrados pelo mesmo usuário
 async function verificaDados(email , cpf){
 
     const response = await fetch(url+ "/usuarios/cpf-email" , {
@@ -129,12 +131,13 @@ async function verificaDados(email , cpf){
             cpf : cpf
         })
     })
-    
+
     if(!response.ok)
         return false;
 
     const data = await response.json();
 
+    //retorna o token enviado como resposta
     return data.token;
 }
 

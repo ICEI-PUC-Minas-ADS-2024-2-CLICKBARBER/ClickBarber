@@ -7,6 +7,7 @@ window.addEventListener('DOMContentLoaded', async function() {
     
     let noLogin = true
 
+    //pega a navbar de cada tipo
     const navbarI = document.getElementById('navbarI')
     const navbarU = document.getElementById('navbarU')
     const navbarB = document.getElementById('navbarB')

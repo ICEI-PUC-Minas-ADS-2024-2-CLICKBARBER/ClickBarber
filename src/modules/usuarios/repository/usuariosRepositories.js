@@ -1,201 +1,102 @@
-//importa as funções que fazem a leitura e escrita no banco de dados
-import { readDB , writeDB } from '../../../fileReader/fileReader.js';
-//importa o uuid para criar ids únicos
-import { v4 as uuidv4 } from 'uuid';
+//importa a pool do banco de dados
+import { pool } from '../../../index.js';
 //importa o bcrypt para criptografar a senha
 import bcrypt from 'bcrypt';
 
 //função que retorna todos os usuarios cadastrados
 export async function getAllUsers() {
-    //lê o banco de dados
-    const data = await readDB();
+    //pega todas os usuarios que estão cadastrados no banco de dados
+    const [rows] = await pool.execute('select * from Pessoa where Tipo_usuario = "cliente"');
 
-    //verifica se existem usuarios cadastrados
-    if(!data.usuarios) return [];
-
-    return data.usuarios;
+    return rows;
 }
 
 //função que pega o usuario pelo id
 export async function getUserById(id){
-    //lê o banco de dados
-    const data = await readDB();
+    //procura no banco de dados e pega o usuario cujo id é igual ao enviado
+    const [rows] = await pool.execute('select * from Pessoa where ID_pessoa = ? and Tipo_usuario = "cliente"' , [id]);
 
-    //verifica se existem usuarios cadastrados
-    if(!data.usuarios) return null;
-
-    //procura o index em que o id enviado é o mesmo doque o cadastrado
-    const index = data.usuarios.findIndex(usuario => usuario.id == id);
-
-    //se não encontrar retorna null
-    if(index == -1) return null;
-
-    return data.usuarios[index];
+    return rows[0]
 }
 
 //função que pega o usuario pelo email
 export async function getUserByEmail(email){
-    //lê o banco de dados
-    const data = await readDB();
+    //procura no banco de dados e pega o usuario cujo email é igual ao enviado
+    const [rows] = await pool.execute('select * from Pessoa where E_mail = ? and Tipo_usuario = "cliente"' , [email]);
 
-    //verifica se existem usuarios cadastrados
-    if(!data.usuarios) return null;
-
-    //procura o index em que o email enviado é o mesmo doque o cadastrado
-    const index = data.usuarios.findIndex(usuario => usuario.email == email);
-
-    //se não encontrar retorna null
-    if(index == -1) return null;
-
-    return data.usuarios[index];
+    return rows[0]
 }
 
 //função que verifica se o cpf já está cadastrado
 export async function getCPF(cpf){
-    //lê o banco de dados
-    const data = await readDB();
+    //verifica se existe algum usuario com cpf igual ao enviado no banco de dados
+    const [rows] = await pool.execute('select * from Pessoa where CPF = ? and Tipo_usuario = "cliente" ' ,[cpf]);
 
-    //verifica se existem usuarios cadastrados
-    if(!data.usuarios) return null;
-
-    //procura o index em que o cpf enviado é o mesmo doque o cadastrado
-    const index = data.usuarios.findIndex(user => user.cpf ==cpf)
-
-    //se não encontrar retorna false
-    if(index == -1) return false;
-
-    return true;
+    //se for maior que 0 é porque existe e retorna true
+    return rows.length > 0 ;
 }
 
 //função que verifica se o email já está cadastrado
 export async function getEmail(email){
-    //lê o banco de dados
-    const data = await readDB();
+    //verifica se existe algum usuario com email igual ao enviado no banco de dados
+    const [rows] = await pool.execute('select * from Pessoa where E_mail = ? and Tipo_usuario = "cliente" ' ,[email]);
 
-    //verifica se existem usuarios cadastrados
-    if(!data.usuarios) return null;
-
-    //procura o index em que o email enviado é o mesmo doque o cadastrado
-    const index = data.usuarios.findIndex(user => user.email == email)
-
-    //se não encontrar retorna false
-    if(index == -1) return false;
-
-    return true;
+    //se for maior que 0 é porque existe e retorna true
+    return rows.length > 0
 }
 
 //função que cria um novo usuario
 export async function createNewUser(data){
     //pega os dados enviados
-    const { email, nome , telefone , cpf, senha} = data;
+    let { email, nome , telefone , cpf, senha} = data;
+    const ddd = `${telefone[0]}${telefone[1]}` //pega o ddd do numero enviado (2 primeiros numeros)
+    telefone = telefone.slice(2); //tira o ddd do telefone enviado
+    senha = await bcrypt.hash(senha, 10) //criptografa a senha
 
-    //lê o banco de dados
-    const db = await readDB();
+    //cadastra todas as informações enviadas no banco de dados
+    const [result] =  await pool.execute('insert into Pessoa (E_mail , Nome , CPF , DDD_telefone , Numero_Telefone , Senha , Tipo_usuario) VALUES (?,?,?,?,?,?, "cliente")',[email , nome , cpf , ddd , telefone , senha])
 
-    //verifica se o array de usuarios existe, se não cria um novo
-    if(!db.usuarios){
-        db.usuarios = [];
-    }
-
-    //cria o novo usuario
-    const newUsuario = {
-        id: uuidv4(), //gera um id unico
-        email: email,
-        nome: nome,
-        telefone: telefone,
-        cpf: cpf,
-        senha: await bcrypt.hash(senha, 10) //criptografa a senha
-    }
-
-    //adiciona o novo usuario ao array de usuarios
-    db.usuarios.push(newUsuario);
-
-    //escreve os novos dados no banco de dados
-    return writeDB(db);
+    //se nenhuma linha for alterada é porque o usuário não foi cadastrado
+    return result.affectedRows > 0
 }
 
 //função que atualiza os dados do usuario
 export async function putUser(id , data){
 
     //pega os dados enviados
-    const { email, nome, telefone, cpf, senha} = data
-    
-    //lê o banco de dados
-    const db = await readDB();
+    const { email, nome , telefone} = data;
+    const ddd = `${telefone[0]}${telefone[1]}` //pega o ddd do numero enviado (2 primeiros numeros)
+    telefone = telefone.slice(2); //tira o ddd do telefone enviado
 
-    //verifica se existem usuarios cadastrados
-    if(!db.usuarios){
-        return null;
-    }
+    //altera no banco de dados o usuario do id enviado
+    const [result] =  await pool.execute('update Pessoa set E_mail = ? , Nome = ? , DDD_telefone = ? , Numero_Telefone = ? where ID_pessoa = ?',[email , nome , ddd , telefone , id])
 
-    //procura o index em que o id enviado é o mesmo doque o cadastrado
-    const index = db.usuarios.findIndex(usuario => usuario.id == id);
-
-    //se não encontrar retorna null
-    if(index === -1){
-        return null;
-    }
-
-    //atualiza os dados do usuario (apenas email, nome e telefone)
-    db.usuarios[index] = {
-        ...db.usuarios[index],
-        email:  email,
-        nome:  nome,
-        telefone:  telefone
-    }
-    
-    //escreve os novos dados no banco de dados
-    return writeDB(db);
+    //se nenhuma linha for alterada é porque o usuário não foi atualizado
+    return result.affectedRows > 0
 }
 
 //função que atualiza a senha do usuario
 export async function patchPassword(id , password){
+    
+    const [rows] = await pool.execute('select Senha from Pessoa where ID_pessoa = ?',[id])
+    //verifica se o usuario existe
+    if(!rows[0]) return false
 
-    //le o banco de dados
-    const db = await readDB();
-
-    //verifica se existe algum usuario
-    if(!db.usuarios)
-        return null;
-
-    //pega o index em que o id enviado é igual ao que foi cadastrado
-    const index = db.usuarios.findIndex(usuario => usuario.id == id);
-
-    //verifica se o id enviado esta correto
-    if(index == -1)
-        return null;
-
-    //criptografa a nova senha que foi enviada
+    //pega a nova senha e criptografa ela
     const newSenha = await bcrypt.hash(password , 10);
 
     //atualiza a senha do usuario
-    db.usuarios[index].senha = newSenha;
+    const [result] = await pool.execute('update Pessoa set Senha = ? where ID_pessoa = ?',[newSenha , id]);
 
-    //escreve os novos dados no banco de dados
-    return writeDB(db);
+    //se nenhuma linha for alterada é porque a senha do usuário não foi atualizada
+    return result.affectedRows > 0 ;
 }
 
 //função que deleta um usuario
 export async function deleteUser(id){
-    //lê o banco de dados
-    const db = readDB();
 
-    //verifica se existem usuarios cadastrados
-    if(!db.usuarios){
-        return null;
-    }
+    const [result] = await pool.execute('delete from Pessoa where ID_pessoa = ?',[id])
 
-    //procura o index em que o id enviado é o mesmo doque o cadastrado
-    const index = db.usuarios.findIndex(usuario => usuario.id == id);
-
-    //se não encontrar retorna null
-    if(index === -1){
-        return null;
-    }
-
-    //remove o usuario do array 
-    db.usuarios.splice(index, 1);
-
-    //escreve os novos dados no banco de dados
-    return writeDB(db);
+    //se nenhuma linha for alterada é porque o usuário não foi excluido
+    return result.affectedRows > 0 ;
 }

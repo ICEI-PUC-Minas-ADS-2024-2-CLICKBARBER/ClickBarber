@@ -9,6 +9,7 @@ window.addEventListener('DOMContentLoaded', async function() {
     
     let noLogin = true
 
+    //pega a navbar de cada tipo
     const navbarI = document.getElementById('navbarI')
     const navbarU = document.getElementById('navbarU')
     const navbarB = document.getElementById('navbarB')
@@ -76,7 +77,6 @@ check2.addEventListener('click',()=>{
         img.src = "assets/imagens/olho.png"
         senha.type = "password"
     }
-
 })
 
 //função que verifica se todos os campos estão preenchidos de forma correta
@@ -156,17 +156,14 @@ btnCriar.addEventListener('click', async (event) => {
         document.getElementById("inSenha").style.display="flex";
     }
     else{
-
         if(senha.length <9){
             valid = false;
             document.getElementById("inSenha").style.display="flex";
         }
-
         else if(!verificaSenha(senha)){
             valid = false;
             document.getElementById("inSenha").style.display="flex";
         }
-
         //verifica o campo confirmação de senha
         else if(senha!==senha2){
             valid = false;
@@ -193,14 +190,11 @@ btnCriar.addEventListener('click', async (event) => {
             //se der true envia para a página de login
             window.location.href = "login_u.html"
         }
-        
     }
-        
 })
 
 //função que cadastra o usuario 
 async function cadastraUsuario(valores){
-
     try{
         //faz a requisição para o backend
         const response = await fetch(url+'/usuarios',{
@@ -265,7 +259,6 @@ async function verificaLogin(token){
         if(!response.ok){
             return true;
         }
-
         return false;
     }
 }
