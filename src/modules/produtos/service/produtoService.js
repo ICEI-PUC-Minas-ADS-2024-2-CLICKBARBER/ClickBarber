@@ -1,7 +1,7 @@
 import schemaProduto from '../schema/produtoSchema.js'; /*schemaProduto: regras de validação dos campos (ex.: nome, quantidade, etc)*/
-import produtoRepositoryFile from '../repository/produtoRepository.file.js'; /*produtoRepositoryFile: camada que lê/grava os dados (atualmente em arquivo)*/
+import produtoRepositoryMySQL from '../repository/produtoRepository.mysql.js'; /*pega o export do produtoRepository.mysql.js*/
 
-const repo = produtoRepositoryFile; /*aponta para o repositório atual. Futuramente será MySQL*/
+const repo = produtoRepositoryMySQL; /*usa sempre o repositório MySQL*/
 
 const produtoService = { /*regras de negócio*/
 

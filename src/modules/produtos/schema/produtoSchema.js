@@ -9,7 +9,8 @@ const schemaProduto = Joi.object({ /*define o schema -formato e regras dos dados
     marca: Joi.string().allow('', null).max(60), /*marca: texto opcional; pode ser '' (vazio) ou null; máx. 60*/
     imagem: Joi.string().allow('', null), /*imagem: texto opcional (data URL/base64 ou URL); pode ser '' ou null*/
     descartavel: Joi.boolean().default(false), /*descartável: boolean; se não vier, vira false (default)*/
-    ativo: Joi.boolean().default(true) /*ativo: boolean; se não vier, vira true (default)*/
+    ativo: Joi.boolean().default(true), /*ativo: boolean; se não vier, vira true (default)*/
+    cnpjBarbearia: Joi.string().allow('', null).max(20) /*cnpj: texto opcional; pode ser '' (vazio) ou null; máx. 20*/
 });
 
 export default schemaProduto; /*exporta o schema para ser utilizado pelo service*/
