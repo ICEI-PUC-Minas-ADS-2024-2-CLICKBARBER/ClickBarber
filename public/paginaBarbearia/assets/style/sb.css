@@ -1,0 +1,29 @@
+.centralizado-geral {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.campo-pesquisa {
+    max-width: 400px;
+    text-align: center;
+}
+
+.lista-barbeiros {
+    width: 100%;
+    max-width: 400px;
+}
+
+.area-servicos {
+    width: 100%;
+    max-width: 400px;
+    display: none;
+}
+
+.dropdown-servicos {
+    width: 100%;
+}
+
+.btn-salvar {
+    width: 100%;
+}

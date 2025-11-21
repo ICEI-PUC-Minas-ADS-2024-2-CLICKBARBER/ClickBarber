@@ -75,11 +75,11 @@ body
 /*Card*/
 .custom-card 
 {
-  margin: 0rem 2rem;
-  background-color: #272727;  /* cor do card */
-  padding:2rem 1.2rem;
+  margin: 0rem;
+  background-color: #272727;  
+  padding:3rem 0rem;
   overflow: cover;
-  transition: transform 0.3s ease;
+  
 }
 
 
