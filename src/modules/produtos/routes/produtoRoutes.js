@@ -1,9 +1,9 @@
-/*DEFINE AS ROTAS REST DE PRODUTOS*/
+/*DEFINE AS ROTAS DE PRODUTOS*/
 
 import { Router } from 'express'; /*pega o Router do Express (mini-app para definir rotas)*/
 import c from '../controller/produtoController.js'; /*importa o controller (c) com os handlers - funções que tratam cada rota/middleware/erro*/
 
-const router = Router(); /*cria uma instância de router*/
+const router = Router(); /*cria uma instância de router que eu uso para "cadastrar" essas rotas*/
 
 router.get('/', c.list); /*lista produtos (aceita filtros via query string)*/
 router.get('/categorias', c.categorias); /*retorna categorias (sem duplicadas)*/

@@ -253,6 +253,16 @@ body {
 @media (max-width: 768px) {
     /*em telas menores que 767px de largura (referência: ipad mini)*/
 
+    .navbar-nav .nav-link {
+        /*opções do menu*/
+        font-size: .9rem;
+    }
+
+    .nav-icons a {
+        /*ícones das redes sociais*/
+        margin-top: 1rem;
+    }
+
     #tituloPrimeiraTela {
         /*título "como deseja filtrar os materiais?"*/
         font-size: 2rem;
@@ -263,10 +273,5 @@ body {
         /*estética do fundo cinza atrás das opções + frase*/
         margin: 1rem 1rem 1rem 1rem;
         font-size: 1.3rem;
-    }
-
-    .nav-icons a {
-        /*ícones das redes sociais*/
-        margin-top: 1rem;
     }
 }

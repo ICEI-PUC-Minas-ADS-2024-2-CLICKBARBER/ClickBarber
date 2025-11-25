@@ -124,3 +124,23 @@ h1 {
     background-color: #464646;
     color: #ffffff;
 }
+
+
+
+
+
+
+/*RESPONSIVIDADE*/
+@media (max-width: 768px) {
+    /*em telas menores que 767px de largura (referência: ipad mini)*/
+
+    .navbar-nav .nav-link {
+        /*opções do menu*/
+        font-size: .9rem;
+    }
+
+    .nav-icons a {
+        /*ícones das redes sociais*/
+        margin-top: 1rem;
+    }
+}
