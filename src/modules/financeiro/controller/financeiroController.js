@@ -30,12 +30,12 @@ async function listarPorDia(req, res) { /*função assíncrona do controller (mi
         const dados = await financeiroService.listarPorDia({ /*consulta no banco e passa os filtros abaixo já validados:*/
             inicio: filtros.inicio,
             fim: filtros.fim,
-            barbeiroId: filtros.barbeiroId,
-            servicoId: filtros.servicoId
+            /*barbeiroId: filtros.barbeiroId,
+            servicoId: filtros.servicoId*/
         });
         res.json(dados); /*responde para o usuário com JSON (lista de registros por dia)*/
-
-    } catch (err) {
+    }
+    catch (err) {
         console.error('Erro em listarPorDia:', err);
         res
             .status(err.status || 500) /*se tiver err.status, usa; senão, 500*/
@@ -55,11 +55,12 @@ async function listarPorBarbeiro(req, res) { /*MESMA lógica de listarPorDia*/
             inicio: filtros.inicio,
             fim: filtros.fim,
             barbeiroId: filtros.barbeiroId,
-            servicoId: filtros.servicoId
+            /*servicoId: filtros.servicoId*/
         });
-        res.json(dados);
 
-    } catch (err) {
+        res.json(dados);
+    }
+    catch (err) {
         console.error('Erro em listarPorBarbeiro:', err);
         res
             .status(err.status || 500)
@@ -144,11 +145,11 @@ async function exportarPdf(req, res) {
         let dados; /*guarda o resultado*/
         /*busca os dados conforme o tipo de tabela:*/
         if (tipoTabela === 'barbeiro') { /*se o tipo de tabela for barbeiro*/
-            dados = await financeiroService.listarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }); /*chama listarPorBarbeiro e guarda em "dados", que será um array de linhas com os campos esperados*/
+            dados = await financeiroService.listarPorBarbeiro({ inicio, fim, barbeiroId /*servicoId*/ }); /*chama listarPorBarbeiro e guarda em "dados", que será um array de linhas com os campos esperados*/
         } else if (tipoTabela === 'servico') { /*MESMA lógica da tabela barbeiro*/
             dados = await financeiroService.listarPorServico({ inicio, fim, barbeiroId, servicoId });
         } else { /*MESMA lógica da tabela barbeiro*/
-            dados = await financeiroService.listarPorDia({ inicio, fim, barbeiroId, servicoId });
+            dados = await financeiroService.listarPorDia({ inicio, fim /*barbeiroId, servicoId*/ });
         }
 
         const doc = new PDFDocument({ size: 'A4', margin: 50 }); /*cria um novo documento PDF de tamanho A4 e margem de 50 pontos em volta*/

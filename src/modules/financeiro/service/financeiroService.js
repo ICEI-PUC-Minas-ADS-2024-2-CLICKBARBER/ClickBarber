@@ -11,8 +11,8 @@ async function listarPorDia({ inicio, fim, barbeiroId, servicoId }) { /*lista va
   const periodo = normalizarPeriodo({ inicio, fim }); /*chama a função de normalizar o período*/
   return financeiroRepository.buscarPorDia({ /*chama o método buscarPorDia do financeiroRepository, passando um objeto com:*/
     ...periodo, /*os três pontos é o retorno de normalizarPeriodo*/
-    barbeiroId,
-    servicoId
+    /*barbeiroId,
+    servicoId*/
   }); /*return o resultado da consulta*/
 }
 
@@ -21,7 +21,7 @@ async function listarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) { /*lis
   return financeiroRepository.buscarPorBarbeiro({ /*chama o método buscarPorBarbeiro do financeiroRepository, passando um objeto com:*/
     ...periodo,
     barbeiroId,
-    servicoId
+    /*servicoId*/
   }); /*devolve o resultado do repository (lista com dados já agrupados por barbeiro)*/
 }
 
@@ -38,7 +38,7 @@ async function gerarCsv({ tipoTabela, inicio, fim, barbeiroId, servicoId }) { /*
   const tipo = tipoTabela || 'dia'; /*se tipoTabela veio preenchido (dia, barbeiro ou serviço...), tipo será esse valor. Se não, tipo vira "dia"*/
 
   if (tipo === 'dia') { /*se o tipo escolhido foi "dia"*/
-    const linhas = await listarPorDia({ inicio, fim, barbeiroId, servicoId }); /*chama a função listarPorDia passando os filtros*/
+    const linhas = await listarPorDia({ inicio, fim/*, barbeiroId, servicoId*/ }); /*chama a função listarPorDia passando os filtros*/
     let csv = 'data,quantidade_atendimentos,total_faturado\n'; /*começando a string do CSV com o cabeçalho (nome das colunas) separados por vírgula + \n (quebra de linha)*/
     for (const l of linhas) { /*percorre cada linha retornada pelo banco*/
       csv += `${l.data},${l.quantidade_atendimentos},${l.total_faturado}\n`; /*para cada linha, adiciona uma nova linha na string do CSV com os valores daquela linha*/
@@ -47,7 +47,7 @@ async function gerarCsv({ tipoTabela, inicio, fim, barbeiroId, servicoId }) { /*
   }
 
   if (tipo === 'barbeiro') { /*se o tipo escolhido foi "barbeiro"*/
-    const linhas = await listarPorBarbeiro({ inicio, fim, servicoId }); /*chama a função listarPorBarbeiro passando os filtros*/
+    const linhas = await listarPorBarbeiro({ inicio, fim, barbeiroId /*servicoId*/ }); /*chama a função listarPorBarbeiro passando os filtros*/
     let csv = 'barbeiro,quantidade_atendimentos,total_faturado\n'; /*começando a string do CSV*/
     for (const l of linhas) { /*percorre cada linha retornada pelo banco*/
       csv += `${l.barbeiro},${l.quantidade_atendimentos},${l.total_faturado}\n`; /*adiciona os valores na linha*/
@@ -56,7 +56,7 @@ async function gerarCsv({ tipoTabela, inicio, fim, barbeiroId, servicoId }) { /*
   }
 
   if (tipo === 'servico') { /*se o tipo escolhido foi "serviço" - MESMA LÓGICA*/
-    const linhas = await listarPorServico({ inicio, fim, barbeiroId });
+    const linhas = await listarPorServico({ inicio, fim, barbeiroId, servicoId /*servicoId = adicionei*/ });
     let csv = 'servico,quantidade_servicos,total_faturado\n';
     for (const l of linhas) {
       csv += `${l.servico},${l.quantidade_servicos},${l.total_faturado}\n`;

@@ -35,15 +35,15 @@ async function buscarPorDia({ inicio, fim, barbeiroId, servicoId }) { /*função
     params.push(fim); /*coloca o valor em params*/
   }
 
-  if (barbeiroId) { /*se veio barbeiroId:*/
-    sql += ' AND barbeiro_id = ?'; /*filtra para apenas aquele barbeiro*/
-    params.push(barbeiroId); /*adiciona o id na lista de parâmetros.*/
-  }
+  /*if (barbeiroId) { se veio barbeiroId:
+    sql += ' AND barbeiro_id = ?'; /*filtra para apenas aquele barbeiro
+    params.push(barbeiroId); /*adiciona o id na lista de parâmetros.
+  }*/
 
-  if (servicoId) { /*MESMA lógica que o barbeiro*/
+  /*if (servicoId) { MESMA lógica que o barbeiro
     sql += ' AND servico_id = ?';
     params.push(servicoId);
-  }
+  }*/
 
   /*finaliza a query:*/
   sql += `
@@ -79,10 +79,10 @@ async function buscarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) {
     params.push(fim);
   }
 
-  if (servicoId) { /*serviço especificado*/
+  /*if (servicoId) { serviço especificado
     sql += ' AND a.servico_id = ?';
     params.push(servicoId);
-  }
+  }*/
 
   if (barbeiroId) { /*barbeiro específico*/
     sql += ' AND a.barbeiro_id = ?';
