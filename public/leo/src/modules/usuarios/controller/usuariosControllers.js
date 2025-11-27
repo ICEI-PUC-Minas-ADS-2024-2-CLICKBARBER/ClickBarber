@@ -81,7 +81,7 @@ export async function getUsuariosByEmail(req , res){
 }
 
 //função que cria um novo usuario
-export async function postUsuarios(req , res){
+export async function postUsuarios(req , res , next){
     
     try{
         //pega os dados enviados
@@ -105,6 +105,11 @@ export async function postUsuarios(req , res){
         if(!await u.createNewUser(newUser)){
             return res.status(500).send({message: 'Erro ao criar usuario'});
         }
+        req.dado = {
+            tipo : 'usuario',
+            valor : email
+        }
+        next()
 
         res.status(201).send({message: 'Usuario criado com sucesso'});
 

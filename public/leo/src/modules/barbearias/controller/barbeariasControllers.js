@@ -1,6 +1,9 @@
 import * as b from '../repository/barbeariasRepositories.js';
 //importa a função que pega os dados através do cep enviado
 import {pegaDadosCep} from '../../utils/getCep.js'
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
 
 //pega todas as barbearias
 export async function getBarbershops(req, res){
@@ -159,6 +162,37 @@ export async function verifyCnpj(req, res){
 
     }catch(error){
         return res.status(500).send({message: `Erro interno do servidor : ${error}`});
+    }
+}
+//função que verifica se o email vindo de um token no localstorage e uma senha são válidas 
+//e como resposta envia um token contendo o CNPJ
+export async function authLogs(req, res){
+
+    const {email} = req.dados //pega o email que estava dentro do token enviado (vindo do middleware anterior)
+    const {senha} = req.body  //pega a senha enviada
+
+    //verifica se a senha existe
+    if(!senha || senha.length <=0)
+        return res.status(400).send({message : 'Senha incorreta'})
+
+    try{
+        //pega a barbearia cujo email é igual ao que estava dentro do token
+        const barbearia = await b.getBarbeariasByEmail(email)
+
+        //verifica se a senha dessa barbearia é igual a senha enviada
+        if(!(await bcrypt.compare(senha , barbearia.senha)))
+            return res.status(400).send({message: 'Senha incorreta'})
+
+        //se for igual cria um token contendo o cnpj dessa barbearia (usado pra identificar os logs dessa barbearia)
+        const token = jwt.sign({
+            cnpj: barbearia.CNPJ_barbearia
+        } , 
+        'chave_secreta')
+
+        return res.status(200).send({message: 'Autorizado', token: token})
+
+    }catch(error){
+        return res.status(500).send({message: 'Erro interno do servidor'})
     }
 }
 
