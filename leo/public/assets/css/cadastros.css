@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Poppins:wght@300;400;500&display=swap');
+
+@font-face {
+    font-family: 'Bakbak One';
+    src: url('../fonts/BakbakOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(to right, #1d0000 0%, #000000 11%);
+  color: rgb(255, 255, 255);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  position: relative;
+}
+
+.logo-container {
+  flex: 0 0 auto;
+}
+
+.nb{
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+.navbar {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#navbarI{
+  display: flex;
+}
+#navbarB{
+  display: none;
+}
+#navbarU{
+  display: none;
+}
+
+.link{
+  margin:  2px 20px;
+  font-size: 22px;
+  font-family: 'Italiana', serif;
+  font-weight: 100;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.link a{
+  color: white;
+  text-decoration: none;
+}
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  flex: 0 0 auto;
+}
+
+.layout img {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---------- Main ---------- */
+
+.container{
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.cd{
+  width: 464px;
+  height: auto;
+  background-color: #121212;
+  margin-bottom: 2rem;
+  border-radius: 19px;
+}
+
+.titulo{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+}
+.titulo p2{
+  margin: 2rem;
+  margin-bottom: 8px;
+  font-family: 'Bakbak One', sans-serif;
+  
+  font-size: 40px;
+}
+
+/* ---------- Formulario de cadastro ---------- */ 
+
+.form{
+  display: flex;
+  justify-content: center;
+  margin: 3;
+}
+.laIn{
+  width: 100%;
+}
+
+.laIn label{
+  margin-top: 40px;
+  margin-bottom: 14px;
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  
+}
+
+.ast{
+  color: rgb(255, 31, 31);
+}
+
+.laIn input{
+  display: block;
+  width: 334px;
+  height: 34px;
+  padding: 0rem .4rem;
+  font-weight: 700;
+}
+.laIn input:focus{
+  outline: none;
+}
+
+#showCep{
+  font-size: 11px;
+  display: none;
+}
+
+/* Remove os botões de incremento/decremento do input number */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.lInp{
+  display: flex;
+}
+.lInp input{
+  width: 291px;
+  display: flex;
+}
+/*botões de senha*/
+.img_check{
+  width: 41px!important;
+  height: 37px!important;
+  display: flex;
+  align-items: baseline;
+  margin: 0px!important;
+  outline: 0px;
+}
+.img_check img{
+  width: 100%;
+  height: 100%;
+  
+}
+.img_check input{
+  display: none;
+}
+
+.invalid{
+  display: none;
+  font-size: 11px;
+  color: rgb(197, 38, 38);
+  margin-top: 7px;
+  width: 320px;
+}
+
+.btn{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+  margin-bottom: 36px;
+}
+.btn button{
+  background-color: #6d2f2f;
+  border-radius: 6px;
+  width: 323px;
+  height: 49px;
+  color: #000000;
+  font-size: large;
+  font-weight: 700;
+  border: 0px;
+  transition: 300ms;
+}
+.btn button:hover{
+  background-color: #502222;
+}
+
+
+/* ---------- Mobile ---------- */
+
+
+@media (max-width: 376px) {
+  
+  /* ---------- Header ---------- */
+  .header{
+    display: block;
+    padding: 0px 10px 20px 10px;
+  }
+  .logo-container img{
+    margin: 0%;
+    width: 130px;
+    height: auto;
+  }
+  .nb{
+    height: auto;
+  }
+  .navbar{
+    position: relative;
+    width: 100%;
+    margin-bottom: 0px;
+    justify-content: center;
+  }
+  .link{
+    font-size: 15px;
+    margin:  10px 15px;
+    width: 55px;
+    display: flex;
+    
+  }
+  .layout{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-right: 200px !important;
+  }
+  .layout img{
+    width: 15px;
+    height: 15px;
+  }
+
+  /* ---------- Main ---------- */
+  
+  .titulo p2{
+    font-size: 33px;
+    font-weight: 900;
+  }
+  
+  .cd{
+    width: 332px;
+    
+  }
+  .laIn label{
+    font-size: 16px;
+  }
+
+  .laIn input{
+    width: 240px;
+    height: 29px;
+  }
+
+  .lInp input{
+    width: 202px;
+    display: flex;
+  }
+  .img_check{
+    width: 39px!important;
+    height: 32px!important;
+  }
+
+  .invalid{
+    font-size: 11.5px;
+    width: 250px;
+  }
+
+  .btn button{
+    width: 232px;
+    height: 41px;
+  }
+}
