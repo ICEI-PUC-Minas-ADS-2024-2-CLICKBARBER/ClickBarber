@@ -1,0 +1,506 @@
+/* ---------------------------------------------
+   FONTES E ESTILO BASE
+--------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Poppins:wght@300;400;500&display=swap');
+
+body {
+  margin: 0;
+  background: linear-gradient(to left, #1d0000 5%, #000000 50%, #1d0000 90%);
+  color: white;
+  font-family: 'Prata', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ---------------------------------------------
+   HEADER / NAVBAR
+--------------------------------------------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  position: relative;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.logo-container img {
+  width: 220px;
+  max-width: 100%;
+}
+
+.header nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 100px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  font-size: 35px;
+  color: white;
+  text-decoration: none;
+  font-family: 'Italiana', serif;
+  font-weight: 100;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: rgb(135, 33, 33);
+}
+
+/* Ícones de redes sociais */
+.socials {
+  display: flex;
+  gap: 20px;
+}
+
+.socials img {
+  width: 27px;
+  height: 27px;
+  transition: opacity 0.3s ease;
+}
+
+.socials img:hover {
+  opacity: 0.7;
+}
+
+/* ---------------------------------------------
+   TÍTULO PRINCIPAL
+--------------------------------------------- */
+.titulo-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.titulo {
+  font-family: 'Italiana', serif;
+  font-size: 5rem;
+  font-weight: 100;
+  color: white;
+}
+
+/* ---------------------------------------------
+   LAYOUT PRINCIPAL
+--------------------------------------------- */
+main {
+  display: flex;
+  gap: 25px;
+  margin: 40px auto;
+  max-width: 1200px;
+  flex-wrap: wrap;
+}
+
+/* ---------------------------------------------
+   CALENDÁRIO
+--------------------------------------------- */
+#calendario-mensal {
+  background: #1c1c1c;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  width: 300px;
+  min-width: 280px;
+  flex-shrink: 0;
+}
+
+#mes-ano {
+  text-align: center;
+  font-family: 'Italiana', serif;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #f1c27d;
+}
+
+.grade-dias {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.dia-btn {
+  background: #2b2b2b;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.dia-btn:hover {
+  background: #a33d3d;
+}
+
+.dia-btn.ativo {
+  background: #b44a4a;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------
+   AGENDA DIÁRIA
+--------------------------------------------- */
+#agenda-container {
+  flex: 1;
+  background: #1c1c1c;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  min-width: 350px;
+}
+
+.barbeiro {
+  border-bottom: 1px solid #444;
+  padding: 20px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.barbeiro:last-child {
+  border: none;
+}
+
+.barbeiro img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1;
+}
+
+.info h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #f1c27d;
+}
+
+.horario {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #222;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 5px;
+  transition: 0.3s;
+}
+
+.horario:hover {
+  transform: scale(1.02);
+  cursor: pointer;
+}
+
+/* ---------------------------------------------
+   CORES POR BARBEIRO
+--------------------------------------------- */
+.agendamento[data-barbeiro="Rafael"] { background: #dd0286; }
+.agendamento[data-barbeiro="Lucas"] { background: #d70606; }
+.agendamento[data-barbeiro="Matheus"] { background: #18afd8; }
+
+.agendamento {
+  border-radius: 8px;
+  color: #fff;
+  padding: 8px;
+  margin-top: 5px;
+  transition: 0.3s;
+}
+
+.mensagem-agenda {
+  text-align: center;
+  color: #f1c27d;
+}
+
+/* ---------------------------------------------
+   MODAL
+--------------------------------------------- */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #1c1c1c;
+  padding: 25px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  max-width: 350px;
+  width: 90%;
+}
+
+.modal-content h2 {
+  color: #f1c27d;
+  font-family: 'Italiana', serif;
+}
+
+.modal-content select,
+.modal-content input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #2b2b2b;
+  color: #fff;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  font-family: 'Poppins', sans-serif;
+  transition: 0.3s;
+}
+
+.btn-salvar {
+  background: #a33d3d;
+  color: white;
+}
+.btn-salvar:hover {
+  background: #b44a4a;
+}
+
+.btn-excluir {
+  background: #dc3545;
+  color: white;
+}
+.btn-excluir:hover {
+  background: #e74c3c;
+}
+
+.btn-fechar {
+  background: #6c757d;
+  color: white;
+}
+.btn-fechar:hover {
+  background: #7f7f7f;
+}
+
+/* ---------------------------------------------
+   RESPONSIVIDADE
+--------------------------------------------- */
+
+/* Tablets e notebooks pequenos (até 900 px) */
+@media (max-width: 900px) {
+  .nav-links {
+    gap: 40px;
+  }
+
+  .nav-links li a {
+    font-size: 25px;
+  }
+
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #calendario-mensal,
+  #agenda-container {
+    width: 90%;
+  }
+
+  .titulo {
+    font-size: 3.5rem;
+  }
+}
+
+/* Tablets médios (até 768 px) */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    padding: 10px 20px;
+    text-align: center;
+  }
+
+  .header nav {
+    position: static;
+    transform: none;
+    margin-top: 10px;
+  }
+
+  .nav-links {
+    gap: 25px;
+  }
+
+  .nav-links li a {
+    font-size: 22px;
+  }
+
+  .titulo {
+    font-size: 3rem;
+  }
+
+  #calendario-mensal {
+    width: 100%;
+  }
+
+  #agenda-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .barbeiro {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .barbeiro img {
+    width: 85px;
+    height: 85px;
+  }
+}
+
+/* Celulares (até 425 px) */
+@media (max-width: 425px) {
+  body {
+    font-size: 14px;
+  }
+
+  .header {
+    padding: 10px 15px;
+  }
+
+  .logo-container img {
+    width: 180px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-links li a {
+    font-size: 20px;
+  }
+
+  .titulo {
+    font-size: 2.2rem;
+  }
+
+  main {
+    margin: 20px auto;
+    gap: 15px;
+  }
+
+  #calendario-mensal,
+  #agenda-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .barbeiro img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .modal-content {
+    padding: 20px;
+    width: 90%;
+  }
+}
+.mes-navegacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #f1c27d;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  font-family: 'Italiana', serif;
+}
+.mes-btn {
+  background: none;
+  border: none;
+  color: #f1c27d;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.mes-btn:hover {
+  color: #b44a4a;
+}
+/* Seleção de Barbeiros (somente para dashboard interno da barbearia) */
+.barbeiro-selector {
+  width: 100%;
+  background: #1c1c1c;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  margin-bottom: 25px;
+}
+
+.lista-barbeiros {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  justify-content: center;
+}
+
+.card-barbeiro {
+  background: #2b2b2b;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 140px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.card-barbeiro:hover {
+  background: #a33d3d;
+}
+
+.card-barbeiro.ativo {
+  border: 2px solid #f1c27d;
+}
+
+.card-barbeiro img {
+  width: 100%;
+  height: 110px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.card-barbeiro h3 {
+  font-size: 1rem;
+  margin-top: 8px;
+  color: #f1c27d;
+}
+#barbeiro-dropdown {
+  width: 100%;
+  padding: 12px;
+  background: #2b2b2b;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  display: none; /* só aparece quando houver muitos barbeiros */
+}
