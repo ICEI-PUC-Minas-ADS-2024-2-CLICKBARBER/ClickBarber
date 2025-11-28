@@ -58,14 +58,14 @@ res.json({ mensagem: "Barbeiro cadastrado", id: result.insertId });
 );
 });
 
-// ==================== Iniciar servidor ====================
+//Iniciar servidor
 const PORT = 4060;
 app.listen(PORT, () => {
 const url = `http://localhost:${PORT}/cadastroBarbeiros.html`;
 console.log(`Servidor rodando na porta ${PORT}`);
 console.log(`Clique aqui para abrir: ${url}`);
 
-// abre o navegador automaticamente (Windows, Linux e Mac)
+// mostra no log um "link" direto para a pagina
 const start =
 process.platform === "win32"
 ? `start ${url}`
