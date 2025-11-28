@@ -24,131 +24,87 @@ const inCPF2 = document.getElementById("inCPF2");
 const inSenha = document.getElementById("inSenha");
 const inSenha2 = document.getElementById("inSenha2");
 
-// Função para mostrar/ocultar senha
-if (check) {
-check.addEventListener("click", () => {
-senha.type = check.checked ? "text" : "password";
-});
-}
-if (check2) {
-check2.addEventListener("click", () => {
-senhaConfirm.type = check2.checked ? "text" : "password";
-});
-}
+// Mostrar/ocultar senha
+if (check) check.addEventListener("click", () => { senha.type = check.checked ? "text" : "password"; });
+if (check2) check2.addEventListener("click", () => { senhaConfirm.type = check2.checked ? "text" : "password"; });
 
-// Funções de validação
+// Validações
 function validaEmail(email) {
-const regex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
-return regex.test(email);
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
 }
 
 function validaSenha(senha) {
-// mínimo 8 caracteres, pelo menos 1 letra, 1 número e 1 símbolo
-const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-return regex.test(senha);
+  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  return regex.test(senha);
 }
 
 function validaCPF(cpf) {
-return cpf.toString().length === 11;
+  return cpf.toString().length === 11;
 }
 
 function limpaErros() {
-inEmail.style.display = "none";
-inEmail2.style.display = "none";
-inNome.style.display = "none";
-inSobrenome.style.display = "none";
-inTele.style.display = "none";
-inCPF.style.display = "none";
-inCPF2.style.display = "none";
-inSenha.style.display = "none";
-inSenha2.style.display = "none";
+  inEmail.style.display = "none";
+  inEmail2.style.display = "none";
+  inNome.style.display = "none";
+  inSobrenome.style.display = "none";
+  inTele.style.display = "none";
+  inCPF.style.display = "none";
+  inCPF2.style.display = "none";
+  inSenha.style.display = "none";
+  inSenha2.style.display = "none";
 }
 
 // Envio do formulário
 btnCriar.addEventListener("click", async () => {
-limpaErros();
-let erro = false;
+  limpaErros();
+  let erro = false;
 
-if (!validaEmail(email.value)) {
-inEmail.style.display = "block";
-erro = true;
-}
-if (!nome.value.trim()) {
-inNome.style.display = "block";
-erro = true;
-}
-if (!sobrenome.value.trim()) {
-inSobrenome.style.display = "block";
-erro = true;
-}
-if (!telefone.value.trim() || isNaN(telefone.value)) {
-inTele.style.display = "block";
-erro = true;
-}
-if (!validaCPF(cpf.value)) {
-inCPF.style.display = "block";
-erro = true;
-}
-if (!validaSenha(senha.value)) {
-inSenha.style.display = "block";
-erro = true;
-}
-if (senha.value !== senhaConfirm.value) {
-inSenha2.style.display = "block";
-erro = true;
-}
+  if (!validaEmail(email.value)) { inEmail.style.display = "block"; erro = true; }
+  if (!nome.value.trim()) { inNome.style.display = "block"; erro = true; }
+  if (!sobrenome.value.trim()) { inSobrenome.style.display = "block"; erro = true; }
+  if (!telefone.value.trim() || isNaN(telefone.value)) { inTele.style.display = "block"; erro = true; }
+  if (!validaCPF(cpf.value)) { inCPF.style.display = "block"; erro = true; }
+  if (!validaSenha(senha.value)) { inSenha.style.display = "block"; erro = true; }
+  if (senha.value !== senhaConfirm.value) { inSenha2.style.display = "block"; erro = true; }
+  if (erro) return;
 
-if (erro) return;
+  try {
+    // Checar duplicados via GET
+    const res = await fetch(urlBase);
+    const dados = await res.json();
 
-// Checar duplicados no banco
-try {
-const res = await fetch(urlBase);
-const dados = await res.json();
+    if (dados.some(u => u.E_mail === email.value)) { inEmail2.style.display = "block"; return; }
+    if (dados.some(u => u.CPF === cpf.value)) { inCPF2.style.display = "block"; return; }
 
-```
-if (dados.some(u => u.email === email.value)) {
-  inEmail2.style.display = "block";
-  return;
-}
-if (dados.some(u => u.cpf === cpf.value)) {
-  inCPF2.style.display = "block";
-  return;
-}
+    // Monta objeto para envio
+    const novoFuncionario = {
+      CNPJ_barbearia: "11111111111111", // barbearia padrão
+      Nome: nome.value + " " + sobrenome.value,
+      E_mail: email.value,
+      Senha: senha.value,
+      CPF: cpf.value,
+      Numero_telefone: telefone.value,
+      Tipo_usuario: "funcionario"
+    };
 
-// Monta objeto para envio
-const novoBarbeiro = {
-  email: email.value,
-  nome: nome.value,
-  sobrenome: sobrenome.value,
-  telefone: telefone.value,
-  cpf: cpf.value,
-  senha: senha.value
-};
+    // Envia para backend
+    const resposta = await fetch(urlBase, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(novoFuncionario)
+    });
 
-// Envia para API
-const resposta = await fetch(urlBase, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(novoBarbeiro)
-});
-
-if (resposta.ok) {
-  alert("Barbeiro cadastrado com sucesso!");
-  // Limpa formulário
-  email.value = "";
-  nome.value = "";
-  sobrenome.value = "";
-  telefone.value = "";
-  cpf.value = "";
-  senha.value = "";
-  senhaConfirm.value = "";
-} else {
-  alert("Erro ao cadastrar barbeiro.");
-}
-```
-
-} catch (err) {
-console.error(err);
-alert("Erro na comunicação com o servidor.");
-}
+    if (resposta.ok) {
+      alert("Funcionário cadastrado com sucesso!");
+      // Limpa formulário
+      email.value = ""; nome.value = ""; sobrenome.value = "";
+      telefone.value = ""; cpf.value = ""; senha.value = ""; senhaConfirm.value = "";
+    } else {
+      alert("Erro ao cadastrar funcionário.");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Erro na comunicação com o servidor.");
+  }
 });

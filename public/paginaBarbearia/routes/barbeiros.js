@@ -3,9 +3,9 @@ const router = express.Router();
 const db = require("../conexao");   // <- usa a conexão criada
 
 // LISTAR todos barbeiros
-router.get("/", (req, res) => {
+router.get("mysql://wallyson:senhaDoWallyson123@gondola.proxy.rlwy.net:44254/railway", (req, res) => {
     const sql = "SELECT * FROM Pessoa WHERE Tipo_usuario = 'funcionario'";
-    // ^ pega só os barbeiros
+    //pega só os barbeiros
 
     db.query(sql, (err, resultado) => {
         if (err) return res.status(500).json({ erro: err });
@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 });
 
 // CRIAR barbeiro
-router.post("/", (req, res) => {
+router.post("mysql://wallyson:senhaDoWallyson123@gondola.proxy.rlwy.net:44254/railway", (req, res) => {
     const dados = req.body;
 
     const sql = "INSERT INTO Pessoa SET ?";
@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
 });
 
 // EDITAR barbeiro
-router.put("/:id", (req, res) => {
+router.put("mysql://wallyson:senhaDoWallyson123@gondola.proxy.rlwy.net:44254/railway:id", (req, res) => {
     const id = req.params.id;
     const dados = req.body;
 
