@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serviços da Barbearia</title>
+  <link rel="stylesheet" href="assets/css/login.css">
+  
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <!--logo-->
+    <div class="logo-container">
+      <img src="assets/imagens/image.png" alt="logo" width="200px">
+    </div>
+
+    <!--barra de navegação-->
+    <div class="nb">
+      <!--navbar quando não tem nenhuma conta logada (padrão)-->
+      <div id="navbarI" class="navbar">
+        <div id="linkEntrar" class="link"><a href="login_u.html">Entrar</a></div>
+        <div class="link"><a href="#">Planos</a></div>
+        <div class="link"><a href="#">Saiba Mais</a></div>
+        <div class="link"><a href="#">Ajuda</a></div>
+      </div>
+      <!--navbar quando tem uma conta de barbearia logada-->
+      <div id="navbarB" class="navbar" >
+        <div class="link"><a href="#">Agenda</a></div>
+        <div class="link"><a href="#">Meu Plano</a></div>
+        <div class="link"><a href="#">Perfil</a></div>
+        <div class="link"><a href="produtos.html">Produtos disponíveis</a></div>
+        <div class="link"><a href="#">Serviços</a></div>
+      </div>
+      <!--navbar quando tem uma conta de usuário logado-->
+      <div id="navbarU" class="navbar" >
+        <div class="link"><a href="#">Agenda</a></div>
+      </div>
+    </div>
+
+    <!--redes sociais-->
+    <div class="layout">
+      <a href="https://instagram.com"><img src="assets/imagens/instagram.png" alt="Instagram"></a>
+      <a href="https://linkedin.com"><img src="assets/imagens/linkedin.png" alt="LinkedIn"></a>
+      <a href="https://x.com"><img src="assets/imagens/x.png" alt="X"></a>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="container">
+      <div class="cd">
+        
+        <div class="titulo">
+          <p2>LOGIN</p2>
+        </div>
+
+        <div class="form">
+          <form>
+
+            <!--CNPJ da barbearia-->
+            <div class="laIn">
+              <label for="CNPJ">Digite o CNPJ da barbearia<span class="ast"> *</span></label>
+              <input type="text" placeholder="XX.XXX.XXX/YYYY-ZZ" id="CNPJ">
+              <div class="invalid" id="inCNPJ">O CNPJ digitado não esta cadastrado no sistema</div>
+            </div>
+
+            <!--Senha da conta-->
+            <div class="laIn">
+              <label for="senha">Digite sua Senha<span class="ast"> *</span></label>
+              <div class="lInp">
+                
+                <input type="password" placeholder="senha123" id="senha">
+
+                <label for="check" class="img_check">
+                  <img id="imgCheckBox" src="assets/imagens/olho.png" class="checkbox-image">
+                </label>
+                <input id="check" style="display: none;" value="true" type="checkbox">
+
+              </div>
+              <div class="invalid" id="inSenha">O CNPJ ou a senha estão incorretos, por favor tente novamente</div>
+
+            </div>
+           
+            <!--Botão de login-->
+            <div class="btn" id="btn_login_b">
+              <button type="button" id="btnEntrar">ENTRAR</button>
+            </div>
+            
+          </form>
+        </div>
+
+        <div class="cr_conta">
+          <div>
+            Não tem uma conta ? <a href="cadastro_u.html"> Crie uma clicando aqui</a>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/scripts/login_b.js"></script>
+
+</body>
+</html>
