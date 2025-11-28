@@ -1,7 +1,7 @@
 import Joi from 'joi'; /*importa o Joi - biblioteca de validação: define regras dos campos e valida o payload*/
 
-const schemaProduto = Joi.object({ /*define o schema -formato e regras dos dados- de validação do produto*/
-    nome: Joi.string().min(2).max(100).required(), /*nome: texto, 2–100, obrigatório*/
+const schemaProduto = Joi.object({ /*define o schema - formato e regras dos dados- de validação do produto*/
+    nome: Joi.string().min(2).max(100).required(), /*nome: texto (string), 2–100, obrigatório*/
     categoria: Joi.string().min(2).max(60).required(), /*categoria: texto, 2–60, obrigatório*/
     quantidade: Joi.number().integer().min(0).required(), /*quantidade: número inteiro ≥ 0, obrigatório*/
     unidade: Joi.string().allow('', null).max(20), /*unidade: texto, 1–20, opcional*/

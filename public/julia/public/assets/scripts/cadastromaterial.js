@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     /*FAZ A LINHA APARECER SEMPRE EMBAIXO DA OPÇÃO "produtos disponíveis", a não ser que outra opção seja selecionada no menu*/
     const menus = [ /*array com os 4 itens do menu*/
         document.getElementById("menuAgenda"),
+        document.getElementById("menuFinanceiro"),
         document.getElementById("menuMeuPlano"),
         document.getElementById("menuPerfil"),
         document.getElementById("menuProdutos"),

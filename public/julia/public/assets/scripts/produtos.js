@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     /*FAZ A LINHA APARECER EMBAIXO DO MENU*/
     const menus = [ /*array com os 4 itens do menu*/
         document.getElementById("menuAgenda"),
+        document.getElementById("menuFinanceiro"),
         document.getElementById("menuMeuPlano"),
         document.getElementById("menuPerfil"),
         document.getElementById("menuProdutos"),

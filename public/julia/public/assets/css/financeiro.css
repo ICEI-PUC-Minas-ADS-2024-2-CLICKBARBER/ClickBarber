@@ -1,0 +1,218 @@
+/*CORPO DA PÁGINA*/
+
+body {
+    /*fundo degradê*/
+    background: linear-gradient(to left, #000000, #170000);
+    font-family: 'Prata', serif;
+    overflow-x: hidden;
+}
+
+/*CABEÇALHO*/
+
+.navbar {
+    /*tirando as margens do cabeçalho*/
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand {
+    /*removendo o espaço entre header e o topo da página*/
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+}
+
+.navbar-brand img {
+    /*logo menu*/
+    height: 8rem;
+    width: auto;
+}
+
+.navbar-nav .nav-link {
+    /*opções do menu*/
+    font-size: 1.1rem;
+    transition: transform 0.3s;
+    font-family: "Italiana", serif !important;
+    font-weight: 100 !important;
+}
+
+.navbar-nav .nav-link:hover {
+    /*opções do menu quando passa o mouse*/
+    transform: scale(1.05);
+}
+
+.nav-icons {
+    /*empurrando o menu pro canto esquerdo */
+    margin-left: auto;
+}
+
+.navbar-nav {
+    /*distância entre logo e opções do menu*/
+    margin-left: 2rem;
+}
+
+.nav-icons a {
+    /*ícones das redes sociais*/
+    font-size: 1rem;
+}
+
+.nav-link {
+    /*permite a linha embaixo da opção quando clica*/
+    position: relative;
+}
+
+.nav-link.active::after {
+    /*estética do traço emabixo da opção quando clica*/
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    background-color: #8b8b8b;
+    border-radius: .1rem;
+}
+
+/*CARDS*/
+
+.pg-financeiro {
+    /*fundo degradê*/
+    background: linear-gradient(to left, #000000, #170000);
+    height: auto;
+    width: 98%;
+}
+
+.pg-financeiro .titulo-pagina {
+    /*título da página*/
+    font-size: 2.5rem;
+    color: #ffffff;
+}
+
+.subtexto {
+    /*frase "acompanhe o faturamento..."*/
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+#primeiroCard {
+    /*distância entre o subtítulo e o primeiro card*/
+    margin-top: 1rem;
+}
+
+.card-filtro,
+.card-resumo,
+.card-tabela {
+    /*fundo cinza dos cards*/
+    border-radius: 0.75rem;
+    background: #d8d8d8;
+
+}
+
+.form-label {
+    /*subtítulos (período, data inicial)*/
+    color: #000000;
+}
+
+#btnAplicarFiltros {
+    /*botão de aplicar filtros*/
+    background-color: rgb(179, 179, 179);
+}
+
+#btnAplicarFiltros:hover {
+    /*botão de aplicar filtros quando passa o mouse*/
+    background-color: rgb(151, 151, 151);
+}
+
+.btn-export {
+    /*botões de exportar*/
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: #d8d8d8;
+    border-radius: .4rem;
+    color: #000000;
+    padding: .4rem;
+}
+
+.btn-export:hover {
+    /*botões de exportar quando passa o mouse*/
+    color: #ffffff;
+    background-color: #585858;
+}
+
+.card-resumo {
+    /*cards com total faturado*/
+    transition: transform 0.15s ease;
+}
+
+.card-resumo:hover {
+    /*cards com total faturado quando passa o mouse*/
+    transform: translateY(-2px);
+}
+
+.card-resumo .label {
+    /*frase "total faturado por..."*/
+    font-size: 0.85rem;
+    color: #000000;
+    letter-spacing: 0.04em;
+}
+
+.card-resumo .valor {
+    /*valor nos cards com total faturado*/
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #000000;
+}
+
+.card-resumo .sub {
+    /*frase embaixo do valor nos cards "total por..."*/
+    font-size: 0.8rem;
+    color: #656a72;
+}
+
+.nav-financeiro .nav-link {
+    /*total por... na tabela*/
+    font-size: 0.9rem;
+    color: #000000;
+}
+
+.table-financeiro thead {
+    /*nome de cada coluna na tabela*/
+    font-size: 0.85rem;
+    letter-spacing: 0.04rem;
+}
+
+.table-financeiro tbody tr {
+    /*dados/linhas da tabela*/
+    font-size: 0.9rem;
+}
+
+
+
+
+
+/*RESPONSIVIDADE*/
+@media (max-width: 768px) {
+    /*em telas menores que 767px de largura (referência: ipad mini)*/
+
+    .navbar-nav .nav-link {
+        /*opções do menu*/
+        font-size: .9rem;
+    }
+
+    .nav-icons a {
+        /*ícones das redes sociais*/
+        margin-top: 1rem;
+    }
+
+    .pg-financeiro .titulo-pagina {
+        /*título da página*/
+        font-size: 1.4rem;
+    }
+
+    .card-resumo .valor {
+        /*valor nos cards*/
+        font-size: 1.2rem;
+    }
+}
