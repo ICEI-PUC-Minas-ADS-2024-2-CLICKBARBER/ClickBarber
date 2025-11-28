@@ -112,11 +112,22 @@ async function exportarCsv(req, res) {
             servicoId: filtros.servicoId
         });
 
+        let nomeArquivo; /*nome do arquivo depois que baixar*/
+        if (filtros.tipoTabela === 'dia') {
+            nomeArquivo = 'por_período';
+        } else if (filtros.tipoTabela === 'barbeiro') {
+            nomeArquivo = 'por_barbeiro';
+        } else if (filtros.tipoTabela === 'servico') {
+            nomeArquivo = 'por_serviço';
+        } else {
+            nomeArquivo = 'financeiro.csv';
+        }
+
         /*definindo os headers da resposta:*/
         res.setHeader('Content-Type', 'text/csv; charset=utf-8'); /*Content-Type diz que o conteúdo é CSV, em UTF-8*/
         res.setHeader(
             'Content-Disposition', /*Content-Disposition indica que é um anexo (download) e sugere o nome do arquivo:*/
-            `attachment; filename=financeiro_${filtros.tipoTabela}.csv`
+            `attachment; filename=financeiro_tabela_${nomeArquivo}.csv`
         );
         res.send(csv); /*envia o conteúdo do CSV como corpo da resposta*/
 
@@ -142,6 +153,12 @@ async function exportarPdf(req, res) {
 
         const { tipoTabela, inicio, fim, barbeiroId, servicoId } = filtros; /*cria variáveis a partir de "filtros"*/
 
+        const labelTipoTabela = { /*nome que vai aparecer no pdf ao exportar*/
+            dia: 'por período',
+            barbeiro: 'por barbeiro',
+            servico: 'por serviço'
+        }[tipoTabela] || tipoTabela;
+
         let dados; /*guarda o resultado*/
         /*busca os dados conforme o tipo de tabela:*/
         if (tipoTabela === 'barbeiro') { /*se o tipo de tabela for barbeiro*/
@@ -158,7 +175,7 @@ async function exportarPdf(req, res) {
         res.setHeader('Content-Type', 'application/pdf'); /*Content-Type → PDF*/
         res.setHeader( /*Content-Disposition → download com nome financeiro_ + tipo da tabela.pdf*/
             'Content-Disposition',
-            `attachment; filename=financeiro_${tipoTabela}.pdf`
+            `attachment; filename=financeiro_tabela_${labelTipoTabela}.pdf`
         );
 
         doc.pipe(res); /*conecta o PDF gerado diretamente na resposta HTTP (res). Tudo que for escrito em doc vai saindo como resposta para o navegador*/
@@ -169,9 +186,11 @@ async function exportarPdf(req, res) {
         doc.moveDown(); /*pula uma linha - espaço vertical*/
 
         /*informações dos filtros:*/
-        doc.fontSize(10).text(`Tipo de relatório: ${tipoTabela}`);
-        if (inicio && fim) {
-            doc.text(`Período: ${inicio} até ${fim}`);
+        doc.fontSize(10).text(`Tipo de relatório: ${labelTipoTabela}`);
+        const inicioStr = inicio ? String(inicio).slice(0, 10) : null;
+        const fimStr = fim ? String(fim).slice(0, 10) : null;
+        if (inicioStr && fimStr) {
+            doc.text(`Período: ${inicioStr} até ${fimStr}`);
         }
         doc.moveDown();
 
@@ -179,23 +198,40 @@ async function exportarPdf(req, res) {
 
         /*conteúdo conforme o tipo de tabela:*/
         if (tipoTabela === 'barbeiro') { /*se for tabela barbeiro*/
-            doc.text('Barbeiro | Qtde atendimentos | Total faturado');
+            doc.text('Barbeiro | Quantidade de atendimentos | Total faturado');
             doc.moveDown(0.5);
-            dados.forEach(l => { /*para cada linha, escreve: nome do barbeiro, quantidade de atendimentos, total faturado:*/
-                doc.text(`${l.barbeiro} | ${l.quantidade_atendimentos} | R$ ${l.total_faturado}`);
-            });
+            if (!dados || dados.length === 0) { /*se a tabela não tiver linhas*/
+                doc.text('Nenhum registro encontrado.');
+            }
+            else {
+                dados.forEach(l => { /*para cada linha, escreve: nome do barbeiro, quantidade de atendimentos, total faturado:*/
+                    doc.text(`${l.barbeiro} | ${l.quantidade_atendimentos} | R$ ${l.total_faturado}`);
+                });
+            }
+
         } else if (tipoTabela === 'servico') { /*MESMA lógica da tabela barbeiro*/
-            doc.text('Serviço | Qtde serviços | Total faturado');
+            doc.text('Serviço | Quantidade prestada de serviços | Total faturado');
             doc.moveDown(0.5);
-            dados.forEach(l => {
-                doc.text(`${l.servico} | ${l.quantidade_servicos} | R$ ${l.total_faturado}`);
-            });
+            if (!dados || dados.length === 0) { /*se a tabela não tiver linhas*/
+                doc.text('Nenhum registro encontrado.');
+            }
+            else {
+                dados.forEach(l => {
+                    doc.text(`${l.servico} | ${l.quantidade_servicos} | R$ ${l.total_faturado}`);
+                });
+            }
+
         } else { /*MESMA lógica da tabela barbeiro*/
-            doc.text('Data | Qtde atendimentos | Total faturado');
+            doc.text('Data | Quantidade de atendimentos | Total faturado');
             doc.moveDown(0.5);
-            dados.forEach(l => {
-                doc.text(`${l.data} | ${l.quantidade_atendimentos} | R$ ${l.total_faturado}`);
-            });
+            if (!dados || dados.length === 0) { /*se a tabela não tiver linhas*/
+                doc.text('Nenhum registro encontrado.');
+            }
+            else {
+                dados.forEach(l => {
+                    doc.text(`${l.data} | ${l.quantidade_atendimentos} | R$ ${l.total_faturado}`);
+                });
+            }
         }
         doc.end(); /*finaliza o documento PDF: diz pro pdfkit que terminou de escrever, fecha o stream e encerra a resposta HTTP*/
 

@@ -4,8 +4,8 @@
   "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "dev": "nodemon public/julia/src/server.js",
+    "start": "node public/julia/src/server.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

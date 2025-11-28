@@ -17,22 +17,24 @@ async function buscarPorDia({ inicio, fim, barbeiroId, servicoId }) { /*função
   /*começa a montar a string da query SQL:*/
   let sql = `
     SELECT 
-      DATE(data_atendimento) AS data,
+      DATE(data_hora) AS data,
       COUNT(*) AS quantidade_atendimentos,
       SUM(valor_total) AS total_faturado
-    FROM atendimentos
+    FROM Atendimento
     WHERE status = 'FINALIZADO'
   `;
   const params = []; /*array params que vai guardar os valores para os ? da query*/
 
   if (inicio) { /*se inicio foi informado*/
-    sql += ' AND DATE(data_atendimento) >= ?'; /*adiciona à query: AND DATE(data_atendimento) >= ?*/
-    params.push(inicio); /*adiciona o valor de inicio no array params; o ? será substituído por esse inicio na hora de executar a query*/
+    const inicioStr = String(inicio).slice(0, 10);
+    sql += ' AND DATE(data_hora) >= ?'; /*adiciona à query: AND DATE(data_atendimento) >= ?*/
+    params.push(inicioStr); /*adiciona o valor de inicio no array params; o ? será substituído por esse inicio na hora de executar a query*/
   }
 
   if (fim) { /*se fim foi informado:*/
-    sql += ' AND DATE(data_atendimento) <= ?'; /*adiciona o filtro de data máxima*/
-    params.push(fim); /*coloca o valor em params*/
+    const fimStr = String(fim).slice(0, 10);
+    sql += ' AND DATE(data_hora) <= ?'; /*adiciona o filtro de data máxima*/
+    params.push(fimStr); /*coloca o valor em params*/
   }
 
   /*if (barbeiroId) { se veio barbeiroId:
@@ -47,8 +49,8 @@ async function buscarPorDia({ inicio, fim, barbeiroId, servicoId }) { /*função
 
   /*finaliza a query:*/
   sql += `
-    GROUP BY DATE(data_atendimento)
-    ORDER BY DATE(data_atendimento) DESC
+    GROUP BY DATE(data_hora)
+    ORDER BY DATE(data_hora) DESC
   `;
 
   const [rows] = await pool.query(sql, params); /*executa a query no MySQL*/
@@ -60,23 +62,26 @@ async function buscarPorDia({ inicio, fim, barbeiroId, servicoId }) { /*função
 async function buscarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) {
   let sql = `
     SELECT 
-      b.nome AS barbeiro,
-      COUNT(a.id) AS quantidade_atendimentos,
+      p.Nome AS barbeiro,
+      COUNT(a.id_atendimento) AS quantidade_atendimentos,
       SUM(a.valor_total) AS total_faturado
-    FROM atendimentos a
-    JOIN barbeiros b ON b.id = a.barbeiro_id
+    FROM Atendimento a
+    JOIN Pessoa p ON p.ID_pessoa = a.id_barbeiro
     WHERE a.status = 'FINALIZADO'
+    AND LOWER(p.Tipo_usuario) = 'barbeiro'
   `;
   const params = [];
 
   if (inicio) { /*data mínima*/
-    sql += ' AND DATE(a.data_atendimento) >= ?';
-    params.push(inicio);
+    const inicioStr = String(inicio).slice(0, 10);
+    sql += ' AND DATE(a.data_hora) >= ?';
+    params.push(inicioStr);
   }
 
   if (fim) { /*data máxima*/
-    sql += ' AND DATE(a.data_atendimento) <= ?';
-    params.push(fim);
+    const fimStr = String(fim).slice(0, 10);
+    sql += ' AND DATE(a.data_hora) <= ?';
+    params.push(fimStr);
   }
 
   /*if (servicoId) { serviço especificado
@@ -90,7 +95,7 @@ async function buscarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) {
   }
 
   sql += `
-    GROUP BY b.id, b.nome
+    GROUP BY p.ID_pessoa, p.Nome
     ORDER BY total_faturado DESC
   `;
 
@@ -102,37 +107,39 @@ async function buscarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) {
 async function buscarPorServico({ inicio, fim, barbeiroId, servicoId }) {
   let sql = `
     SELECT 
-      s.nome AS servico,
-      COUNT(a.id) AS quantidade_servicos,
+      s.Titulo AS servico,
+      COUNT(a.id_atendimento) AS quantidade_servicos,
       SUM(a.valor_total) AS total_faturado
-    FROM atendimentos a
-    JOIN servicos s ON s.id = a.servico_id
+    FROM Atendimento a
+    JOIN Servico s ON s.ID_servico = a.id_servico
     WHERE a.status = 'FINALIZADO'
   `;
   const params = [];
 
   if (inicio) { /*início do período*/
-    sql += ' AND DATE(a.data_atendimento) >= ?';
-    params.push(inicio);
+    const inicioStr = String(inicio).slice(0, 10);
+    sql += ' AND DATE(a.data_hora) >= ?';
+    params.push(inicioStr);
   }
 
   if (fim) { /*fim do período*/
-    sql += ' AND DATE(a.data_atendimento) <= ?';
-    params.push(fim);
+    const fimStr = String(fim).slice(0, 10);
+    sql += ' AND DATE(a.data_hora) <= ?';
+    params.push(fimStr);
   }
 
   if (servicoId) { /*serviço específico*/
-    sql += ' AND a.servico_id = ?';
+    sql += ' AND a.id_servico = ?';
     params.push(servicoId);
   }
 
   if (barbeiroId) { /*barbeiro específico*/
-    sql += ' AND a.barbeiro_id = ?';
+    sql += ' AND a.id_barbeiro = ?';
     params.push(barbeiroId);
   }
 
   sql += `
-    GROUP BY s.id, s.nome
+    GROUP BY s.ID_servico, s.Titulo
     ORDER BY total_faturado DESC
   `;
 

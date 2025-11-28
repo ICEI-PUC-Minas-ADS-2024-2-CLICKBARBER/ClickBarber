@@ -129,9 +129,9 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: none;
+    background-color: #d8d8d8;
     border-radius: .4rem;
-    color: #4e4e4e;
+    color: #000000;
     padding: .4rem;
 }
 

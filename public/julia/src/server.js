@@ -6,7 +6,7 @@ import { loadEnv } from './config/env.js';
 
 /*carrega configurações e define a porta*/
 const env = loadEnv(); /*lê o .env e guarda em env*/
-const port = env.PORT || 5001; /*escolhe a porta: usa env.PORT se existir ou a 5001*/
+const port = 3000; /*escolhe a porta: usa env.PORT se existir ou a 5001*/
 
 /*sobe o servidor*/
 app.listen(port, () => { /*inicia o HTTP na porta escolhida e mostra no console a URL para acesso*/

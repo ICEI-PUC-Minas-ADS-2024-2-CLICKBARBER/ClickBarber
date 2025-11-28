@@ -1,5 +1,13 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
+    /*lista fake de barbeiros enquanto não existe API / tabela pessoa*/
+    const BARBEIROS_MOCK = [
+        { id: 1, nome: 'João' },
+        { id: 2, nome: 'Carlos' },
+        { id: 3, nome: 'Lucas' }
+        // pode adicionar mais se quiser
+    ];
+
     /*FAZ A LINHA APARECER SEMPRE EMBAIXO DA OPÇÃO "financeiro", a não ser que outra opção seja selecionada no menu*/
     const menus = [ /*array com os 6 itens do menu*/
         document.getElementById("menuAgenda"),
@@ -33,20 +41,62 @@ document.addEventListener("DOMContentLoaded", async function () {
     function limparSelectMantendoTodos(select) { /*mantém só a primeira opção (índice 0 = "Todos") no select de barbeiro e de serviço*/
         select.options.length = 1;
     }
+
+    /*chamando o backend em /api/servicos
+    async function apiListarServicos() {
+        const res = await fetch(`${API_BASE}/servicos`); /*faz uma requisição HTTP GET
+        if (!res.ok) { /*se não deu certo
+            throw new Error('Erro ao buscar serviços');
+        }
+        return res.json(); /*se deu certo, pego o corpo da resposta e converto para JSON
+    }*/
+
+    /*preencher o <select> de serviços no filtro
+    async function carregarSelectServicos() {
+        if (!filtroServico) return; /*se não existir o elemento, sai da função
+
+        try {
+            const servicos = await apiListarServicos(); /*chama função que eu já criei
+            limparSelectMantendoTodos(filtroServico); /*chama função que eu já criei*/
+
+    /*preenchendo o select
+    (servicos || []).forEach(s => { /*percorre cada serviço s do array
+        const opt = document.createElement('option'); /*cria uma nova <option> do HTML
+        opt.value = s.ID_servico;        /*id do serviço no banco vira o valor da opção
+        opt.textContent = s.nome_servico; /*texto visível do select
+        filtroServico.appendChild(opt); /*adiciona essa <option> dentro do <select> de filtros
+    });
+} catch (err) {
+    console.error('Erro ao carregar serviços:', err);
+}
+}*/
+
     /*POPULANDO os select de BARBEIRO e SERVIÇO usando backend*/
     async function carregarBarbeirosEServicos() {
         try {
             /*barbeiros*/
-            const barbeiros = await apiListarBarbeiros(); /*chama a função apiListarBarbeiros() que faz um fetch na minha api*/
+            /*DESCOMENTAR AQUI DEPOIS DA API const barbeiros = await apiListarBarbeiros(); /*chama a função apiListarBarbeiros() que faz um fetch na minha api*/
             limparSelectMantendoTodos(filtroBarbeiro);
 
-            (barbeiros || []).forEach(b => { /*percorre cada barbeiro da lista; b é um objeto do tipo {id, nome}*/
-                const opt = document.createElement('option'); /*cria um <option> novo para esse barbeiro*/
-                opt.value = b.id; /*o value da option será o id do barbeiro*/
-                opt.textContent = b.nome; /*o texto exibido no select é o nome do barbeiro*/
-                filtroBarbeiro.appendChild(opt); /*adiciona essa <option> dentro do <select> de barbeiro*/
+            /* DESCOMENTAR AQUI DEPOIS DA API (barbeiros || []).forEach(b => { percorre cada barbeiro da lista; b é um objeto do tipo {id, nome}
+                const opt = document.createElement('option'); /*]cria um <option> novo para esse barbeiro
+                opt.value = b.id; /*o value da option será o id do barbeiro
+                opt.textContent = b.nome; /*o texto exibido no select é o nome do barbeiro
+                filtroBarbeiro.appendChild(opt); /*adiciona essa <option> dentro do <select> de barbeiro
             }); /*repete isso para cada barbeiro retornado pela API*/
 
+            (BARBEIROS_MOCK || []).forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b.id;       /*id fake do barbeiro*/
+                opt.textContent = b.nome; /*nome fake do barbeiro*/
+                filtroBarbeiro.appendChild(opt);
+            });
+
+        } catch (e) { /*se der erro, deixa só "Todos" como option*/
+            console.error('Erro ao carregar barbeiros/serviços:', e);
+        }
+
+        try {
             /*serviços*/
             const servicos = await apiListarServicos(); /*MESMA lógica*/
             limparSelectMantendoTodos(filtroServico);
@@ -57,6 +107,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 opt.textContent = s.nome;
                 filtroServico.appendChild(opt);
             });
+
+            /*carregarSelectServicos();*/
 
         } catch (e) { /*se der erro, deixa só "Todos" como option*/
             console.error('Erro ao carregar barbeiros/serviços:', e);
@@ -354,4 +406,62 @@ document.addEventListener("DOMContentLoaded", async function () {
             alert('Erro ao carregar dados financeiros. Verifique se a API está rodando.');
         }
     });
+
+    const btnExportCsv = document.getElementById('btnExportCsv'); /*botão de exportar csv*/
+    const btnExportPdf = document.getElementById('btnExportPdf'); /*botão de exportar pdf*/
+
+    function obterTipoTabelaAtual() { /*descobre qual aba está ativa (aberta) e devolve o tipoTabela*/
+        const tabAtiva = document.querySelector('#tabsFinanceiro .nav-link.active');
+        if (!tabAtiva) return 'dia';
+        if (tabAtiva.id === 'tab-dia') return 'dia';
+        if (tabAtiva.id === 'tab-barbeiro') return 'barbeiro';
+        if (tabAtiva.id === 'tab-servico') return 'servico';
+        return 'dia';
+    }
+
+    /*monta a query string com os mesmos filtros da tela*/
+    function montarQueryExport(tipoTabela) {
+        const periodo = filtroPeriodo.value;
+        const dataIni = dataInicioInput.value;
+        const dataFim = dataFimInput.value;
+
+        const barbeiroId = filtroBarbeiro.value || '';
+        const servicoId = filtroServico.value || '';
+
+        const { inicio, fim } = calcularInicioFim(periodo, dataIni, dataFim);
+
+        const params = new URLSearchParams();
+        params.append('tipoTabela', tipoTabela);
+
+        if (inicio) params.append('inicio', inicio);
+        if (fim) params.append('fim', fim);
+
+        const textoBarbeiro = filtroBarbeiro.options[filtroBarbeiro.selectedIndex].text.toLowerCase(); /*só manda barbeiroId se não for "Todos"*/
+        if (textoBarbeiro !== 'todos' && barbeiroId) {
+            params.append('barbeiroId', barbeiroId);
+        }
+
+        const textoServico = filtroServico.options[filtroServico.selectedIndex].text.toLowerCase(); /*só manda servicoId se não for "Todos"*/
+        if (textoServico !== 'todos' && servicoId) {
+            params.append('servicoId', servicoId);
+        }
+
+        return params.toString();
+    }
+
+    if (btnExportCsv) { /*se for o botão de exportar csv*/
+        btnExportCsv.addEventListener('click', function () {
+            const tipoTabela = obterTipoTabelaAtual();
+            const query = montarQueryExport(tipoTabela);
+            window.location.href = `${API_BASE_URL}/exportar/csv?${query}`;
+        });
+    }
+
+    if (btnExportPdf) { /*se for o botão de exportar pdf*/
+        btnExportPdf.addEventListener('click', function () {
+            const tipoTabela = obterTipoTabelaAtual();
+            const query = montarQueryExport(tipoTabela);
+            window.location.href = `${API_BASE_URL}/exportar/pdf?${query}`;
+        });
+    }
 });

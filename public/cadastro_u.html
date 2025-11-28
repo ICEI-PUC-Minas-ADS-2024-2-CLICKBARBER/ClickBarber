@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,17 +27,18 @@
         <div class="link"><a href="#">Ajuda</a></div>
       </div>
       <!--navbar quando tem uma conta de barbearia logada-->
-      <div id="navbarB" class="navbar" >
-        <div class="link"><a href="#">Agenda</a></div>
-        <div class="link"><a href="#">Meu Plano</a></div>
-        <div class="link"><a href="#">Perfil</a></div>
-        <div class="link"><a href="#">Produtos disponiveis</a></div>
-        <div class="link"><a href="#">Serviços</a></div>
-      </div>
-      <!--navbar quando tem uma conta de usuário logado-->
-      <div id="navbarU" class="navbar" >
-        <div class="link"><a href="#">Agenda</a></div>
-      </div>
+      <div class="link"><a href="#">Agenda</a></div>
+      <li class="link"><a id="menuFinanceiro" class="nav-link text-white" href="financeiro.html">Financeiro</a></li>
+      <div class="link"><a href="#">Meu Plano</a></div>
+      <div class="link"><a href="#">Perfil</a></div>
+      <li class="link"><a id="menuProdutos" class="nav-link text-white" href="produtos.html">Produtos disponíveis</a>
+      </li>
+      <div class="link"><a href="#">Serviços</a></div>
+    </div>
+    <!--navbar quando tem uma conta de usuário logado-->
+    <div id="navbarU" class="navbar">
+      <div class="link"><a href="#">Agenda</a></div>
+    </div>
     </div>
 
     <!--redes sociais-->
@@ -51,7 +53,7 @@
   <main>
     <div class="container">
       <div class="cd">
-        
+
         <div class="titulo">
           <p2>CADASTRE-SE</p2>
         </div>
@@ -66,28 +68,28 @@
               <div class="invalid" id="inEmail">Esse campo é obrigatorio, por favor digite um email válido</div>
               <div class="invalid" id="inEmail2">Esse email ja foi cadastrado no sistema</div>
             </div>
-            
+
             <!--Nome do usuario-->
             <div class="laIn">
               <label for="nome">Digite seu Nome<span class="ast"> *</span></label>
               <input type="text" placeholder="Arthur" id="nome">
               <div class="invalid" id="inNome">Esse campo é obrigatorio, por favor digite um nome válido</div>
             </div>
-            
+
             <!--Sobrenome do usuario-->
             <div class="laIn">
               <label for="sobrenome">Digite seu Sobrenome<span class="ast"> *</span></label>
               <input type="text" placeholder="Carvalho Ramos" id="sobrenome">
               <div class="invalid" id="inSobrenome">Esse campo é obrigatorio, por favor digite um sobrenome válido</div>
             </div>
-            
+
             <!--Telefone -->
             <div class="laIn">
               <label for="telefone">Digite seu Telefone<span class="ast"> *</span></label>
               <input type="number" placeholder="(31) 1234 - 5678" id="telefone">
               <div class="invalid" id="inTele">Esse campo é obrigatorio, por favor digite um telefone válido</div>
             </div>
-            
+
             <!--CPF do usuario-->
             <div class="laIn">
               <label for="cpf">Digite seu CPF <span class="ast"> *</span></label>
@@ -95,7 +97,7 @@
               <div class="invalid" id="inCPF">Esse campo é obrigatorio, por favor digite um CPF válido</div>
               <div class="invalid" id="inCPF2">O valor digitado ja existe no sistema</div>
             </div>
-            
+
             <!--Senha da conta-->
             <div class="laIn">
               <label for="senha">Digite sua Senha<span class="ast"> *</span></label>
@@ -106,9 +108,10 @@
                 </label>
                 <input id="check" style="display: none;" value="true" type="checkbox">
               </div>
-              <div class="invalid" id="inSenha">Por favor digite uma senha válida (no minimo 8 characteres e deve ter no minimo 1 numero 1 letra e um simbolo)</div>
+              <div class="invalid" id="inSenha">Por favor digite uma senha válida (no minimo 8 characteres e deve ter no
+                minimo 1 numero 1 letra e um simbolo)</div>
             </div>
-            
+
             <!--Confirmação da senha escolhida-->
             <div class="laIn">
               <label for="senhaConfirm">Confirme sua Senha <span class="ast"> *</span></label>
@@ -121,20 +124,21 @@
               </div>
               <div class="invalid" id="inSenha2">A senhas senhas precisam ser iguais para prosseguir</div>
             </div>
-           
+
             <!--Botão de cadastro de usuário-->
             <div class="btn">
               <button type="button" id="btnCria">CRIAR CONTA</button>
             </div>
-            
+
           </form>
         </div>
-      
+
       </div>
     </div>
   </main>
 
   <script src="assets/scripts/cadastro_u.js"></script>
-  
+
 </body>
+
 </html>
