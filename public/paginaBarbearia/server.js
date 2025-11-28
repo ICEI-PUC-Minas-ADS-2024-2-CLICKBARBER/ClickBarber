@@ -61,7 +61,7 @@ res.json({ mensagem: "Barbeiro cadastrado", id: result.insertId });
 //Iniciar servidor
 const PORT = 4060;
 app.listen(PORT, () => {
-const url = `http://localhost:${PORT}/cadastroBarbeiros.html`;
+const url = `http://humble-journey-pjwxv7pr6gqw296q-4060.app.github.dev:${PORT}/cadastroBarbeiros.html`;
 console.log(`Servidor rodando na porta ${PORT}`);
 console.log(`Clique aqui para abrir: ${url}`);
 
