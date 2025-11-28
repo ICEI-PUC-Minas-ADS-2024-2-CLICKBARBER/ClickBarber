@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClickBarber</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/style/style.css">
+  <link rel="stylesheet" href="assets/style/sb.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <img src="assets/img/image.png" alt="logo" width="200px">
+    </div>
+
+    <nav class="fonte-italiana nav">
+      <a href="index.html">Inicio</a><!--manda pra pagina de inicio da barbearia-->
+      <a href="cadastroBarbeiros.html">Cadastrar Barbeiros</a>
+      <a href="#">Features</a><!--vai levar para a pagina onde vai ter a conta do barbeiro-->
+      <a href="#">Saiba Mais</a><!--vai levar para a agenda do barbeiro-->
+      <a href="#">Ajuda</a><!--vai deslogar o barbeiro-->
+    </nav>
+
+    <div class="layout">
+      <a href="https://instagram.com"><img src="assets/img/instagram.png" alt="Instagram"></a>
+      <a href="https://linkedin.com"><img src="assets/img/linkedin.png" alt="LinkedIn"></a>
+      <a href="https://x.com"><img src="assets/img/x.png" alt="X"></a>
+    </div>
+  </header>
+ <div class="container mt-4 centralizado-geral">
+
+    <h2 class="mb-3 text-center">Selecionar Barbeiro</h2>
+
+    <input type="text" id="searchBarbeiro" class="form-control mb-3 campo-pesquisa" placeholder="Pesquisar barbeiro...">
+
+    <ul id="listaBarbeiros" class="list-group mb-4 lista-barbeiros"></ul>
+
+    <div id="areaServicos" class="area-servicos mt-3">
+        <h3 class="mb-3 text-center">Serviços do barbeiro selecionado</h3>
+
+        <label for="dropdownServicos">Selecione os serviços:</label>
+
+        <select id="dropdownServicos" class="form-control dropdown-servicos" multiple size="6"></select>
+
+        <button id="btnSalvar" class="btn btn-primary mt-3 btn-salvar">Salvar</button>
+    </div>
+
+</div>
+
+
+
+<script src="assets/js/SBarbeiros.js"></script>
+</body>
+</html>

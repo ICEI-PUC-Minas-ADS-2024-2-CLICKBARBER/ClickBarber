@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Julius+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Italiana&family=Julius+Sans+One&display=swap');
+
+body 
+{
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(to left, #470404 7%, #000000 50%, #460202 90%);
+  color: white;
+  font-family: 'Arial', sans-serif;
+}
+.fonte-italiana
+{
+  font-family: 'Italiana', sans-serif;
+}
+
+
+
+/* ---------- Header ---------- */
+.header 
+{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0rem 2rem;
+  position: relative;
+}
+
+.logo-container 
+{
+  flex: 0 0 auto;
+}
+
+.img-container 
+{
+  position: relative;
+}
+.nav a
+{
+  color: white;
+  padding: 0.1rem 2rem;
+  font-size: 22px;
+}
+.nav a:hover
+{
+  color:rgb(163, 163, 163);
+}
+
+.container .row 
+{
+  justify-content: center; /* centraliza todas as colunas na linha */
+}
+
+.layout 
+{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  flex: 0 0 auto;
+}
+
+.layout img 
+{
+  width: 24px;
+  height: 24px;
+}
+
+.container-superior
+{
+  padding:1rem;
+  background-color: #1a1a1a;
+}
+/*Card*/
+.custom-card 
+{
+  margin: 0rem;
+  background-color: #272727;  
+  padding:3rem 0rem;
+  overflow: hidden;
+  
+}
+
+
+
+/*Imagem*/
+.img-container img 
+{
+  
+  width: 18.5rem;
+  margin: 0 auto;
+  height: 25rem;
+}
+
+/*Titulo Card*/
+.texto-central 
+{
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  letter-spacing:0.4rem;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: "Julius Sans One", sans-serif;
+  font-size: 32px;
+  pointer-events: none;
+}
+
+/*Botão*/
+.custom-btn 
+{
+  background-color: #6D2F2F;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:15rem;
+  height: 4rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.4rem;
+  font-size: 48px;
+  color: black;
+  font-family: "Inter";
+  transition: transform 0.2s ease;
+  letter-spacing: 0.5rem;
+  margin: 0 auto; 
+}
+
+.custom-btn:hover 
+{
+  transform: scale(1.03);
+  background-color: #9c36363f;
+  color: white;
+}
+
+@media (max-width: 768px) {
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  /* Header empilha os itens */
+  .header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  /* Nav empilhada */
+  .nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .nav a {
+    font-size: 18px;
+    padding: 0.4rem 1rem;
+  }
+
+  /* Ícones sociais centralizados */
+  .layout {
+    justify-content: center;
+    gap: 16px;
+  }
+
+  /* Cards empilhados e mais largos */
+  .container .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .custom-card {
+    width: 95%;
+    max-width: 520px; /* ficou mais largo */
+    margin: 1rem 0;
+    padding: 1.5rem 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #272727;
+  }
+
+  /* Imagem 100% da largura do card */
+  .img-container img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+  }
+
+  /* Texto central sobre a imagem */
+  .texto-central {
+    font-size: 30px;
+    letter-spacing: 0.2rem;
+  }
+
+  /* Botão maior e proporcional ao card */
+  .custom-btn {
+    width: 100%;
+    height: 3.8rem;
+    font-size: 24px;
+    letter-spacing: 0.2rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+  }
+}
+
+/* 📱 Extra pequeno (celulares muito estreitos) */
+@media (max-width: 480px) {
+  .custom-card {
+    width: 95%;
+    max-width: 380px; /* reduz um pouco só em telas bem pequenas */
+    padding: 1rem;
+  }
+
+  .texto-central {
+    font-size: 24px;
+    letter-spacing: 0.1rem;
+  }
+
+  .custom-btn {
+    font-size: 18px;
+    height: 3.4rem;
+  }
+}

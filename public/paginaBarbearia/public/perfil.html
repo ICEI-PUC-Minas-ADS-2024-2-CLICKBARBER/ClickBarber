@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClickBarber</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/style/style.css">
+  <link rel="stylesheet" href="assets/style/perfil.css">
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <img src="assets/img/image.png" alt="logo" width="200px">
+    </div>
+
+    <nav class="nav fonte-italiana">
+      <a href="index.html">Inicio</a><!--manda pra pagina de inicio-->
+      <a href="cadastroBarbeiros.html">Cadastrar Barbeiros</a><!--Leva para a tela de cadastrar barbeiro-->
+      <a href="#">Features</a><!--vai levar para a pagina onde vai ter a conta do barbeiro-->
+      <a href="#">Saiba Mais</a><!--vai levar para a agenda do barbeiro-->
+      <a href="#">Ajuda</a><!--vai deslogar o barbeiro-->
+    </nav>
+
+    <div class="layout">
+      <a href="https://instagram.com"><img src="assets/img/instagram.png" alt="Instagram"></a>
+      <a href="https://linkedin.com"><img src="assets/img/linkedin.png" alt="LinkedIn"></a>
+      <a href="https://x.com"><img src="assets/img/x.png" alt="X"></a>
+    </div>
+  </header>
+    <div class="perfil-container">
+      <!-- Logo -->
+      <div class="img-container perfil-logo">
+        <img id="logo" src="assets/img/image.png" alt="Logo Barbearia">
+        <button class="custom-btn" id="alterar-logo-btn">Alterar Logo</button>
+      </div>
+      <!-- Nome -->
+      <div class="perfil-nome">
+        <h1 id="nome">ClickBarber</h1>
+        <button class="custom-btn" id="editar-nome-btn">Editar Nome</button>
+      </div>
+
+      <!-- Descrição -->
+      <div class="perfil-descricao">
+        <p class="texto"id="descricao">Bem-vindo à melhor barbearia da cidade!</p>
+        <button class="custom-btn" id="editar-descricao-btn">Editar Descrição</button>
+      </div>
+
+      <!-- Endereço -->
+      <div class="perfil-endereco">
+        <p class="texto" id="endereco">Rua Exemplo, 123, Bairro, Cidade</p>
+        <button class="custom-btn" id="editar-endereco-btn">Editar Endereço</button>
+      </div>
+
+      <!-- Telefone -->
+      <div class="perfil-telefone">
+        <p class="texto" id="telefone">+55 11 12345-6789</p>
+        <button class="custom-btn" id="editar-telefone-btn">Editar Telefone</button>
+      </div>
+
+
+  <!-- Pop-up -->
+  <div id="popup-senha" class="popup-senha">
+  <div class="popup-content" id="popup-content">
+  </div>
+</div>
+  <script src="assets/js/perfil.js"></script>
+</body>
+
+</html>
