@@ -1,5 +1,5 @@
 const listaServicos = document.getElementById('listaServicos');
-const url = "http://localhost:3000/servicos";
+const url = "http://localhost:3001/servicos";
 
 const modal = document.getElementById('modal');
 const modalConfirm = document.getElementById('modalConfirm');
