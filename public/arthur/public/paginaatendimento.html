@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Novo Atendimento</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#aa0911",
+                        "background-light": "#f8f5f6",
+                        "background-dark": "#181111",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="bg-background-dark font-display text-white">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-[#221011] p-4 flex flex-col">
+            <h1 class="text-xl font-extrabold mb-6">Barber Shop</h1>
+            <nav class="flex flex-col gap-2">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">calendar_month</span> Agenda
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary" href="#">
+                    <span class="material-symbols-outlined">content_cut</span> Atendimentos
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">group</span> Clientes
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">payments</span> Financeiro
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1 p-10">
+            <h1 class="text-4xl font-black mb-8">Novo Atendimento</h1>
+
+            <!-- Card Detalhes -->
+            <div class="bg-[#221011] border border-[#543b3c] rounded-xl p-6 mb-8">
+                <h2 class="text-xl font-bold mb-4">Detalhes</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Cliente -->
+                    <div>
+                        <label class="block mb-1 text-sm font-medium">Selecionar Cliente</label>
+                        <select id="cliente" class="w-full bg-[#392829] rounded-lg p-3 text-white">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+
+                    <!-- Barbeiro -->
+                    <div>
+                        <label class="block mb-1 text-sm font-medium">Selecionar Barbeiro</label>
+                        <select id="barbeiro" class="w-full bg-[#392829] rounded-lg p-3 text-white">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+
+                    <!-- Serviços MULTIPLOS -->
+                    <div class="md:col-span-2">
+                        <label class="block mb-1 text-sm font-medium">Selecionar Serviços</label>
+                        <select id="servico" multiple class="w-full bg-[#392829] rounded-lg p-3 text-white h-40"></select>
+                        <p class="text-sm opacity-60 mt-1">*Selecione vários segurando CTRL.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagamento -->
+            <div class="bg-[#221011] border border-[#543b3c] rounded-xl p-6 mb-8">
+                <h2 class="text-xl font-bold mb-4">Forma de Pagamento</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button id="pg-dinheiro"
+                        class="btn-pagamento bg-[#392829] py-4 rounded-lg text-center hover:bg-primary/30 flex flex-col items-center gap-2"
+                        onclick="selecionarPagamento('dinheiro')">💵 Dinheiro</button>
+                    <button id="pg-pix"
+                        class="btn-pagamento bg-[#392829] py-4 rounded-lg text-center hover:bg-primary/30 flex flex-col items-center gap-2"
+                        onclick="selecionarPagamento('pix')">⚡ Pix</button>
+                    <button id="pg-credito"
+                        class="btn-pagamento bg-[#392829] py-4 rounded-lg text-center hover:bg-primary/30 flex flex-col items-center gap-2"
+                        onclick="selecionarPagamento('credito')">💳 Crédito</button>
+                    <button id="pg-debito"
+                        class="btn-pagamento bg-[#392829] py-4 rounded-lg text-center hover:bg-primary/30 flex flex-col items-center gap-2"
+                        onclick="selecionarPagamento('debito')">🏧 Débito</button>
+                </div>
+            </div>
+
+            <!-- Total -->
+            <div class="flex justify-between items-center mb-6">
+                <p class="text-xl font-bold">
+                    Total: <span id="valor" class="text-primary">R$ 00,00</span>
+                </p>
+                <span id="statusAtendimento"
+                    class="text-sm px-3 py-1 bg-yellow-500/20 text-yellow-300 rounded-lg">Aguardando</span>
+            </div>
+
+            <!-- Botões -->
+            <div class="flex gap-4">
+                <button id="btnIniciar"
+                    onclick="iniciarAtendimento()"
+                    class="bg-primary px-6 py-3 rounded-lg text-lg font-bold hover:bg-primary/80">
+                    Iniciar Atendimento
+                </button>
+
+                <button id="btnFinalizar"
+                    class="bg-gray-700 px-6 py-3 rounded-lg text-lg font-bold opacity-40 cursor-not-allowed">
+                    Finalizar Atendimento
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- JS -->
+    <script src="assets/scripts/atendimento.js"></script>
+</body>
+</html>
