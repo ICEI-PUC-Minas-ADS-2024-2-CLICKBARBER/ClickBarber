@@ -21,7 +21,6 @@ function validar(schema, valores) { /*recebe schema joi e os valores*/
 }
 
 /*listagens (JSON):*/
-/*endpoint e os parâmetros esperados: GET /api/financeiro/por-dia?inicio=YYYY-MM-DD&fim=YYYY-MM-DD&barbeiroId=&servicoId=*/
 async function listarPorDia(req, res) { /*função assíncrona do controller (middleware do Express - função que o Express executa no meio do fluxo da requisição para tratar algo (log, validação...)*/
     try {
         const filtros = validar(schemaFinanceiro, req.query); /*valida req.query (query string) usando schemaFinanceiro*/
@@ -30,8 +29,6 @@ async function listarPorDia(req, res) { /*função assíncrona do controller (mi
         const dados = await financeiroService.listarPorDia({ /*consulta no banco e passa os filtros abaixo já validados:*/
             inicio: filtros.inicio,
             fim: filtros.fim,
-            /*barbeiroId: filtros.barbeiroId,
-            servicoId: filtros.servicoId*/
         });
         res.json(dados); /*responde para o usuário com JSON (lista de registros por dia)*/
     }
@@ -46,7 +43,6 @@ async function listarPorDia(req, res) { /*função assíncrona do controller (mi
     }
 }
 
-/*endpoint e os parâmetros esperados: GET /api/financeiro/por-barbeiro*/
 async function listarPorBarbeiro(req, res) { /*MESMA lógica de listarPorDia*/
     try {
         const filtros = validar(schemaFinanceiro, req.query);
@@ -55,7 +51,6 @@ async function listarPorBarbeiro(req, res) { /*MESMA lógica de listarPorDia*/
             inicio: filtros.inicio,
             fim: filtros.fim,
             barbeiroId: filtros.barbeiroId,
-            /*servicoId: filtros.servicoId*/
         });
 
         res.json(dados);
@@ -71,7 +66,6 @@ async function listarPorBarbeiro(req, res) { /*MESMA lógica de listarPorDia*/
     }
 }
 
-/*endpoint e os parâmetros esperados: GET /api/financeiro/por-servico*/
 async function listarPorServico(req, res) { /*MESMA lógica de listarPorDia*/
     try {
         const filtros = validar(schemaFinanceiro, req.query);
@@ -96,7 +90,6 @@ async function listarPorServico(req, res) { /*MESMA lógica de listarPorDia*/
 }
 
 /*exportação CSV:*/
-/*endpoint e os parâmetros esperados: GET /api/financeiro/exportar/csv?tipoTabela=dia|barbeiro|servico&inicio=&fim=&barbeiroId=&servicoId=*/
 async function exportarCsv(req, res) {
     try {
         const filtros = validar(exportacaoSchema, { /*valida os filtros com exportacaoSchema:*/
@@ -114,11 +107,11 @@ async function exportarCsv(req, res) {
 
         let nomeArquivo; /*nome do arquivo depois que baixar*/
         if (filtros.tipoTabela === 'dia') {
-            nomeArquivo = 'por_período';
+            nomeArquivo = 'por_periodo';
         } else if (filtros.tipoTabela === 'barbeiro') {
             nomeArquivo = 'por_barbeiro';
         } else if (filtros.tipoTabela === 'servico') {
-            nomeArquivo = 'por_serviço';
+            nomeArquivo = 'por_servico';
         } else {
             nomeArquivo = 'financeiro.csv';
         }
@@ -143,7 +136,6 @@ async function exportarCsv(req, res) {
 }
 
 /*exportação PDF:*/
-/*endpoint e os parâmetros esperados: GET /api/financeiro/exportar/pdf?tipoTabela=dia|barbeiro|servico&inicio=&fim=&barbeiroId=&servicoId=*/
 async function exportarPdf(req, res) {
     try {
         const filtros = validar(exportacaoSchema, { /*MESMA lógica do CSV*/
@@ -191,6 +183,8 @@ async function exportarPdf(req, res) {
         const fimStr = fim ? String(fim).slice(0, 10) : null;
         if (inicioStr && fimStr) {
             doc.text(`Período: ${inicioStr} até ${fimStr}`);
+        } else {
+            doc.text('Período: não informado');
         }
         doc.moveDown();
 
@@ -229,7 +223,12 @@ async function exportarPdf(req, res) {
             }
             else {
                 dados.forEach(l => {
-                    doc.text(`${l.data} | ${l.quantidade_atendimentos} | R$ ${l.total_faturado}`);
+                    const iso = l.data instanceof Date
+                        ? l.data.toISOString().slice(0, 10) /*se vier data, pega YYYY-MM-DD*/
+                        : String(l.data).substring(0, 10); /*se vier string, garante só os 10 primeiros*/
+                    const partes = iso.split('-'); /*[YYYY, MM, DD]*/
+                    const dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`; /*DD/MM/YYYY*/
+                    doc.text(`${dataFormatada} | ${l.quantidade_atendimentos} | R$ ${l.total_faturado}`);
                 });
             }
         }

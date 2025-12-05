@@ -1,12 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
-    /*lista fake de barbeiros enquanto não existe API / tabela pessoa*/
-    const BARBEIROS_MOCK = [
-        { id: 1, nome: 'João' },
-        { id: 2, nome: 'Carlos' },
-        { id: 3, nome: 'Lucas' }
-        // pode adicionar mais se quiser
-    ];
+    let BARBEIROS_API = []; /*array com barbeiros vindos da API (cada um com seus serviços)*/
 
     /*FAZ A LINHA APARECER SEMPRE EMBAIXO DA OPÇÃO "financeiro", a não ser que outra opção seja selecionada no menu*/
     const menus = [ /*array com os 6 itens do menu*/
@@ -38,81 +32,75 @@ document.addEventListener("DOMContentLoaded", async function () {
     const filtroServico = document.getElementById('filtroServico');
     const btnAplicar = document.getElementById('btnAplicarFiltros');
 
+    /*listener para MUDAR SERVIÇOS quando o barbeiro mudar*/
+    if (filtroBarbeiro) { /*se filtroBarbeiro existe*/
+        filtroBarbeiro.addEventListener('change', function () { /*sempre que o usuário escolher um barbeiro diferente, vai executar essa função*/
+            const barbeiroId = filtroBarbeiro.value; /*pega o valor (id) selecionado no <select> de barbeiros*/
+            if (!barbeiroId) { /*se for vazio, significa que o usuário escolheu "Todos"*/
+                carregarServicosTodos(); /*carrega todos os serviços*/
+            } else { /*se o usuário tiver escolhido um barbeiro específico*/
+                carregarServicosPorBarbeiro(barbeiroId); /*carrega os serviços só do escolhido*/
+            }
+        });
+    }
+
     function limparSelectMantendoTodos(select) { /*mantém só a primeira opção (índice 0 = "Todos") no select de barbeiro e de serviço*/
         select.options.length = 1;
     }
 
-    /*chamando o backend em /api/servicos
-    async function apiListarServicos() {
-        const res = await fetch(`${API_BASE}/servicos`); /*faz uma requisição HTTP GET
-        if (!res.ok) { /*se não deu certo
-            throw new Error('Erro ao buscar serviços');
-        }
-        return res.json(); /*se deu certo, pego o corpo da resposta e converto para JSON
-    }*/
+    /*POPULANDO o select de serviços*/
+    function preencherSelectServicos(listaServicos) {
+        if (!filtroServico) return; /*se filtroServico não existe, finaliza*/
+        limparSelectMantendoTodos(filtroServico); /*chama a função que deixa só "Todos"*/
 
-    /*preencher o <select> de serviços no filtro
-    async function carregarSelectServicos() {
-        if (!filtroServico) return; /*se não existir o elemento, sai da função
+        (listaServicos || []).forEach(s => { /*percorre cada serviço da listaServicos*/
+            const opt = document.createElement('option'); /*cria um elemento <option> do HTML (que vai ser colocado dentro do select)*/
+            opt.value = s.id; /*id do serviço*/
+            opt.textContent = s.nome; /*nome do serviço*/
+            filtroServico.appendChild(opt); /*adiciona a <option> dentro do <select> filtroServico*/
+        });
+    }
 
+    /*carregar TODOS os SERVIÇOS no caso de “Todos" os barbeiros*/
+    async function carregarServicosTodos() {
         try {
-            const servicos = await apiListarServicos(); /*chama função que eu já criei
-            limparSelectMantendoTodos(filtroServico); /*chama função que eu já criei*/
+            const servicos = await apiListarServicos(); /*retorna um array de serviços vindo da tabela Serviços*/
+            preencherSelectServicos(servicos); /*popula o select com os serviços*/
+        } catch (e) { /*tratamento de erro*/
+            console.error('Erro ao carregar TODOS os serviços:', e);
+        }
+    }
 
-    /*preenchendo o select
-    (servicos || []).forEach(s => { /*percorre cada serviço s do array
-        const opt = document.createElement('option'); /*cria uma nova <option> do HTML
-        opt.value = s.ID_servico;        /*id do serviço no banco vira o valor da opção
-        opt.textContent = s.nome_servico; /*texto visível do select
-        filtroServico.appendChild(opt); /*adiciona essa <option> dentro do <select> de filtros
-    });
-} catch (err) {
-    console.error('Erro ao carregar serviços:', err);
-}
-}*/
+    /*carregar SERVIÇOS de UM barbeiro específico (usando a view)*/
+    function carregarServicosPorBarbeiro(idBarbeiro) {
+        if (!BARBEIROS_API || BARBEIROS_API.length === 0) { /*se o array de serviços dos barbeiros não existir ou estiver vazio, não continua*/
+            return;
+        }
+        const idNum = Number(idBarbeiro); /*converte o idBarbeiro de string para número*/
+        const barbeiro = BARBEIROS_API.find(b => b.id === idNum); /*procura o id do barbeiro no array*/
+        const servicosDoBarbeiro = barbeiro?.servicos || []; /*se achar o barbeiro, pega o serviço*/
+        preencherSelectServicos(servicosDoBarbeiro); /*preenche o select*/
+    }
 
     /*POPULANDO os select de BARBEIRO e SERVIÇO usando backend*/
     async function carregarBarbeirosEServicos() {
         try {
             /*barbeiros*/
-            /*DESCOMENTAR AQUI DEPOIS DA API const barbeiros = await apiListarBarbeiros(); /*chama a função apiListarBarbeiros() que faz um fetch na minha api*/
+            BARBEIROS_API = await apiListarBarbeiros(); /*GET /api/barbeiros*/
             limparSelectMantendoTodos(filtroBarbeiro);
 
-            /* DESCOMENTAR AQUI DEPOIS DA API (barbeiros || []).forEach(b => { percorre cada barbeiro da lista; b é um objeto do tipo {id, nome}
-                const opt = document.createElement('option'); /*]cria um <option> novo para esse barbeiro
-                opt.value = b.id; /*o value da option será o id do barbeiro
-                opt.textContent = b.nome; /*o texto exibido no select é o nome do barbeiro
-                filtroBarbeiro.appendChild(opt); /*adiciona essa <option> dentro do <select> de barbeiro
+            (BARBEIROS_API || []).forEach(b => { /*percorre cada barbeiro da lista; b é um objeto do tipo { id, nome }*/
+                const opt = document.createElement('option'); /*cria um <option> novo para esse barbeiro*/
+                opt.value = b.id; /*o value da option será o id do barbeiro*/
+                opt.textContent = b.nome; /*o texto exibido no select é o nome do barbeiro*/
+                filtroBarbeiro.appendChild(opt); /*adiciona essa <option> dentro do <select> de barbeiro*/
             }); /*repete isso para cada barbeiro retornado pela API*/
 
-            (BARBEIROS_MOCK || []).forEach(b => {
-                const opt = document.createElement('option');
-                opt.value = b.id;       /*id fake do barbeiro*/
-                opt.textContent = b.nome; /*nome fake do barbeiro*/
-                filtroBarbeiro.appendChild(opt);
-            });
-
         } catch (e) { /*se der erro, deixa só "Todos" como option*/
             console.error('Erro ao carregar barbeiros/serviços:', e);
         }
 
-        try {
-            /*serviços*/
-            const servicos = await apiListarServicos(); /*MESMA lógica*/
-            limparSelectMantendoTodos(filtroServico);
-
-            (servicos || []).forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id;
-                opt.textContent = s.nome;
-                filtroServico.appendChild(opt);
-            });
-
-            /*carregarSelectServicos();*/
-
-        } catch (e) { /*se der erro, deixa só "Todos" como option*/
-            console.error('Erro ao carregar barbeiros/serviços:', e);
-        }
+        await carregarServicosTodos(); /*inicialmente, mostrar TODOS (caso "Todos" os barbeiros)*/
     }
     /*chama assim que a tela carregar:*/
     carregarBarbeirosEServicos();
@@ -142,8 +130,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         let fim = '';
 
         if (periodo === 'hoje') { /*se o período escolhido for "hoje"*/
-            const iso = hoje.toISOString().slice(0, 10); /*transforma a data atual em uma string no formato ISO*/
-            inicio = iso;
+            const ano = hoje.getFullYear(); /*pega o ano da data de hoje*/
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0'); /*pega o mês e acrescenta 0 se precisar*/
+            const dia = String(hoje.getDate()).padStart(2, '0'); /*pega o dia e acrescenta 0 se precisar*/
+            const iso = `${ano}-${mes}-${dia}`; /*monta a string*/
+            inicio = iso; /*define que o início e o fim do período são a mesma data de hoje*/
             fim = iso;
         } else if (periodo === '7dias') { /*se o período escolhido for "7 dias"*/
             const dInicio = new Date(); /*cria um novo Date com a data atual*/
@@ -186,8 +177,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             const tr = document.createElement('tr'); /*cria uma linha na tabela*/
 
             const tdData = document.createElement('td'); /*cria uma célula para "data"*/
-            /*a data vem no formato 2025-11-24, aí converte pra 24/11/2025:*/
-            const partes = String(l.data).split('-');
+            /*a data vem no formato 2025-11-24, aí converte pra 24/11/2025 (na tabela):*/
+            const iso = String(l.data);
+            const soData = iso.substring(0, 10); /*pega só YYYY-MM-DD*/
+            const partes = soData.split('-');
             tdData.textContent = `${partes[2]}/${partes[1]}/${partes[0]}`;
 
             const tdQtd = document.createElement('td'); /*cria uma célula para "quantidade de atendimentos"*/
@@ -210,7 +203,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const tbody = document.getElementById('tabelaPorBarbeiro');
         tbody.innerHTML = '';
 
-        if (!dados || dados.length === 0) {
+        if (!Array.isArray(dados) || dados.length === 0) {
             tbody.innerHTML = '<tr><td colspan="3">Nenhum registro encontrado.</td></tr>';
             return;
         }
@@ -240,7 +233,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const tbody = document.getElementById('tabelaPorServico');
         tbody.innerHTML = '';
 
-        if (!dados || dados.length === 0) {
+        if (!Array.isArray(dados) || dados.length === 0) {
             tbody.innerHTML = '<tr><td colspan="3">Nenhum registro encontrado.</td></tr>';
             return;
         }

@@ -60,6 +60,32 @@ app.get('/api/servicos/:id', async (req, res) => { /*cria uma rota com parâmetr
   }
 });
 
+/*API de barbeiros para popular o select:*/
+app.get('/api/barbeiros', async (req, res) => { /*GET barbeiros*/
+  try {
+    /*consulta no banco usando o pool:*/
+    const [rows] = await pool.query(` 
+      SELECT 
+        id_barbeiro   AS id,
+        nome_barbeiro AS nome,
+        servicos
+      FROM view_barbeiros_servicos_json
+      ORDER BY nome_barbeiro
+    `);
+
+    const barbeiros = rows.map(r => ({ /*percorre cada linha retornada do banco e transforma em um novo formato; r é cada cada barbeiro. Resultado: array chamado barbeiros*/
+      id: r.id,
+      nome: r.nome,
+      servicos: r.servicos || []
+    }));
+    res.json(barbeiros); /*envia a resposta para o frontend em formato JSON*/
+
+  } catch (err) { /*tratamento de erro*/
+    console.error('Erro em GET /api/barbeiros:', err);
+    res.status(500).json({ erro: 'Erro ao listar barbeiros' });
+  }
+});
+
 /*se nenhuma rota anterior atendeu a requisição (não foi mapeada), retorna HTTP 404*/
 app.use((req, res) => {
   res.status(404).json({ error: 'Rota não encontrada' });

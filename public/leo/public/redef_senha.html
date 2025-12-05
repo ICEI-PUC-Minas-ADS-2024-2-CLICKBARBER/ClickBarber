@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Serviços da Barbearia</title>
   <link rel="stylesheet" href="assets/css/rec_senha.css">
-  
+
 </head>
 
 <body>
@@ -24,15 +25,16 @@
         <div class="link"><a href="#">Ajuda</a></div>
       </div>
       <!--navbar quando tem uma conta de barbearia logada-->
-      <div id="navbarB" class="navbar" >
+      <div id="navbarB" class="navbar">
         <div class="link"><a href="#">Agenda</a></div>
+        <div class="link"><a href="../../julia/public/financeiro.html">Financeiro</a></div>
         <div class="link"><a href="#">Meu Plano</a></div>
         <div class="link"><a href="#">Perfil</a></div>
-        <div class="link"><a href="produtos.html">Produtos disponíveis</a></div>
+        <div class="link"><a href="../../julia/public/produtos.html">Produtos disponiveis</a></div>
         <div class="link"><a href="#">Serviços</a></div>
       </div>
       <!--navbar quando tem uma conta de usuário logado-->
-      <div id="navbarU" class="navbar" >
+      <div id="navbarU" class="navbar">
         <div class="link"><a href="#">Agenda</a></div>
       </div>
     </div>
@@ -47,16 +49,16 @@
   <main>
     <div class="container">
       <div class="cd">
-        
+
         <div class="titulo">
           <p2>REDEFINIÇÃO DE SENHA</p2>
         </div>
 
         <div class="info">Insira uma nova senha para redefini-la.</div>
-        
+
         <div class="form">
           <form>
-            
+
             <!--Senha da conta-->
             <div class="laIn">
               <label for="senha">Digite sua nova Senha<span class="ast"> *</span></label>
@@ -67,9 +69,10 @@
                 </label>
                 <input id="check" style="display: none;" value="true" type="checkbox">
               </div>
-              <div class="invalid" id="inSenha">Por favor digite uma senha válida (no minimo 8 characteres e deve ter no minimo 1 numero 1 letra e um simbolo)</div>
+              <div class="invalid" id="inSenha">Por favor digite uma senha válida (no minimo 8 characteres e deve ter no
+                minimo 1 numero 1 letra e um simbolo)</div>
             </div>
-            
+
             <!--Confirmação da senha escolhida-->
             <div class="laIn">
               <label for="senhaConfirm">Confirme sua Senha <span class="ast"> *</span></label>
@@ -82,18 +85,19 @@
               </div>
               <div class="invalid" id="inSenha2">A senhas senhas precisam ser iguais para prosseguir</div>
             </div>
-           
+
             <!--Botão de redefinição de senha-->
             <div class="btn">
               <button type="button" id="btnRedefinir">REDEFINIR SENHA</button>
             </div>
 
-          </form>      
+          </form>
+        </div>
       </div>
-    </div>
   </main>
 
   <script src="assets/scripts/redef_senha.js"></script>
 
 </body>
+
 </html>

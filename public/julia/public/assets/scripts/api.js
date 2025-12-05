@@ -25,7 +25,7 @@ function apiAtualizarProduto(id, p) { return http('PUT', `/produtos/${id}`, p); 
 function apiExcluirProduto(id) { return http('DELETE', `/produtos/${id}`); } /*faz DELETE /produtos/:id e, em sucesso, retorna null (porque o servidor responde 204)*/
 function apiCategorias() { return http('GET', '/produtos/categorias'); } /*faz GET /produtos/categorias e retorna a lista de categorias únicas*/
 function apiListarBarbeiros() { return http('GET', '/barbeiros'); } /*trocar apenas '/barbeiros' e '/servicos' quando me mandarem a rota real*/
-function apiListarServicos() { return http('GET', '/servicos');}
+function apiListarServicos() { return http('GET', '/servicos'); }
 
 
 /*resumo: monta URL com filtros, envia/recebe JSON, converte erros HTTP em exceção e expõe funções prontas para CRUD de produtos e listagem de categorias*/

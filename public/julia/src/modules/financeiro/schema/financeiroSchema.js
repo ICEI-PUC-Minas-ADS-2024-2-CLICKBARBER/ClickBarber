@@ -1,6 +1,5 @@
 import Joi from 'joi'; /*importa o Joi - biblioteca de validação: define regras dos campos e valida o payload*/
 
-/*era const filtroRelatorioSchema*/
 /*define o schema - formato e regras dos dados- de validação do produto*/
 const schemaFinanceiro = Joi.object({ /*filtros gerais: datas + barbeiro + serviço*/
   inicio: Joi.string().isoDate().allow('', null), /*data de inicio do filtro: é um texto (string), no formato ISO, e pode ser vazia/null*/

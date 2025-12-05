@@ -37,16 +37,6 @@ async function buscarPorDia({ inicio, fim, barbeiroId, servicoId }) { /*função
     params.push(fimStr); /*coloca o valor em params*/
   }
 
-  /*if (barbeiroId) { se veio barbeiroId:
-    sql += ' AND barbeiro_id = ?'; /*filtra para apenas aquele barbeiro
-    params.push(barbeiroId); /*adiciona o id na lista de parâmetros.
-  }*/
-
-  /*if (servicoId) { MESMA lógica que o barbeiro
-    sql += ' AND servico_id = ?';
-    params.push(servicoId);
-  }*/
-
   /*finaliza a query:*/
   sql += `
     GROUP BY DATE(data_hora)
@@ -59,16 +49,16 @@ async function buscarPorDia({ inicio, fim, barbeiroId, servicoId }) { /*função
 }
 
 /*total por barbeiro:*/
-async function buscarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) {
+async function buscarPorBarbeiro({ inicio, fim, barbeiroId, /*servicoId*/ }) {
   let sql = `
     SELECT 
-      p.Nome AS barbeiro,
+      v.nome_barbeiro AS barbeiro,
       COUNT(a.id_atendimento) AS quantidade_atendimentos,
       SUM(a.valor_total) AS total_faturado
     FROM Atendimento a
-    JOIN Pessoa p ON p.ID_pessoa = a.id_barbeiro
+    JOIN view_barbeiros_servicos_json v           
+      ON v.id_barbeiro = a.id_barbeiro
     WHERE a.status = 'FINALIZADO'
-    AND LOWER(p.Tipo_usuario) = 'barbeiro'
   `;
   const params = [];
 
@@ -84,18 +74,13 @@ async function buscarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) {
     params.push(fimStr);
   }
 
-  /*if (servicoId) { serviço especificado
-    sql += ' AND a.servico_id = ?';
-    params.push(servicoId);
-  }*/
-
   if (barbeiroId) { /*barbeiro específico*/
-    sql += ' AND a.barbeiro_id = ?';
+    sql += ' AND a.id_barbeiro = ?';
     params.push(barbeiroId);
   }
 
   sql += `
-    GROUP BY p.ID_pessoa, p.Nome
+   GROUP BY v.id_barbeiro, v.nome_barbeiro                       
     ORDER BY total_faturado DESC
   `;
 
@@ -107,11 +92,10 @@ async function buscarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) {
 async function buscarPorServico({ inicio, fim, barbeiroId, servicoId }) {
   let sql = `
     SELECT 
-      s.Titulo AS servico,
+      a.nome_servicos AS servico,
       COUNT(a.id_atendimento) AS quantidade_servicos,
       SUM(a.valor_total) AS total_faturado
     FROM Atendimento a
-    JOIN Servico s ON s.ID_servico = a.id_servico
     WHERE a.status = 'FINALIZADO'
   `;
   const params = [];
@@ -128,18 +112,18 @@ async function buscarPorServico({ inicio, fim, barbeiroId, servicoId }) {
     params.push(fimStr);
   }
 
-  if (servicoId) { /*serviço específico*/
-    sql += ' AND a.id_servico = ?';
-    params.push(servicoId);
-  }
-
   if (barbeiroId) { /*barbeiro específico*/
     sql += ' AND a.id_barbeiro = ?';
     params.push(barbeiroId);
   }
 
+  if (servicoId) { /*serviço específico*/
+    sql += ' AND a.nome_servicos = (SELECT s.Titulo FROM Servico s WHERE s.ID_servico = ?)';
+    params.push(servicoId);
+  }
+
   sql += `
-    GROUP BY s.ID_servico, s.Titulo
+    GROUP BY a.nome_servicos
     ORDER BY total_faturado DESC
   `;
 
