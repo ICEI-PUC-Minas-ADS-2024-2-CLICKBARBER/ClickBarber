@@ -1,12 +1,4 @@
-/*import financeiroRepository from '../repository/financeiroRepository.mysql.js'; pega o export do produtoRepository.mysql.js*/
-import financeiroRepository from '../repository/financeiroRepository.js'; /*TESTE BD LOCAL*/
-
-/*LISTA FAKE de barbeiros*/
-const BARBEIROS_MOCK = [
-  { id: 1, nome: 'Barbeiro João' },
-  { id: 2, nome: 'Barbeiro Carlos' },
-  { id: 3, nome: 'Barbeiro Lucas' }
-];
+import financeiroRepository from '../repository/financeiroRepository.mysql.js'; /*pega o export do produtoRepository.mysql.js*/
 
 function normalizarPeriodo({ inicio, fim }) { /*normaliza o período de filtro*/
   return {
@@ -19,38 +11,15 @@ async function listarPorDia({ inicio, fim, barbeiroId, servicoId }) { /*lista va
   const periodo = normalizarPeriodo({ inicio, fim }); /*chama a função de normalizar o período*/
   return financeiroRepository.buscarPorDia({ /*chama o método buscarPorDia do financeiroRepository, passando um objeto com:*/
     ...periodo, /*os três pontos é o retorno de normalizarPeriodo*/
-    /*barbeiroId,
-    servicoId*/
   }); /*return o resultado da consulta*/
 }
 
-/*DESCOMENTAR DEPOIS DA API async function listarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) { /*lista valor total por barbeiro
-  const periodo = normalizarPeriodo({ inicio, fim }); /*chama a função de normalizar o período
-  return financeiroRepository.buscarPorBarbeiro({ /*chama o método buscarPorBarbeiro do financeiroRepository, passando um objeto com:
+async function listarPorBarbeiro({ inicio, fim, barbeiroId, /*servicoId*/ }) { /*lista valor total por barbeiro*/
+  const periodo = normalizarPeriodo({ inicio, fim }); /*chama a função de normalizar o período*/
+  return financeiroRepository.buscarPorBarbeiro({ /*chama o método buscarPorBarbeiro do financeiroRepository, passando um objeto com:*/
     ...periodo,
     barbeiroId,
-    /*servicoId -> essa linha NÃO DESCOMENTAR
-  }); /*devolve o resultado do repository (lista com dados já agrupados por barbeiro)
-}*/
-
-/*função fake enquanto não existir os barbeiros*/
-async function listarPorBarbeiro({ inicio, fim, barbeiroId, servicoId }) {
-  if (barbeiroId) { /*se o usuário escolheu um barbeiro*/
-    const b = BARBEIROS_MOCK.find(x => x.id === Number(barbeiroId));
-    if (!b) {
-      return [];
-    }
-    return [{
-      barbeiro: b.nome,
-      quantidade_atendimentos: 0,
-      total_faturado: 0
-    }];
-  }
-  return BARBEIROS_MOCK.map(b => ({ /*se ele escolheu Todos*/
-    barbeiro: b.nome,
-    quantidade_atendimentos: 0,
-    total_faturado: 0
-  }));
+  }); /*devolve o resultado do repository (lista com dados já agrupados por barbeiro)*/
 }
 
 async function listarPorServico({ inicio, fim, barbeiroId, servicoId }) { /*lista total por serviço*/
@@ -92,7 +61,12 @@ async function gerarCsv({ tipoTabela, inicio, fim, barbeiroId, servicoId }) { /*
       return csv;
     }
     for (const l of linhas) { /*percorre cada linha retornada pelo banco*/
-      csv += `${l.data}, ${l.quantidade_atendimentos}, ${l.total_faturado}\n`; /*para cada linha, adiciona uma nova linha na string do CSV com os valores daquela linha*/
+      const iso = l.data instanceof Date
+        ? l.data.toISOString().slice(0, 10) /*se vier data, pega YYYY-MM-DD*/
+        : String(l.data).substring(0, 10); /*se vier string, garante só os 10 primeiros*/
+      const partes = iso.split('-'); /*[YYYY, MM, DD]*/
+      const dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`; /*DD/MM/YYYY*/
+      csv += `${dataFormatada}, ${l.quantidade_atendimentos}, ${l.total_faturado}\n`; /*para cada linha, adiciona uma nova linha na string do CSV com os valores daquela linha*/
     }
     return csv; /*devolve a string final do CSV pronta para ser baixada*/
   }

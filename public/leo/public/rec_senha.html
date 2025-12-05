@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Serviços da Barbearia</title>
   <link rel="stylesheet" href="assets/css/rec_senha.css">
-  
+
 </head>
 
 <body>
@@ -24,15 +25,16 @@
         <div class="link"><a href="#">Ajuda</a></div>
       </div>
       <!--navbar quando tem uma conta de barbearia logada-->
-      <div id="navbarB" class="navbar" >
+      <div id="navbarB" class="navbar">
         <div class="link"><a href="#">Agenda</a></div>
+        <div class="link"><a href="../../julia/public/financeiro.html">Financeiro</a></div>
         <div class="link"><a href="#">Meu Plano</a></div>
         <div class="link"><a href="#">Perfil</a></div>
-        <div class="link"><a href="produtos.html">Produtos disponíveis</a></div>
+        <div class="link"><a href="../../julia/public/produtos.html">Produtos disponiveis</a></div>
         <div class="link"><a href="#">Serviços</a></div>
       </div>
       <!--navbar quando tem uma conta de usuário logado-->
-      <div id="navbarU" class="navbar" >
+      <div id="navbarU" class="navbar">
         <div class="link"><a href="#">Agenda</a></div>
       </div>
     </div>
@@ -47,16 +49,16 @@
   <main>
     <div class="container">
       <div class="cd">
-        
+
         <div class="titulo">
           <p2>RECUPERAÇÃO DE SENHA</p2>
         </div>
 
         <div class="info">
-          Para redefinir sua senha insira no campo abaixo seu email e cpf cadastrado 
+          Para redefinir sua senha insira no campo abaixo seu email e cpf cadastrado
         </div>
-        
-        
+
+
         <div class="form">
           <form>
             <!--Email do usuario-->
@@ -71,7 +73,7 @@
               <input type="number" placeholder="123-456-789-10" id="cpf">
               <div class="invalid" id="invalid">Email ou CPF incorretos</div>
             </div>
-            
+
             <!--Botão de redefinição de senha-->
             <div class="btn">
               <button type="button" id="btnEntrar">REDEFINIR</button>
@@ -79,14 +81,17 @@
 
             <!--Botão que volta pra página de login-->
             <div class="btnVoltar">
-                <a href="login_u.html"><div>VOLTAR</div></a>
+              <a href="login_u.html">
+                <div>VOLTAR</div>
+              </a>
             </div>
 
-          </form>      
+          </form>
+        </div>
       </div>
-    </div>
   </main>
 
   <script src="assets/scripts/rec_senha.js"></script>
 </body>
+
 </html>
