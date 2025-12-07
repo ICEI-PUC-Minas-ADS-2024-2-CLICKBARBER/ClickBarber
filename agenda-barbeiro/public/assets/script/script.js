@@ -3,11 +3,13 @@
 // Inclui: calendário mensal navegável, agendamento, edição e exclusão
 // ================================================================
 
+const url = 'http://localhost:3000';
+
 // ---------- VARIÁVEIS GLOBAIS ----------
 let dataSelecionada = null; // guarda a data atual selecionada
 let mesAtual;               // mês sendo exibido (0 = janeiro)
 let anoAtual;               // ano sendo exibido
-let barbeiroSelecionado = null;
+let barbeiroSelecionado = '';
 
 
 // ---------- INICIALIZAÇÃO ----------
@@ -96,8 +98,16 @@ async function carregarAgenda(data, barbeiro = barbeiroSelecionado) {
     return;
   }
 
-  // Busca todos os agendamentos armazenados na API
-  const agendamentos = await fetch("/api/agendamentos").then(r => r.json());
+  // Busca todos os agendamentos armazenados
+  const response = await fetch(url + "/agendar")
+  const agendamentos = '';
+  if (!response.ok)
+    {
+
+    }else
+    {
+      agendamentos = response.json().data 
+    };
 
   // Lista fixa de horários disponíveis para agendamento
   const horarios = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00"];
@@ -108,7 +118,7 @@ async function carregarAgenda(data, barbeiro = barbeiroSelecionado) {
   // Monta o cabeçalho da agenda com nome do barbeiro e data formatada
   container.innerHTML = `
     <h2 style="text-align:center; color:#f1c27d;">
-      Agenda de ${barbeiro.nome} — ${dia}/${mes}/${ano}
+      Agenda de ${barbeiro.Nome} — ${dia}/${mes}/${ano}
     </h2>
     <div class="lista-horarios"></div>
   `;
@@ -117,14 +127,19 @@ async function carregarAgenda(data, barbeiro = barbeiroSelecionado) {
   const lista = container.querySelector(".lista-horarios");
 
   // Para cada horário disponível...
+  const ag = '';
   horarios.forEach(hora => {
 
+    if(agendamentos != '')
+    {
+      ag = agendamentos.find(a => 
+        a.data === data &&
+        a.horario === hora &&
+        a.barbeiro === barbeiro.Nome
+      )
+    }
     // Procura se existe um agendamento correspondente na API
-    const ag = agendamentos.find(a => 
-      a.data === data &&
-      a.horario === hora &&
-      a.barbeiro === barbeiro.nome
-    );
+   ;
 
     // Cria o bloco visual do horário
     const slot = document.createElement("div");
@@ -161,7 +176,10 @@ async function carregarBarbeiros() {
   const lista = document.getElementById("lista-barbeiros");
   const dropdown = document.getElementById("barbeiro-dropdown");
   // Busca todos os barbeiros na API
-  const barbeiros = await fetch("/api/barbeiros").then(r => r.json());
+  let barbeiros = await fetch(url +"/barbeiros").then(r => r.json());
+  barbeiros = barbeiros.data;
+  console.log(barbeiros);
+
   // Limpa conteúdos anteriores da lista e do dropdown
   lista.innerHTML = "";
   dropdown.innerHTML = "";
@@ -174,7 +192,7 @@ async function carregarBarbeiros() {
     // Monta as opções do dropdown
     dropdown.innerHTML = `
       <option value="">Selecione...</option>
-      ${barbeiros.map(b => `<option value="${b.id}">${b.nome}</option>`).join("")}
+      ${barbeiros.map(b => `<option value="${b.ID_pessoa}">${b.Nome}</option>`).join("")}
     `;
 
     // Evento que dispara quando o usuário escolhe um barbeiro no dropdown
@@ -182,7 +200,7 @@ async function carregarBarbeiros() {
       const id = dropdown.value;
 
       // Encontra no array o barbeiro selecionado
-      barbeiroSelecionado = barbeiros.find(b => b.id == id);
+      barbeiroSelecionado = barbeiros.find(b => b.ID_pessoa == id);
 
       // Se houver uma data escolhida, recarrega a agenda desse barbeiro
       if (dataSelecionada && barbeiroSelecionado) {
@@ -233,7 +251,8 @@ async function carregarBarbeiros() {
 
 async function abrirModalNovo(e) {
   // Busca a lista de serviços disponíveis na API
-  const servicos = await fetch("/api/servicos").then(r => r.json());
+  let servicos = await fetch(url +"/servicos").then(r => r.json());
+  servicos = servicos.data;
   // Exibe o modal na tela
   document.getElementById("modal").style.display = "flex";
   // Define o título do modal como "Novo Agendamento"
@@ -248,7 +267,7 @@ async function abrirModalNovo(e) {
   const servicoSelect = document.getElementById("servico");
   // Preenche o <select> com a lista de serviços retornados pela API
   servicoSelect.innerHTML = servicos.map(s =>
-    `<option value="${s.id}">${s.nome}</option>`
+    `<option value="${s.ID_servico}">${s.Titulo}</option>`
   ).join("");
   // Limpa o campo de ID, pois ainda não existe um agendamento salvo
   document.getElementById("agendamento-id").value = "";
@@ -264,11 +283,11 @@ async function abrirModalEditar(e) {
   // Obtém o ID do agendamento a partir do elemento clicado
   const id = e.currentTarget.dataset.id;
   // Busca os dados completos do agendamento na API
-  const ag = await fetch(`/api/agendamentos/${id}`).then(r => r.json());
+  const ag = await fetch(url + `/agendar/${id}`).then(r => r.json());
   // Busca a lista completa de barbeiros (para o select)
-  const barbeiros = await fetch("/api/barbeiros").then(r => r.json());
+  const barbeiros = await fetch(url + "/barbeiros").then(r => r.json());
   // Busca a lista de serviços (para o select)
-  const servicos = await fetch("/api/servicos").then(r => r.json());
+  const servicos = await fetch(url + "/servicos").then(r => r.json());
   // Exibe o modal
   document.getElementById("modal").style.display = "flex";
   // Ajusta o título para modo de edição
@@ -277,8 +296,8 @@ async function abrirModalEditar(e) {
   document.getElementById("btnExcluir").classList.remove("hidden");
 
   // Preenche campos básicos do agendamento
-  document.getElementById("agendamento-id").value = ag.id;
-  document.getElementById("cliente").value = ag.cliente;
+  document.getElementById("agendamento-id").value = ag.ID_agenda;
+  document.getElementById("cliente").value = ag.ID_pessoa;
   document.getElementById("horario").value = ag.horario;
 
   // --- Preenche lista de barbeiros no select ---
@@ -286,13 +305,13 @@ async function abrirModalEditar(e) {
 
   // Cada opção é marcada como 'selected' se for o barbeiro desse agendamento
   barbeiroSelect.innerHTML = barbeiros.map(b =>
-    `<option value="${b.id}" ${b.nome === ag.barbeiro ? "selected" : ""}>${b.nome}</option>`
+    `<option value="${b.ID_pessoa}" ${b.Nome === ag.barbeiro ? "selected" : ""}>${b.Nome}</option>`
   ).join("");
   // --- Preenche lista de serviços no select ---
   const servicoSelect = document.getElementById("servico");
   // Cada opção é marcada como 'selected' se for o serviço desse agendamento
   servicoSelect.innerHTML = servicos.map(s =>
-    `<option value="${s.id}" ${s.nome === ag.servico ? "selected" : ""}>${s.nome}</option>`
+    `<option value="${s.ID_servico}" ${s.Titulo === ag.servico ? "selected" : ""}>${s.nome}</option>`
   ).join("");
 }
 
@@ -306,24 +325,25 @@ async function salvarAgendamento() {
   // Se estiver vazio, significa que é um novo.
   const id = document.getElementById("agendamento-id").value;
 
-  // Monta o objeto com os dados que serão enviados para a API
+  // Monta o objeto com os dados que serão enviados 
   const data = {
-    barbeiro_id: barbeiroSelecionado.id,                       // ID do barbeiro selecionado
+    barbeiro_id: barbeiroSelecionado.ID_pessoa,                       // ID do barbeiro selecionado
     cliente: document.getElementById("cliente").value,         // Nome do cliente
     servico_id: document.getElementById("servico").value,      // Serviço escolhido
     horario: document.getElementById("horario").value,         // Horário selecionado
     data: dataSelecionada                                      // Data da agenda
   };
+  console.log (data);
 
   // Define o método HTTP:
   // PUT → edição de agendamento existente
   // POST → criação de novo agendamento
-  const metodo = id ? "PUT" : "POST";
+  const metodo = id ? "PATCH" : "POST";
 
   // Define a URL adequada para inserir ou atualizar o agendamento
-  const url = id ? `/api/agendar/${id}` : "/api/agendar";
+  const endpoint = id ? `${url}/agendar/${id}` : `${url}/agendar`;
 
-  // Envia os dados para a API
+  // Envia os dados 
   await fetch(url, {
     method: metodo,
     headers: { "Content-Type": "application/json" },
@@ -343,7 +363,7 @@ async function salvarAgendamento() {
 // =======================================================
 async function excluirAgendamento() {
   const id = document.getElementById("agendamento-id").value;
-  await fetch(`/api/agendar/${id}`, { method: "DELETE" });
+  await fetch(url + `/agendar/${id}`, { method: "DELETE" });
   fecharModal();
   await carregarAgenda(dataSelecionada);
 }
